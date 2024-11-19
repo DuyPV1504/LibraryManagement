@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.controller.UserController">
+   <children>
+      <ImageView accessibleRole="PASSWORD_FIELD" fitHeight="540.0" fitWidth="960.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/libBack.jpg" />
+         </image>
+      </ImageView>
+      <Pane opacity="0.55" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #ffffff;" />
+      <Label alignment="CENTER" prefHeight="50.0" prefWidth="650.0" text="Welcome to Library Management Application">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <SplitMenuButton fx:id="optionU" layoutX="842.0" layoutY="15.0" mnemonicParsing="false" onAction="#onOptionMenuUClick" opacity="0.81" prefHeight="40.0" prefWidth="90.0" text="Tùy chọn">
+         <items>
+            <MenuItem fx:id="inforU" mnemonicParsing="false" onAction="#onInforUClick" text="Thông tin cá nhân" />
+            <MenuItem fx:id="logOutU" mnemonicParsing="false" onAction="#onLogOutUClick" text="Đăng xuất" />
+         </items>
+      </SplitMenuButton>
+      <TabPane layoutY="60.0" opacity="0.72" prefHeight="480.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab fx:id="bookInfor" onSelectionChanged="#onBookInforButtonClick" text="Thông tin sách">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã sách" wrappingWidth="90.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên sách" wrappingWidth="90.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tác giả" wrappingWidth="90.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="510.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NXB" wrappingWidth="130.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="510.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Năm XB" wrappingWidth="90.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="bookIDU" layoutX="180.0" layoutY="10.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="bookNameU" layoutX="180.0" layoutY="40.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="authorU" layoutX="180.0" layoutY="70.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="publisherU" layoutX="660.0" layoutY="40.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="publishedYearU" layoutX="660.0" layoutY="10.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <Button fx:id="searchBookU" layoutX="430.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchBookUButtonClick" opacity="0.72" prefHeight="40.0" prefWidth="100.0" text="Tìm kiếm">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <TableView layoutY="185.0" opacity="0.72" prefHeight="266.0" prefWidth="960.0">
+                           <columns>
+                              <TableColumn fx:id="idUser" prefWidth="100.0" text="ID" />
+                              <TableColumn fx:id="nameOfBook" prefWidth="200.0" text="Tên sách" />
+                              <TableColumn fx:id="author" minWidth="70.0" prefWidth="180.0" text="Tác giả" />
+                              <TableColumn fx:id="publisher" minWidth="24.79998779296875" prefWidth="180.0" text="NXB" />
+                              <TableColumn fx:id="publishYear" minWidth="70.0" prefWidth="100.0" text="Năm XB" />
+                              <TableColumn fx:id="availableBooksInInfoBook" minWidth="50.0" prefWidth="100.0" text="Số lượng còn lại" />
+                              <TableColumn fx:id="totalBooks" minWidth="70.0" prefWidth="100.0" text="Tổng số sách" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="borrownReturnUManage" onSelectionChanged="#onBorrowReturnUManageClick" text="Mượn/Trả sách">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã giao dịch">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tài khoản">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã sách">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="40.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số lượng">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="520.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày mượn">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="520.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày trả">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="520.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tình trạng ">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="transactionIDU" layoutX="180.0" layoutY="10.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="transactionAccountU" layoutX="180.0" layoutY="40.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="bookIDUTrans" layoutX="180.0" layoutY="70.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="numberOfBook" layoutX="180.0" layoutY="100.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="borrowDateU" layoutX="660.0" layoutY="10.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="returnDateU" layoutX="660.0" layoutY="40.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="statusU" layoutX="660.0" layoutY="70.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <Button fx:id="borrowButton" layoutX="216.0" layoutY="130.0" mnemonicParsing="false" onAction="#onBorrowButtonClick" opacity="0.72" prefHeight="30.0" prefWidth="120.0" text="Mượn sách">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="returnButton" layoutX="616.0" layoutY="130.0" mnemonicParsing="false" onAction="#onReturnButtonClick" opacity="0.72" prefHeight="30.0" prefWidth="120.0" text="Trả sách">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <TableView layoutX="-3.0" layoutY="174.0" opacity="0.72" prefHeight="280.0" prefWidth="960.0">
+                           <columns>
+                              <TableColumn fx:id="transaction_id" prefWidth="120.0" text="Mã giao dịch" />
+                              <TableColumn fx:id="userAccount" prefWidth="135.99996948242188" text="Tài khoản mượn" />
+                              <TableColumn fx:id="book_id" prefWidth="126.40003967285156" text="Mã sách" />
+                              <TableColumn fx:id="availableBooksInBorrow" onEditStart="#soLuongConLai" prefWidth="103.20001220703125" text="Số lượng" />
+                              <TableColumn fx:id="availableBooks" prefWidth="169.5999755859375" text="Ngày mượn" />
+                              <TableColumn fx:id="returnDate" prefWidth="157.60003662109375" text="Ngày trả" />
+                              <TableColumn fx:id="status" prefWidth="150.0" text="Tình trạng" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="bookReview" onSelectionChanged="#onBookReviewClick" text="Đánh giá">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã sách">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên sách" wrappingWidth="90.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tác giả" wrappingWidth="90.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="520.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NXB" wrappingWidth="90.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="520.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Năm XB" wrappingWidth="90.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="bookIDReview" layoutX="180.0" layoutY="10.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="bookNameReview" layoutX="180.0" layoutY="40.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="authorReview" layoutX="180.0" layoutY="70.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="publisherReview" layoutX="660.0" layoutY="40.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="publishedYearReview" layoutX="660.0" layoutY="10.0" opacity="0.72" prefHeight="10.0" prefWidth="280.0" />
+                        <Label layoutX="10.0" layoutY="135.0" prefHeight="30.0" prefWidth="100.0" text="Bình luận:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="comments" layoutX="10.0" layoutY="160.0" opacity="0.86" prefHeight="240.0" prefWidth="960.0" />
+                        <Button fx:id="addCommentButton" layoutX="40.0" layoutY="410.0" mnemonicParsing="false" onAction="#onAddCommentButtonClick" prefHeight="30.0" prefWidth="150.0" text="Thêm đánh giá">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="editCommentButton" layoutX="350.0" layoutY="410.0" mnemonicParsing="false" onAction="#onEditCommentButtonClick" prefHeight="30.0" prefWidth="150.0" text="Sửa đánh giá">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="deleteCommentButton" layoutX="660.0" layoutY="410.0" mnemonicParsing="false" onAction="#onDeleteCommentButtonClick" prefHeight="30.0" prefWidth="150.0" text="Xóa đánh giá">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</Pane>
