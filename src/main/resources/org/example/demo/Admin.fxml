@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
@@ -9,62 +10,64 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.97" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.controller.AdminController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #71C0B8;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.controller.AdminController">
    <children>
-      <Label alignment="CENTER" prefHeight="50.0" prefWidth="650.0" text="Welcome to Library Management Application">
+      <Label alignment="CENTER" prefHeight="40.0" prefWidth="310.0" text="QUẢN LÝ THƯ VIỆN" textFill="WHITE">
          <font>
-            <Font size="31.0" />
+            <Font size="32.0" />
          </font>
       </Label>
-      <SplitMenuButton fx:id="option" layoutX="832.0" layoutY="5.0" mnemonicParsing="false" onAction="#onOptionMenuClick" prefHeight="40.0" prefWidth="90.0" text="Tùy chọn">
+      <SplitMenuButton fx:id="option" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#onOptionMenuClick" prefHeight="30.0" prefWidth="90.0" stylesheets="@MenuButton.css" text="Tùy chọn">
          <items>
             <MenuItem fx:id="infor" mnemonicParsing="false" onAction="#onInforClick" text="Thông tin cá nhân" />
             <MenuItem fx:id="volume" mnemonicParsing="false" onAction="#onVolumeClick" text="Tắt/Bật nhạc" />
             <MenuItem fx:id="logOut" mnemonicParsing="false" onAction="#onLogOutClick" text="Đăng xuất" />
          </items>
       </SplitMenuButton>
-      <TabPane layoutY="60.0" prefHeight="480.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutY="50.0" prefHeight="490.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0" tabMinWidth="100.0">
          <tabs>
             <Tab fx:id="userManageButton" onSelectionChanged="#onUserManageButtonClick" text="Quản lý người dùng">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #1F2A42;">
                      <children>
-                        <Text layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Họ" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Họ" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày sinh" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày sinh" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="510.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Giới tính" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="510.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Giới tính" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="510.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="510.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="510.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên tài khoản" wrappingWidth="123.5999755859375">
+                        <Text fill="WHITE" layoutX="510.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên tài khoản" wrappingWidth="123.5999755859375">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -76,38 +79,38 @@
                         <TextField fx:id="genderInuser" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="emailInUser" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="accountNameInUser" layoutX="660.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Button fx:id="searchUserButton" layoutX="80.0" layoutY="138.0" mnemonicParsing="false" onAction="#onSearchUserButtonClick" prefHeight="40.0" prefWidth="90.0" text="Tìm kiếm">
+                        <Button fx:id="searchUserButton" layoutX="75.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="addUserButton" layoutX="240.0" layoutY="137.0" mnemonicParsing="false" onAction="#onAddUserButtonClick" prefHeight="40.0" prefWidth="150.0" text="Thêm người dùng">
+                        <Button fx:id="addUserButton" layoutX="295.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm người dùng" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="editInforButton" layoutX="460.0" layoutY="138.0" mnemonicParsing="false" onAction="#onEditInforButtonClick" prefHeight="40.0" prefWidth="120.0" text="Sửa thông tin">
+                        <Button fx:id="editInforButton" layoutX="515.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditInforButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa thông tin" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="deleteUserButton" layoutX="660.0" layoutY="138.0" mnemonicParsing="false" onAction="#onDeleteUserButtonClick" prefHeight="40.0" prefWidth="140.0" text="Xóa người dùng">
+                        <Button fx:id="deleteUserButton" layoutX="735.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa người dùng" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <TableView fx:id="userTableView" layoutY="190.0" prefHeight="261.0" prefWidth="960.0">
+                        <TableView fx:id="userTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0">
                            <columns>
-                              <TableColumn fx:id="idUserColum" prefWidth="65.60000914335251" text="ID" />
-                              <TableColumn fx:id="surnameColum" prefWidth="81.60000610351562" text="Họ" />
-                              <TableColumn fx:id="lastnameColum" minWidth="108.79997253417969" prefWidth="108.79997253417969" text="Tên" />
-                              <TableColumn fx:id="dateOfBirthColum" minWidth="109.5999755859375" prefWidth="128.0" text="Ngày sinh" />
-                              <TableColumn fx:id="genderColum" minWidth="56.0" prefWidth="80.800048828125" text="Giới tính" />
-                              <TableColumn fx:id="emailColum" minWidth="123.20001220703125" prefWidth="150.39996337890625" text="Email" />
-                              <TableColumn fx:id="userNameColum" minWidth="78.39996337890625" prefWidth="78.39996337890625" text="Tên TK" />
-                              <TableColumn fx:id="accountNameColum" prefWidth="102.4000244140625" text="Tài khoản" />
-                              <TableColumn fx:id="userPasswordColum" minWidth="0.0" prefWidth="69.60009765625" text="Mật khẩu" />
-                              <TableColumn fx:id="warningColum" prefWidth="89.60003662109375" text="Cảnh cáo" />
+                              <TableColumn fx:id="idUserColum" prefWidth="65.60000914335251" style="-fx-background-color: #127AFF;" text="ID" />
+                              <TableColumn fx:id="surnameColum" prefWidth="81.60000610351562" style="-fx-background-color: #127AFF;" text="Họ" />
+                              <TableColumn fx:id="lastnameColum" minWidth="108.79997253417969" prefWidth="108.79997253417969" style="-fx-background-color: #127AFF;" text="Tên" />
+                              <TableColumn fx:id="dateOfBirthColum" minWidth="109.5999755859375" prefWidth="128.0" style="-fx-background-color: #127AFF;" text="Ngày sinh" />
+                              <TableColumn fx:id="genderColum" minWidth="56.0" prefWidth="80.800048828125" style="-fx-background-color: #127AFF;" text="Giới tính" />
+                              <TableColumn fx:id="emailColum" minWidth="123.20001220703125" prefWidth="150.39996337890625" style="-fx-background-color: #127AFF;" text="Email" />
+                              <TableColumn fx:id="userNameColum" minWidth="78.39996337890625" prefWidth="78.39996337890625" style="-fx-background-color: #127AFF;" text="Tên TK" />
+                              <TableColumn fx:id="accountNameColum" prefWidth="102.4000244140625" style="-fx-background-color: #127AFF;" text="Tài khoản" />
+                              <TableColumn fx:id="userPasswordColum" minWidth="0.0" prefWidth="69.60009765625" style="-fx-background-color: #127AFF;" text="Mật khẩu" />
+                              <TableColumn fx:id="warningColum" prefWidth="89.60003662109375" style="-fx-background-color: #127AFF;" text="Cảnh cáo" />
                            </columns>
                         </TableView>
                      </children>
@@ -116,79 +119,79 @@
             </Tab>
             <Tab fx:id="bookManageButton" onSelectionChanged="#onBookManageButtonClick" text="Quản lý sách">
                <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #1F2A42;">
                      <children>
-                        <Text layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã sách">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã sách">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên sách" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên sách" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tác giả" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tác giả" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NXB" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NXB" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="520.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Năm XB" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="520.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Năm XB" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="520.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SL còn lại" wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="520.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SL còn lại" wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="520.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tổng " wrappingWidth="90.0">
+                        <Text fill="WHITE" layoutX="520.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tổng " wrappingWidth="90.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="bookIDManage" layoutX="180.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="nameOfBookInBokkManage" layoutX="180.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="author" layoutX="180.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="publisher" layoutX="180.0" layoutY="100.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="publishedYearInBookManage" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="quantityInBookManage" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="bookIDTextField" layoutX="180.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="bookNameTextField" layoutX="180.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="authorTextField" layoutX="180.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="publisherTextField" layoutX="180.0" layoutY="100.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="publishedYearTextField" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="availableBooksInBookManage" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="totalInBookManage" layoutX="660.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Button fx:id="addBookButton" layoutX="200.0" layoutY="150.0" mnemonicParsing="false" onAction="#onAddBookButtonClick" prefHeight="40.0" prefWidth="100.0" text="Thêm sách">
+                        <Button fx:id="addBookButton" layoutX="295.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm sách" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="editBookButton" layoutX="380.0" layoutY="150.0" mnemonicParsing="false" onAction="#onEditBookButtonClick" prefHeight="40.0" prefWidth="120.0" text="Sửa thông tin">
+                        <Button fx:id="editBookButton" layoutX="515.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa thông tin" textFill="#fffefe">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="deleteBookButton" layoutX="580.0" layoutY="150.0" mnemonicParsing="false" onAction="#onDeleteBookButtonClick" prefHeight="40.0" prefWidth="90.0" text="Xóa sách">
+                        <Button fx:id="deleteBookButton" layoutX="735.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa sách" textFill="#fffbfb">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="searchBookButton" layoutX="40.0" layoutY="150.0" mnemonicParsing="false" onAction="#onSearchBookButtonClick" prefHeight="40.0" prefWidth="90.0" text="Tìm kiếm">
+                        <Button fx:id="searchBookButton" layoutX="75.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <TableView layoutY="200.0" prefHeight="250.0" prefWidth="960.0">
+                        <TableView fx:id="bookTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0">
                            <columns>
-                              <TableColumn fx:id="idOfBookInBookManageColum" text="ID" />
-                              <TableColumn fx:id="bookNameInBookManageColum" prefWidth="240.0" text="Tên sách" />
-                              <TableColumn fx:id="authorInBookManageColum" minWidth="70.0" prefWidth="180.0" text="Tác giả" />
-                              <TableColumn fx:id="publisherInBookManageColum" minWidth="24.79998779296875" prefWidth="180.0" text="NXB" />
-                              <TableColumn fx:id="publishYearInBookManageColum" minWidth="70.0" prefWidth="90.0" text="Năm XB" />
-                              <TableColumn fx:id="availableBooksInBookManageColum" minWidth="50.0" prefWidth="100.0" text="Số lượng còn lại" />
-                              <TableColumn fx:id="totalBooksInBookManageColum" minWidth="70.0" text="Tổng số sách" />
+                              <TableColumn fx:id="idOfBookInBookManageColum" style="-fx-background-color: #127AFF;" text="ID" />
+                              <TableColumn fx:id="bookNameInBookManageColum" prefWidth="240.0" style="-fx-background-color: #127AFF;" text="Tên sách" />
+                              <TableColumn fx:id="authorInBookManageColum" minWidth="70.0" prefWidth="180.0" style="-fx-background-color: #127AFF;" text="Tác giả" />
+                              <TableColumn fx:id="publisherInBookManageColum" minWidth="24.79998779296875" prefWidth="180.0" style="-fx-background-color: #127AFF;" text="NXB" />
+                              <TableColumn fx:id="publishYearInBookManageColum" minWidth="70.0" prefWidth="90.0" style="-fx-background-color: #127AFF;" text="Năm XB" />
+                              <TableColumn fx:id="availableBooksInBookManageColum" minWidth="50.0" prefWidth="100.0" style="-fx-background-color: #127AFF;" text="Số lượng còn lại" />
+                              <TableColumn fx:id="totalBooksInBookManageColum" minWidth="70.0" style="-fx-background-color: #127AFF;" text="Tổng số sách" />
                            </columns>
                         </TableView>
                      </children>
@@ -197,85 +200,92 @@
             </Tab>
             <Tab fx:id="borrowReturnManage" onSelectionChanged="#onBorrowReturnManageClick" text="Quản lý mượn/trả">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #1F2A42;">
                      <children>
-                        <Text layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã giao dịch">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã giao dịch">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tài khoản">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tài khoản">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã sách">
+                        <Text fill="WHITE" layoutX="40.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã sách">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="40.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số lượng">
+                        <Text fill="WHITE" layoutX="520.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày mượn">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="520.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày mượn">
+                        <Text fill="WHITE" layoutX="520.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hạn trả">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="520.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hạn trả">
+                        <Text fill="WHITE" layoutX="520.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tình trạng ">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text layoutX="520.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tình trạng ">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Text>
-                        <TextField fx:id="transactionID" layoutX="180.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="transactionAccount" layoutX="180.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="bookIDTrans" layoutX="180.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="soLuong" layoutX="180.0" layoutY="100.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="borrowDate" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="returnDate" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="status" layoutX="660.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Button fx:id="searchTransactionButton" layoutX="40.0" layoutY="150.0" mnemonicParsing="false" onAction="#onSearchTransactionButtonClick" prefHeight="40.0" prefWidth="90.0" text="Tìm kiếm">
+                        <TextField fx:id="transactionIDTextField" layoutX="180.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="userAccountTextField" layoutX="180.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="bookIDInBorrowTextField" layoutX="180.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="borrowDateTextField" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="endDateTextField" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
+                        <TextField fx:id="statusTextField" layoutX="660.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
+                        <Button fx:id="searchTransactionButton" layoutX="75.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="editTransactionButton" layoutX="220.0" layoutY="150.0" mnemonicParsing="false" onAction="#onEditTransactionButtonClick" prefHeight="40.0" prefWidth="120.0" text="Sửa giao dịch">
+                        <Button fx:id="editTransactionButton" layoutX="295.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa giao dịch" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="deleteTransaction" layoutX="440.0" layoutY="150.0" mnemonicParsing="false" onAction="#onDeleteTransactionButtonCLick" prefHeight="40.0" prefWidth="120.0" text="Xóa giao dịch">
+                        <Button fx:id="deleteTransaction" layoutX="515.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteTransactionButtonCLick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa giao dịch" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="addTransaction" layoutX="660.0" layoutY="150.0" mnemonicParsing="false" onAction="#onAddTransactionButtonClick" prefHeight="40.0" prefWidth="140.0" text="Thêm giao dịch">
+                        <Button fx:id="addTransaction" layoutX="735.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm giao dịch" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <TableView layoutY="200.0" prefHeight="250.0" prefWidth="960.0">
+                        <TableView fx:id="loanTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0">
                            <columns>
-                              <TableColumn fx:id="transaction_idColum" prefWidth="120.0" text="Mã giao dịch" />
-                              <TableColumn fx:id="userAccountColum" prefWidth="120.0" text="Tài khoản mượn" />
-                              <TableColumn fx:id="book_idColum" prefWidth="120.0" text="Mã sách" />
-                              <TableColumn fx:id="borrowDateColum" prefWidth="150.0" text="Ngày mượn" />
-                              <TableColumn fx:id="endDateColum" prefWidth="150.0" text="Hạn trả" />
-                              <TableColumn fx:id="returnDateColum" prefWidth="150.0" text="Ngày trả" />
-                              <TableColumn fx:id="statusColum" prefWidth="150.0" text="Tình trạng" />
+                              <TableColumn fx:id="transaction_idColum" prefWidth="120.0" style="-fx-background-color: #127AFF;" text="Mã giao dịch" />
+                              <TableColumn fx:id="userAccountColum" prefWidth="120.0" style="-fx-background-color: #127AFF;" text="Tài khoản mượn" />
+                              <TableColumn fx:id="book_idColum" prefWidth="120.0" style="-fx-background-color: #127AFF;" text="Mã sách" />
+                              <TableColumn fx:id="borrowDateColum" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Ngày mượn" />
+                              <TableColumn fx:id="endDateColum" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Hạn trả" />
+                              <TableColumn fx:id="returnDateColum" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Ngày trả" />
+                              <TableColumn fx:id="statusColum" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Tình trạng" />
                            </columns>
                         </TableView>
                      </children></AnchorPane>
                </content>
             </Tab>
          </tabs>
+         <stylesheets>
+            <URL value="@TabSheet.css" />
+            <URL value="@TableColumnText.css" />
+         </stylesheets>
       </TabPane>
+      <Button fx:id="exitButton" alignment="CENTER" layoutX="912.0" layoutY="-1.0" minWidth="39.0" mnemonicParsing="false" onAction="#onExitButton" prefHeight="30.0" prefWidth="39.0" style="-fx-background-color: rgba(0, 0, 0, 0.2);">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../image/closeIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </Pane>

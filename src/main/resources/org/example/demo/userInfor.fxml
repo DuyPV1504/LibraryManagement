@@ -2,87 +2,77 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="493.0" prefWidth="882.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.UserInforController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1F2A42;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.UserInforController">
    <children>
-      <ImageView fitHeight="507.0" fitWidth="918.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../image/libBack.jpg" />
-         </image>
-      </ImageView>
-      <Pane layoutX="86.0" layoutY="48.0" opacity="0.72" prefHeight="399.0" prefWidth="731.0" style="-fx-background-color: #ffffff;">
-         <children>
-            <Label layoutX="255.0" layoutY="36.0" prefHeight="40.0" prefWidth="200.0" text="Thông tin cá nhân:" textAlignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label layoutX="106.0" layoutY="168.0" text="Giới tính:">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="105.0" layoutY="129.0" text="Ngày sinh:">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="108.0" layoutY="214.0" text="Email:">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="107.0" layoutY="252.0" text="Tên người dùng">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="106.0" layoutY="333.0" text="Tên đăng nhập:">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="108.0" layoutY="294.0" text="Mật khẩu:">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="106.0" layoutY="89.0" text="Họ và tên:">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <TextField fx:id="surName" layoutX="266.0" layoutY="89.0" prefHeight="30.0" prefWidth="87.0" />
-            <TextField fx:id="day" alignment="CENTER" layoutX="266.0" layoutY="126.0" prefHeight="30.0" prefWidth="63.0" promptText="Ngày" />
-            <TextField fx:id="gender" layoutX="266.0" layoutY="168.0" prefHeight="30.0" prefWidth="260.0" />
-            <TextField fx:id="accountName" layoutX="266.0" layoutY="252.0" prefHeight="30.0" prefWidth="260.0" />
-            <TextField fx:id="email" layoutX="266.0" layoutY="214.0" prefHeight="30.0" prefWidth="260.0" />
-            <TextField fx:id="userPassword" layoutX="266.0" layoutY="294.0" prefHeight="30.0" prefWidth="260.0" />
-            <TextField layoutX="266.0" layoutY="333.0" prefHeight="30.0" prefWidth="260.0" />
-            <Button fx:id="changeNameButton" layoutX="546.0" layoutY="89.0" mnemonicParsing="false" onAction="#onChangeNameButtonClick" prefHeight="30.0" prefWidth="80.0" text="Thay đổi" />
-            <Button fx:id="changeDateButton" layoutX="546.0" layoutY="129.0" mnemonicParsing="false" onAction="#onChangeDateButtonClick" prefHeight="30.0" prefWidth="80.0" text="Thay đổi" />
-            <Button fx:id="changeGenderButton" layoutX="546.0" layoutY="168.0" mnemonicParsing="false" onAction="#onChangeGenderButtonClick" prefHeight="30.0" prefWidth="80.0" text="Thay đổi" />
-            <Button fx:id="changeEmailButton" layoutX="546.0" layoutY="214.0" mnemonicParsing="false" onAction="#onChangeEmailButtonClick" prefHeight="30.0" prefWidth="80.0" text="Thay đổi" />
-            <Button fx:id="changePasswordButton" layoutX="546.0" layoutY="294.0" mnemonicParsing="false" onAction="#onChangePasswordButtonClick" prefHeight="30.0" prefWidth="80.0" text="Thay đổi" />
-            <Button fx:id="changeAccountNameButton" layoutX="546.0" layoutY="252.0" mnemonicParsing="false" onAction="#onChangeAccountNameButton" prefHeight="30.0" prefWidth="80.0" text="Thay đổi" />
-            <TextField fx:id="month" alignment="CENTER" layoutX="345.0" layoutY="126.0" prefHeight="30.0" prefWidth="69.0" promptText="Tháng" />
-            <TextField fx:id="year" alignment="CENTER" layoutX="432.0" layoutY="126.0" prefHeight="30.0" prefWidth="92.0" promptText="Năm" />
-            <TextField fx:id="lastName" layoutX="371.0" layoutY="89.0" prefHeight="30.0" prefWidth="155.0" promptText="Tên" />
-         </children>
-      </Pane>
-      <MenuButton layoutX="817.0" layoutY="22.0" mnemonicParsing="false" text="Tùy chọn">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Home" />
-          <MenuItem mnemonicParsing="false" text="Đăng xuất" />
-        </items>
-      </MenuButton>
+      <Label prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #71C0B8;" text="Thông tin cá nhân:" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Button fx:id="backTo" alignment="CENTER" layoutX="225.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBackToButton" prefHeight="40.0" prefWidth="150.0" styleClass="backTo" stylesheets="@UserInforButton.css" text="Quay lại" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Label layoutX="20.0" layoutY="140.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="Giới tính:" textFill="#faf9f9">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="Ngày sinh:" textFill="#faf9f9">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="Email:" textFill="#faf9f9">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="Tên người dùng" textFill="#faf9f9">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="Tên đăng nhập:" textFill="#faf9f9">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="260.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="Mật khẩu:" textFill="#faf9f9">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="Họ và tên:" textFill="#faf9f9">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="surName" layoutX="200.0" layoutY="60.0" prefHeight="30.0" prefWidth="90.0" promptText="Họ" />
+      <TextField fx:id="lastName" layoutX="300.0" layoutY="60.0" prefHeight="30.0" prefWidth="160.0" promptText="Tên" />
+      <TextField fx:id="day" alignment="CENTER" layoutX="200.0" layoutY="100.0" prefHeight="30.0" prefWidth="70.0" promptText="Ngày" />
+      <TextField fx:id="month" alignment="CENTER" layoutX="280.0" layoutY="100.0" prefHeight="30.0" prefWidth="70.0" promptText="Tháng" />
+      <TextField fx:id="year" alignment="CENTER" layoutX="360.0" layoutY="100.0" prefHeight="30.0" prefWidth="100.0" promptText="Năm" />
+      <TextField fx:id="gender" layoutX="200.0" layoutY="140.0" prefHeight="30.0" prefWidth="260.0" />
+      <TextField fx:id="accountName" layoutX="200.0" layoutY="220.0" prefHeight="30.0" prefWidth="260.0" />
+      <TextField fx:id="email" layoutX="200.0" layoutY="180.0" prefHeight="30.0" prefWidth="260.0" />
+      <TextField fx:id="userPassword" layoutX="200.0" layoutY="260.0" prefHeight="30.0" prefWidth="260.0" />
+      <TextField fx:id="tenDangNhap" layoutX="200.0" layoutY="300.0" prefHeight="30.0" prefWidth="260.0" />
+      <Button fx:id="changeNameButton" layoutX="490.0" layoutY="60.0" mnemonicParsing="false" onAction="#onChangeNameButtonClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-custom" stylesheets="@UserInforButton.css" text="Thay đổi" />
+      <Button fx:id="changeDateButton" layoutX="490.0" layoutY="100.0" mnemonicParsing="false" onAction="#onChangeDateButtonClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-custom" stylesheets="@UserInforButton.css" text="Thay đổi" />
+      <Button fx:id="changeGenderButton" layoutX="490.0" layoutY="140.0" mnemonicParsing="false" onAction="#onChangeGenderButtonClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-custom" stylesheets="@UserInforButton.css" text="Thay đổi" />
+      <Button fx:id="changeEmailButton" layoutX="490.0" layoutY="180.0" mnemonicParsing="false" onAction="#onChangeEmailButtonClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-custom" stylesheets="@UserInforButton.css" text="Thay đổi" />
+      <Button fx:id="changePasswordButton" layoutX="490.0" layoutY="260.0" mnemonicParsing="false" onAction="#onChangePasswordButtonClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-custom" stylesheets="@UserInforButton.css" text="Thay đổi" />
+      <Button fx:id="changeAccountNameButton" layoutX="490.0" layoutY="220.0" mnemonicParsing="false" onAction="#onChangeAccountNameButton" prefHeight="30.0" prefWidth="80.0" styleClass="button-custom" stylesheets="@UserInforButton.css" text="Thay đổi" />
+      <Button fx:id="exitButton" alignment="CENTER" layoutX="530.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onExitButton" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #71C0B8;" styleClass="exitButton" stylesheets="@UserInforButton.css" text="Thoát" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
    </children>
-</AnchorPane>
+</Pane>

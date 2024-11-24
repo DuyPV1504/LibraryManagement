@@ -6,29 +6,26 @@ public class Book {
     private String author;
     private String publisher;
     private int publishYear;
-    private int totalBooks;
     private int availableBooks;
+    private int totalBooks;
 
     public Book() {
 
     }
-    public Book(String bookName, String author, String publisher, int publishYear, int totalBooks, int availableBooks) {
+    public Book(String bookName, String author, String publisher, int publishYear,int availableBooks, int totalBooks) {
         if (totalBooks < 0 || availableBooks < 0) {
             throw new IllegalArgumentException("Total books and available books cannot be negative.");
-        }
-        if (availableBooks > totalBooks) {
-            throw new IllegalArgumentException("Available books cannot exceed total books.");
         }
         this.bookName = bookName;
         this.author = author;
         this.publisher = publisher;
         this.publishYear = publishYear;
-        this.totalBooks = totalBooks;
         this.availableBooks = availableBooks;
+        this.totalBooks = totalBooks;
     }
 
-    public Book(int id, String bookName, String author, String publisher, int publishYear, int totalBooks, int availableBooks) {
-        this(bookName, author, publisher, publishYear, totalBooks, availableBooks);
+    public Book(int id, String bookName, String author, String publisher, int publishYear, int availableBooks, int totalBooks) {
+        this(bookName, author, publisher, publishYear, availableBooks, totalBooks);
         this.id = id;
     }
 

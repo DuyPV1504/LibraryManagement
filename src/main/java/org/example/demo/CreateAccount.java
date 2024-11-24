@@ -19,11 +19,12 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CreateAccount extends giaoDienChung implements Initializable {
+public class CreateAccount extends GiaoDienChung implements Initializable {
     public TextField firstNameText;
     public TextField lastNameText;
     public TextField onDayDateText;
@@ -36,6 +37,8 @@ public class CreateAccount extends giaoDienChung implements Initializable {
     public PasswordField userCreatePasswordText;
     public TextField onUserName;
     public PasswordField userCreatePasswordTextPart;
+    public Button backToLogginButton;
+    public Button exitButton;
 
     /**
      * check xem email co hop ly khong.
@@ -44,7 +47,8 @@ public class CreateAccount extends giaoDienChung implements Initializable {
      */
     public boolean checkEmailHopLy() {
         System.out.println(emailCreateText.getText());
-        Pattern p = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
+        Pattern p = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)" +
+                "*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
         Matcher M = p.matcher(emailCreateText.getText());
         if (M.find() && M.group().equals(emailCreateText.getText())) {
             System.out.println("Valid email");
@@ -88,7 +92,7 @@ public class CreateAccount extends giaoDienChung implements Initializable {
 
             if (checkAllFieldIsFill()) {
                 if (checkValidPassword() && checkEmailHopLy() && checkTrungAccountVaEmail()
-                        && checkValidGender() && checkDateValid()&&checkTrungPassword()) {
+                        && checkValidGender() && checkDateValid() && checkTrungPassword() && checkTrungUserName()) {
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Success");
                     alert.setHeaderText(null);
@@ -115,10 +119,37 @@ public class CreateAccount extends giaoDienChung implements Initializable {
         }
     }
 
+    public boolean checkTrungUserName() throws SQLException {
+        connection = database.connectDB();
+        String check = "SELECT Count(*) FROM Users WHERE userName = ?";
+        assert connection != null;
+        PreparedStatement pre = connection.prepareStatement(check);
+        ResultSet rs = null;
+        try {
+            assert connection != null;
+            pre.setString(1, onUserName.getText());
+
+            rs = pre.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("User Name that already exists");
+                alert.showAndWait();
+                onUserName.clear();
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 
     public boolean checkTrungAccountVaEmail() throws SQLException {
         connection = database.connectDB();
-        String check = "SELECT Count(*) FROM Users WHERE userName = ? or email = ?";
+        String check = "SELECT Count(*) FROM Users WHERE userAccount = ? or email = ?";
 
         assert connection != null;
         PreparedStatement pre = connection.prepareStatement(check);
@@ -205,7 +236,7 @@ public class CreateAccount extends giaoDienChung implements Initializable {
     boolean checkTrungPassword() {
         if (userCreatePasswordText.getText().equals(userCreatePasswordTextPart.getText())) {
             return true;
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
@@ -215,11 +246,27 @@ public class CreateAccount extends giaoDienChung implements Initializable {
             userCreatePasswordTextPart.clear();
             return false;
         }
-
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    }
 
+    public void onBackToLogginButton(ActionEvent actionEvent) {
+        firstNameText.clear();
+        lastNameText.clear();
+        monthDateText.clear();
+        onDayDateText.clear();
+        onGenderText.clear();
+        emailCreateText.clear();
+        onUserName.clear();
+        accountCreateUserNameText.clear();
+        userCreatePasswordText.clear();
+        userCreatePasswordTextPart.clear();
+        chuyenCanh(backToLogginButton, "signUp.fxml");
+    }
+
+    public void onExitButton(ActionEvent actionEvent) {
+        thoat();
     }
 }

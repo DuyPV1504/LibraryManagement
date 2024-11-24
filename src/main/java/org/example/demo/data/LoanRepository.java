@@ -149,11 +149,9 @@ public class LoanRepository {
         LocalDate returnDate = rs.getDate("returnDate") != null ? rs.getDate("returnDate").toLocalDate() : null;
         Loan.LoanStatus status = Loan.LoanStatus.valueOf(rs.getString("status").toUpperCase());
 
-        // Lấy đối tượng User và Book từ UserRepository và BookRepository
-        User user = userRepository.getUserByAccount(userAccount);
+
         Book book = bookRepository.getBookById(bookId);
 
-        // Tạo đối tượng Loan với các thông tin lấy từ ResultSet
         return new Loan(transactionId, userAccount, bookId, borrowDate, endDate, returnDate, status);
     }
 }

@@ -1,10 +1,18 @@
 package org.example.demo;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class UserInforController {
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
+public class UserInforController extends GiaoDienChung implements Initializable {
     public Button changeNameButton;
     public Button changeDateButton;
     public Button changeGenderButton;
@@ -20,22 +28,244 @@ public class UserInforController {
     public TextField month;
     public TextField year;
     public TextField lastName;
+    public Button exitButton;
+    public Button backTo;
+    public TextField tenDangNhap;
 
-    public void onChangeNameButtonClick(ActionEvent actionEvent) {
+    public String dayString = null;
+    public String monthString = null;
+    public String yearString = null;
+
+    public void onChangeNameButtonClick(ActionEvent actionEvent) throws SQLException {
+        if (!surName.getText().equals(SignUp.surName) || !lastName.getText().equals(SignUp.lastName)) {
+            String querySurName = "UPDATE Users SET surname = ? WHERE userAccount = ?;";
+            String queryLastName = "UPDATE Users SET lastName = ? WHERE userAccount = ?";
+            connection = database.connectDB();
+            assert connection != null;
+            preparedStatement = connection.prepareStatement(querySurName);
+            preparedStatement.setString(1, surName.getText());
+            preparedStatement.setString(2, SignUp.account);
+            preparedStatement.executeUpdate();
+
+            preparedStatement = connection.prepareStatement(queryLastName);
+            preparedStatement.setString(1, lastName.getText());
+            preparedStatement.setString(2, SignUp.account);
+            preparedStatement.executeUpdate();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Update Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Your name has been successfully updated.");
+            alert.showAndWait();
+
+            SignUp.surName = surName.getText();
+            SignUp.lastName = lastName.getText();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Nothing to update");
+            alert.showAndWait();
+        }
     }
 
-    public void onChangeDateButtonClick(ActionEvent actionEvent) {
+    public void onChangeDateButtonClick(ActionEvent actionEvent) throws SQLException {
+        if (!dayString.equals(day.getText()) || !monthString.equals(month.getText())
+                || !yearString.equals(year.getText())) {
+
+            String queryDay = "UPDATE Users SET dateOfBirth = ? WHERE userAccount = ?;";
+            connection = database.connectDB();
+            assert connection != null;
+
+            preparedStatement = connection.prepareStatement(queryDay);
+            preparedStatement.setString(1, year.getText() + '-'
+                    + month.getText() + '-' + day.getText());
+            preparedStatement.setString(2, SignUp.account);
+            preparedStatement.executeUpdate();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Update Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Your birth day has been successfully updated.");
+            alert.showAndWait();
+
+            dayString = day.getText();
+            monthString = month.getText();
+            yearString = year.getText();
+        }
+
     }
 
-    public void onChangeGenderButtonClick(ActionEvent actionEvent) {
+    public void onChangeGenderButtonClick(ActionEvent actionEvent) throws SQLException {
+        if(!gender.getText().equals(SignUp.genderString)) {
+            String queryGender = "UPDATE Users SET gender = ? WHERE userAccount = ?;";
+            connection = database.connectDB();
+            assert connection != null;
+            preparedStatement=connection.prepareStatement(queryGender);
+            preparedStatement.setString(1, gender.getText());
+            preparedStatement.setString(2, SignUp.account);
+            preparedStatement.executeUpdate();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Update Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Your gender has been successfully updated.");
+            alert.showAndWait();
+
+            SignUp.genderString = gender.getText();
+
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Nothing to update");
+            alert.showAndWait();
+        }
     }
 
-    public void onChangeEmailButtonClick(ActionEvent actionEvent) {
+    public void onChangeEmailButtonClick(ActionEvent actionEvent) throws SQLException {
+        if (!email.getText().equals(SignUp.emailString)) {
+            String queryEmail = "UPDATE Users SET email = ? WHERE userAccount = ?;";
+            connection = database.connectDB();
+            assert connection != null;
+            preparedStatement=connection.prepareStatement(queryEmail);
+            preparedStatement.setString(1, email.getText());
+            preparedStatement.setString(2, SignUp.account);
+            preparedStatement.executeUpdate();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Update Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Your email has been successfully updated.");
+            alert.showAndWait();
+
+            SignUp.emailString = email.getText();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Nothing to update");
+            alert.showAndWait();
+        }
     }
 
-    public void onChangePasswordButtonClick(ActionEvent actionEvent) {
+    public void onChangePasswordButtonClick(ActionEvent actionEvent) throws SQLException {
+        if(!userPassword.getText().equals(SignUp.passWordString)){
+            String queryPassword = "UPDATE Users SET userPassword = ? WHERE userAccount = ?;";
+            connection = database.connectDB();
+            assert connection != null;
+            preparedStatement=connection.prepareStatement(queryPassword);
+            preparedStatement.setString(1,userPassword.getText());
+            preparedStatement.setString(2, SignUp.account);
+            preparedStatement.executeUpdate();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Update Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Your password has been successfully updated.");
+            alert.showAndWait();
+
+            SignUp.passWordString = userPassword.getText();
+        }else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Nothing to update");
+            alert.showAndWait();
+
+        }
     }
 
-    public void onChangeAccountNameButton(ActionEvent actionEvent) {
+    public void onChangeAccountNameButton(ActionEvent actionEvent) throws SQLException {
+        if(!accountName.getText().equals(SignUp.nameString)) {
+            String queryAccountName = "UPDATE Users SET userName = ? WHERE userAccount = ?;";
+            connection = database.connectDB();
+            assert connection != null;
+            preparedStatement=connection.prepareStatement(queryAccountName);
+            preparedStatement.setString(1, accountName.getText());
+            preparedStatement.setString(2, SignUp.account);
+            preparedStatement.executeUpdate();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Update Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Your name account has been successfully updated.");
+            alert.showAndWait();
+
+            SignUp.nameString = accountName.getText();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Nothing to update");
+            alert.showAndWait();
+        }
+    }
+
+    public void onExitButton(ActionEvent actionEvent) {
+        thoat();
+    }
+
+
+    public void onBackToButton(ActionEvent actionEvent) throws SQLException {
+        String query = "SELECT * FROM Users WHERE userAccount = ?";
+        String roles = null;
+        connection = database.connectDB();
+        assert connection != null;
+        preparedStatement = connection.prepareStatement(query);
+        try {
+            preparedStatement.setString(1, SignUp.account);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                roles = resultSet.getString("roles");
+                if (roles.equals("Admin")) {
+                    chuyenCanh(backTo, "Admin.fxml");
+                } else {
+                    chuyenCanh(backTo, "User.fxml");
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Not found roles");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        String query = "SELECT surName, lastName, day(dateOfBirth) as day1 , month(dateOfBirth) as month1, EXTRACT(year FROM dateOfBirth) as year1, gender, userAccount, email, "
+                + "userPassword,userName FROM Users WHERE userAccount = ?";
+        connection = database.connectDB();
+
+        try {
+            assert connection != null;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, SignUp.account);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                surName.setText(resultSet.getString("surName"));
+                lastName.setText(resultSet.getString("lastName"));
+                day.setText(resultSet.getString("day1"));
+                month.setText(resultSet.getString("month1"));
+                year.setText(resultSet.getString("year1"));
+                gender.setText(resultSet.getString("gender"));
+                accountName.setText(resultSet.getString("userName"));
+                email.setText(resultSet.getString("email"));
+                userPassword.setText(resultSet.getString("userPassword"));
+                tenDangNhap.setText(resultSet.getString("userAccount"));
+
+                dayString = resultSet.getString("day1");
+                monthString = resultSet.getString("month1");
+                yearString = resultSet.getString("year1");
+
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Not found account");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

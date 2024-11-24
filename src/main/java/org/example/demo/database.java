@@ -13,13 +13,12 @@ public class database {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url, user, password);
+            con.setAutoCommit(true);
             return con;
         } catch (Exception e) {
             System.out.println("Connection error: " + e.getMessage());
             return null;
         }
-
-
     }
 
 }

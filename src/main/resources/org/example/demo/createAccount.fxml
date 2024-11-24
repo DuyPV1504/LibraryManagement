@@ -53,5 +53,23 @@
             <PasswordField fx:id="userCreatePasswordTextPart" layoutX="105.0" layoutY="294.0" prefHeight="26.0" prefWidth="303.0" promptText="Confirm Your Password" />
             </children>
         </Pane>
+      <Button fx:id="backToLogginButton" alignment="CENTER" layoutX="14.0" layoutY="8.0" minWidth="18.0" mnemonicParsing="false" onAction="#onBackToLogginButton" prefHeight="30.0" prefWidth="18.0" style="-fx-background-color: rgba(0, 0, 0, 0.2);">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../image/pngwing.com.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="exitButton" alignment="CENTER" layoutX="836.0" layoutY="8.0" minWidth="18.0" mnemonicParsing="false" onAction="#onExitButton" prefHeight="30.0" prefWidth="18.0" style="-fx-background-color: rgba(0, 0, 0, 0.2);">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../image/closeIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

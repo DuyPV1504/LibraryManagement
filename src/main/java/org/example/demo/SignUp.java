@@ -20,12 +20,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class SignUp extends giaoDienChung implements Initializable {
+public class SignUp extends GiaoDienChung implements Initializable {
 
     public Button onCreateAccButton;
     public TextField onUserNameButton;
     public TextField onPasswordButton;
     public Button onSignInButton;
+    public Button exitButton;
+
+    public static String rolesPerson = null;
+    public static String account = null;
+    public static String surName = null;
+    public static String lastName = null;
+    public static String passWordString = null;
+    public static String nameString = null;
+    public static String genderString = null;
+    public static String emailString = null;
 
     public void onSignInClick(ActionEvent actionEvent) {
 
@@ -58,10 +68,19 @@ public class SignUp extends giaoDienChung implements Initializable {
                     alert.showAndWait();
                     String role = resultSet.getString("roles");
                     if (role.equals("Admin")) {
-                        super.chuyenCanh(onSignInButton,"Admin.fxml");
+                        super.chuyenCanh(onSignInButton, "Admin.fxml");
                     } else {
-                        super.chuyenCanh(onSignInButton,"User.fxml");
+                        super.chuyenCanh(onSignInButton, "User.fxml");
                     }
+                    rolesPerson = role;
+                    account = resultSet.getString("userAccount");
+
+                    nameString = resultSet.getString("userName");
+                    genderString = resultSet.getString("gender");
+                    emailString = resultSet.getString("email");
+                    passWordString = resultSet.getString("password");
+                    surName = resultSet.getString("surName");
+                    lastName = resultSet.getString("lastName");
                 } else {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Notification");
@@ -79,13 +98,15 @@ public class SignUp extends giaoDienChung implements Initializable {
     }
 
     public void onCreateAccClick(ActionEvent actionEvent) {
-        chuyenCanh(onCreateAccButton,"createAccount.fxml");
+        chuyenCanh(onCreateAccButton, "createAccount.fxml");
     }
-
-
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    }
+
+    public void onExitButton(ActionEvent actionEvent) {
+        thoat();
     }
 }
