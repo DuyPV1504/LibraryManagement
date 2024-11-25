@@ -1,0 +1,83 @@
+
+/* Nut exit */
+/* Mac dinh */
+.exitButotn {
+    -fx-background-color: #71C0B8;
+    -fx-text-fill: white;
+}
+
+/* Khi re chuot qua nut exit */
+.exitButton:hover {
+    -fx-font-weight: bold; /* Boi dam */
+    -fx-underline: true; /* Gach duoi */
+    -fx-text-fill: #000000; /* Mau chu khi luot chuot qua */
+}
+
+/* Khi nhan nut exit */
+.exitButton:pressed {
+    -fx-font-weight: bold; /* Boi dam */
+    -fx-underline: true; /* Gach duoi */
+    -fx-text-fill: #000000; /* Mau chu khi click chuot */
+}
+
+/* Nut back */
+/* Mac dinh */
+.backTo {
+    -fx-background-color:  #257EFF; /* Màu nền mặc định */
+    -fx-text-fill: white; /* Màu chữ */
+    -fx-font-size: 16px; /* Kích thước chữ */
+    -fx-background-radius: 30px; /* Góc bo tròn */
+    -fx-border-color: #fffff; /* Màu viền */
+    -fx-border-width: 2px; /* Độ dày viền */
+}
+
+/* Khi re chuot qua nut back */
+.backTo:hover {
+    -fx-background-color: #71C0B8; /* Màu nền khi hover */
+    -fx-font-weight: bold; /* Boi dam */
+    -fx-underline: true; /* Gach duoi */
+    -fx-text-fill: #000000; /* Mau chu khi luot chuot qua */
+}
+
+/* Khi nhan nut exit */
+.backTo:pressed {
+    -fx-background-color: #71C0B8; /* Màu nền khi click */
+    -fx-font-weight: bold; /* Boi dam */
+    -fx-underline: true; /* Gach duoi */
+    -fx-text-fill: #000000; /* Mau chu khi click chuot */
+}
+
+/* Nut con lai */
+/* Mac dinh */
+.button-custom {
+    -fx-background-color:  #257EFF; /* Màu nền mặc định */
+    -fx-text-fill: white; /* Màu chữ */
+    -fx-font-size: 12px; /* Kích thước chữ */
+    -fx-background-radius: 30px; /* Góc bo tròn */
+    -fx-border-color: #fffff; /* Màu viền */
+    -fx-border-width: 2px; /* Độ dày viền */
+}
+
+/* Khi rê chuột qua nút */
+.button-custom:hover {
+    -fx-background-color: #71C0B8; /* Màu nền khi hover */
+    -fx-underline: true; /* Gach duoi */
+    -fx-border-color: #71C0B8; /* Màu viền khi hover */
+    -fx-border-radius: 30px; /*Bo tròn viền khi hover */
+}
+
+/* Khi nhấn nút */
+.button-custom:pressed {
+    -fx-background-color:  #71C0B8; /* Màu nền khi nhấn */
+    -fx-underline: true; /* Gach duoi */
+    -fx-text-fill: #000000; /* Màu chữ khi nhấn */
+    -fx-border-color:  #71C0B8; /* Màu viền khi nhấn */
+}
+
+/* Khi nút được focus */
+.button-custom:focused {
+    -fx-border-color:  #fffff; /* Viền màu trắng khi focus */
+    -fx-underline: true; /* Gach duoi */
+    -fx-border-width: 2px; /* Độ dày viền khi focus */
+    -fx-border-radius: 30px; /*Bo tròn viền khi focus */
+}

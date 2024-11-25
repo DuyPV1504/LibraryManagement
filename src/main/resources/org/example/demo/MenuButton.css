@@ -1,0 +1,17 @@
+.split-menu-button {
+    -fx-text-fill: #71C0B8; /* Màu chữ */
+    -fx-background-color:  #DDDDDD;
+    -fx-border-radius: 30px;
+}
+
+.split-menu-button .arrow-button {
+    -fx-background-color: #DDDDDD; /* Màu nền của mũi tên */
+}
+
+.split-menu-button .arrow-button:hover {
+    -fx-background-color: #ffffff; /* Màu nền khi hover */
+}
+
+.split-menu-button:armed {
+    -fx-background-color: #ffffff; /* Màu nền khi nhấn */
+}
