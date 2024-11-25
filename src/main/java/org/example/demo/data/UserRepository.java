@@ -84,13 +84,16 @@ public class UserRepository extends BaseRepository {
         return bookList;
     }
 
-    public List<Loan> getAllTransactions() {
-        String query = "SELECT * FROM Loans";
-        List<Loan> loanList = new ArrayList<>();
+    public List<Loan> getUserTransactions(String userAccount) {
+        String query = "SELECT transaction_id, userAccount, book_id, borrowDate, status FROM Loans WHERE userAccount = ?";
+        List<Loan> loans = new ArrayList<>();
 
-        try (Connection connection = connectDB();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = database.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, userAccount);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Loan loan = new Loan(
@@ -98,15 +101,54 @@ public class UserRepository extends BaseRepository {
                         resultSet.getString("userAccount"),
                         resultSet.getInt("book_id"),
                         resultSet.getDate("borrowDate").toLocalDate(),
-                        resultSet.getDate("endDate").toLocalDate(),
-                        resultSet.getDate("returnDate") == null ? null : resultSet.getDate("returnDate").toLocalDate(),
                         Loan.LoanStatus.valueOf(resultSet.getString("status").toUpperCase())
                 );
-                loanList.add(loan);
+                loans.add(loan);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return loanList;
+
+        return loans;
     }
+
+    public List<Loan> searchUserTransactions(Integer transactionId, String userAccount, Integer bookId) {
+        String query = "SELECT transaction_id, userAccount, book_id, borrowDate, status FROM Loans WHERE userAccount = ?" +
+                (transactionId != null ? " AND transaction_id = ?" : "") +
+                (bookId != null ? " AND book_id = ?" : "");
+
+        List<Loan> loans = new ArrayList<>();
+
+        try (Connection connection = database.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            int paramIndex = 1;
+            preparedStatement.setString(paramIndex++, userAccount);
+
+            if (transactionId != null) {
+                preparedStatement.setInt(paramIndex++, transactionId);
+            }
+            if (bookId != null) {
+                preparedStatement.setInt(paramIndex++, bookId);
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Loan loan = new Loan(
+                        resultSet.getInt("transaction_id"),
+                        resultSet.getString("userAccount"),
+                        resultSet.getInt("book_id"),
+                        resultSet.getDate("borrowDate").toLocalDate(),
+                        Loan.LoanStatus.valueOf(resultSet.getString("status").toUpperCase())
+                );
+                loans.add(loan);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return loans;
+    }
+
 }

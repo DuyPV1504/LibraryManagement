@@ -18,20 +18,19 @@ public class Loan {
     public Loan() {
 
     }
-    public Loan(String userAccount, int bookId, LocalDate borrowDate, LocalDate endDate) {
-        this.userAccount = userAccount;
-        this.bookId = bookId;
-        this.borrowDate = borrowDate;
-        this.endDate = endDate;
-        this.status = LoanStatus.BORROWED;
-    }
 
-    public Loan(int transactionId, String userAccount, int bookId, LocalDate borrowDate, LocalDate returnDate, LoanStatus status) {
-        this.transactionId = transactionId;
+    public Loan(String userAccount, int bookId, LocalDate borrowDate, LocalDate returnDate) {
         this.userAccount = userAccount;
         this.bookId = bookId;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
+    }
+
+    public Loan(int transactionId, String userAccount, int bookId, LocalDate borrowDate, LoanStatus status) {
+        this.transactionId = transactionId;
+        this.userAccount = userAccount;
+        this.bookId = bookId;
+        this.borrowDate = borrowDate;
         this.status = status;
     }
 
