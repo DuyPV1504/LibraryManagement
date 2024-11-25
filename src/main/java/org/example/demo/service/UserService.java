@@ -1,6 +1,7 @@
 package org.example.demo.service;
 
 import models.Book;
+import models.Loan;
 import models.User;
 import org.example.demo.data.UserRepository;
 
@@ -18,6 +19,8 @@ public class UserService {
         return userRepository.searchBookByKeyword(id, bookName, publishedYear, author, publisher);
     }
 
+    public List<Loan> getAllTransactions() {
+        return userRepository.getAllTransactions();
+    }
+
 }
-
-

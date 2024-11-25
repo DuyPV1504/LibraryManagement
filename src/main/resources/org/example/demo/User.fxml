@@ -67,22 +67,27 @@
                         <TextField fx:id="authorInForTextFiled" layoutX="180.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="publisherInForTextFiled" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="publishedYearInForTextFiled" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Button fx:id="searchBookU" layoutX="405.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchBookUButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
+                        <Button fx:id="searchBookU" layoutX="180.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchBookUButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
                         <TableView fx:id="bookTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0" stylesheets="@TableColumnText.css">
                            <columns>
-                              <TableColumn fx:id="bookIDInForCollumn" prefWidth="100.0" style="-fx-background-color: #127AFF;" text="ID" />
-                              <TableColumn fx:id="bookNameCollumn" prefWidth="200.0" style="-fx-background-color: #127AFF;" text="Tên sách" />
-                              <TableColumn fx:id="authorCollumn" minWidth="70.0" prefWidth="180.0" style="-fx-background-color: #127AFF;" text="Tác giả" />
-                              <TableColumn fx:id="publisherCollumn" minWidth="24.79998779296875" prefWidth="180.0" style="-fx-background-color: #127AFF;" text="NXB" />
-                              <TableColumn fx:id="publishYearCollumn" minWidth="70.0" prefWidth="100.0" style="-fx-background-color: #127AFF;" text="Năm XB" />
-                              <TableColumn fx:id="availableBooksInInfoBookCollumn" minWidth="50.0" prefWidth="100.0" style="-fx-background-color: #127AFF;" text="Số lượng còn lại" />
-                              <TableColumn fx:id="totalBooksCollumn" minWidth="70.0" prefWidth="100.0" style="-fx-background-color: #127AFF;" text="Tổng số sách" />
+                              <TableColumn fx:id="bookIDInForCollumn" prefWidth="100.0" text="ID" />
+                              <TableColumn fx:id="bookNameCollumn" prefWidth="200.0" text="Tên sách" />
+                              <TableColumn fx:id="authorCollumn" minWidth="70.0" prefWidth="180.0" text="Tác giả" />
+                              <TableColumn fx:id="publisherCollumn" minWidth="24.79998779296875" prefWidth="180.0" text="NXB" />
+                              <TableColumn fx:id="publishYearCollumn" minWidth="70.0" prefWidth="100.0" text="Năm XB" />
+                              <TableColumn fx:id="availableBooksInInfoBookCollumn" minWidth="50.0" prefWidth="100.0" text="Số lượng còn lại" />
+                              <TableColumn fx:id="totalBooksCollumn" minWidth="70.0" prefWidth="100.0" text="Tổng số sách" />
                            </columns>
                         </TableView>
+                        <Button fx:id="borrowButton" layoutX="600.0" layoutY="140.0" mnemonicParsing="false" onAction="#onBorrowButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Mượn sách" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </content>
@@ -106,11 +111,6 @@
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <Text fill="WHITE" layoutX="40.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số lượng">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Text>
                         <Text fill="WHITE" layoutX="520.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày mượn">
                            <font>
                               <Font size="20.0" />
@@ -129,31 +129,30 @@
                         <TextField fx:id="transactionIDTextField" layoutX="180.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="userAccountTextField" layoutX="180.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="book_idTextField" layoutX="180.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <TextField fx:id="availableBooksTextFields" layoutX="180.0" layoutY="100.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="borrowDateTextField" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="returnDateTextField" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="statusTextField" layoutX="660.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Button fx:id="borrowButton" layoutX="220.0" layoutY="140.0" mnemonicParsing="false" onAction="#onBorrowButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Mượn sách" textFill="WHITE">
+                        <Button fx:id="returnButton" layoutX="624.0" layoutY="140.0" mnemonicParsing="false" onAction="#onReturnButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Trả sách" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="returnButton" layoutX="590.0" layoutY="140.0" mnemonicParsing="false" onAction="#onReturnButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Trả sách" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Button>
-                        <TableView layoutY="190.0" prefHeight="268.0" prefWidth="960.0" styleClass="column-header-background" stylesheets="@TableColumnText.css">
+                        <TableView fx:id="loanTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0" styleClass="column-header-background" stylesheets="@TableColumnText.css">
                            <columns>
-                              <TableColumn fx:id="transaction_idCollumn" prefWidth="120.0" style="-fx-background-color: #127AFF;" text="Mã giao dịch" />
-                              <TableColumn fx:id="userAccountCollumn" prefWidth="135.99996948242188" style="-fx-background-color: #127AFF;" text="Tài khoản mượn" />
-                              <TableColumn fx:id="book_idCollumn" prefWidth="126.40003967285156" style="-fx-background-color: #127AFF;" text="Mã sách" />
-                              <TableColumn fx:id="availableBooksInBorrowCollum" prefWidth="103.20001220703125" style="-fx-background-color: #127AFF;" text="Số lượng" />
-                              <TableColumn fx:id="borrowDateCollum" prefWidth="169.5999755859375" style="-fx-background-color: #127AFF;" text="Ngày mượn" />
-                              <TableColumn fx:id="returnDateCollumn" prefWidth="157.60003662109375" style="-fx-background-color: #127AFF;" text="Ngày trả" />
-                              <TableColumn fx:id="statusCollumn" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Tình trạng" />
+                              <TableColumn fx:id="transaction_idCollumn" prefWidth="120.0" text="Mã giao dịch" />
+                              <TableColumn fx:id="userAccountCollumn" prefWidth="135.99996948242188" text="Tài khoản mượn" />
+                              <TableColumn fx:id="book_idCollumn" prefWidth="126.40003967285156" text="Mã sách" />
+                              <TableColumn fx:id="availableBooksInBorrowCollum" prefWidth="103.20001220703125" text="Số lượng" />
+                              <TableColumn fx:id="borrowDateCollum" prefWidth="169.5999755859375" text="Ngày mượn" />
+                              <TableColumn fx:id="returnDateCollumn" prefWidth="157.60003662109375" text="Ngày trả" />
+                              <TableColumn fx:id="statusCollumn" prefWidth="150.0" text="Tình trạng" />
                            </columns>
                         </TableView>
+                        <Button fx:id="searchBookBorrow" layoutX="244.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchBookBorrowButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </content>

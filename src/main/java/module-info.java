@@ -16,5 +16,6 @@ module org.example.demo {
     exports org.example.demo;
     exports models;
     exports org.example.demo.controller;
+    exports org.example.demo.data;
     opens org.example.demo.controller to javafx.fxml;
 }

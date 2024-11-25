@@ -76,13 +76,14 @@ public class Book {
 
     public void setPublishYear(int publishYear) { this.publishYear = publishYear; }
 
+    public int getAvailableBooks() { return availableBooks; }
+
+    public void setAvailableBooks(int availableBooks) { this.availableBooks = availableBooks; }
+
     public int getTotalBooks() { return totalBooks; }
 
     public void setTotalBooks(int totalBooks) { this.totalBooks = totalBooks; }
 
-    public int getAvailableBooks() { return availableBooks; }
-
-    public void setAvailableBooks(int availableBooks) { this.availableBooks = availableBooks; }
 
     // Override toString for debugging
     @Override

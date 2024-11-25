@@ -26,6 +26,16 @@ public class Loan {
         this.status = LoanStatus.BORROWED;
     }
 
+    public Loan(int transactionId, String userAccount, int bookId, LocalDate borrowDate, LocalDate returnDate, LoanStatus status) {
+        this.transactionId = transactionId;
+        this.userAccount = userAccount;
+        this.bookId = bookId;
+        this.borrowDate = borrowDate;
+        this.returnDate = returnDate;
+        this.status = status;
+    }
+
+
     public Loan(int transactionId, String userAccount, int bookId, LocalDate borrowDate, LocalDate endDate, LocalDate returnDate, LoanStatus status) {
         this.transactionId = transactionId;
         this.userAccount = userAccount;

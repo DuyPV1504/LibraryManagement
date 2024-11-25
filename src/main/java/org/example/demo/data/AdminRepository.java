@@ -157,17 +157,16 @@ public class AdminRepository extends BaseRepository {
         }
     }
 
-    public boolean deleteUserById(int userId) {
+    public int deleteUser(int userId) {
         String query = "DELETE FROM Users WHERE id = ?";
-        try (Connection connection = getConnection();
+        try (Connection connection = connectDB();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
+            return preparedStatement.executeUpdate(); // Trả về số dòng bị xóa
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
     }
 
@@ -199,34 +198,36 @@ public class AdminRepository extends BaseRepository {
     }
 
 
-    public List<Book> searchBookByKeyword(String id, String bookName, String publishedYear, String totalBooks, String availableBooks, String author, String publisher) {
+    public List<Book> searchBookByKeyword(String id, String bookName, String publishedYear, String availableBooks,
+                                          String totalBooks, String author, String publisher) {
         String query = "SELECT * FROM Books WHERE " +
                 "(? IS NULL OR id = ?) AND " +
                 "(? IS NULL OR bookName = ?) AND " +
                 "(? IS NULL OR publishYear = ?) AND " +
-                "(? IS NULL OR totalBooks = ?) AND " +
                 "(? IS NULL OR availableBooks = ?) AND " +
+                "(? IS NULL OR totalBooks = ?) AND " +
                 "(? IS NULL OR author = ?) AND " +
                 "(? IS NULL OR publisher = ?)";
+
         List<Book> bookList = new ArrayList<>();
 
         try (Connection connection = connectDB();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setObject(1, id == null ? null : Integer.parseInt(id));
-            preparedStatement.setObject(2, id == null ? null : Integer.parseInt(id));
-            preparedStatement.setObject(3, bookName.isEmpty() ? null : bookName);
-            preparedStatement.setObject(4, bookName.isEmpty() ? null : bookName);
-            preparedStatement.setObject(5, publishedYear == null ? null : Integer.parseInt(publishedYear));
-            preparedStatement.setObject(6, publishedYear == null ? null : Integer.parseInt(publishedYear));
-            preparedStatement.setObject(7, totalBooks == null ? null : Integer.parseInt(totalBooks));
-            preparedStatement.setObject(8, totalBooks == null ? null : Integer.parseInt(totalBooks));
-            preparedStatement.setObject(9, availableBooks == null ? null : Integer.parseInt(availableBooks));
-            preparedStatement.setObject(10, availableBooks == null ? null : Integer.parseInt(availableBooks));
-            preparedStatement.setObject(11, author == null ? null : author);
-            preparedStatement.setObject(12, author == null ? null : author);
-            preparedStatement.setObject(13, publisher == null ? null : publisher);
-            preparedStatement.setObject(14, publisher == null ? null : publisher);
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, id);
+            preparedStatement.setString(3, bookName);
+            preparedStatement.setString(4, bookName);
+            preparedStatement.setString(5, publishedYear);
+            preparedStatement.setString(6, publishedYear);
+            preparedStatement.setString(7, availableBooks);
+            preparedStatement.setString(8, availableBooks);
+            preparedStatement.setString(9, totalBooks);
+            preparedStatement.setString(10, totalBooks);
+            preparedStatement.setString(11, author);
+            preparedStatement.setString(12, author);
+            preparedStatement.setString(13, publisher);
+            preparedStatement.setString(14, publisher);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -260,8 +261,8 @@ public class AdminRepository extends BaseRepository {
             preparedStatement.setString(2, book.getAuthor());
             preparedStatement.setString(3, book.getPublisher());
             preparedStatement.setInt(4, book.getPublishYear());
-            preparedStatement.setInt(6, book.getAvailableBooks());
-            preparedStatement.setInt(5, book.getTotalBooks());
+            preparedStatement.setInt(5, book.getAvailableBooks());
+            preparedStatement.setInt(6, book.getTotalBooks());
 
             int affectedRows = preparedStatement.executeUpdate();
 

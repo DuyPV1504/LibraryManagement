@@ -1,5 +1,6 @@
 package org.example.demo.data;
 
+import models.Loan;
 import models.User;
 import models.Book;
 import org.example.demo.database;
@@ -28,8 +29,8 @@ public class UserRepository extends BaseRepository {
                         resultSet.getString("author"),
                         resultSet.getString("publisher"),
                         resultSet.getInt("publishYear"),
-                        resultSet.getInt("availableBooks"), // Lấy từ cột availableBooks
-                        resultSet.getInt("totalBooks")      // Lấy từ cột totalBooks
+                        resultSet.getInt("availableBooks"),
+                        resultSet.getInt("totalBooks")
                 );
                 books.add(book);
             }
@@ -72,8 +73,8 @@ public class UserRepository extends BaseRepository {
                         resultSet.getString("author"),
                         resultSet.getString("publisher"),
                         resultSet.getInt("publishYear"),
-                        resultSet.getInt("totalBooks"),
-                        resultSet.getInt("availableBooks")
+                        resultSet.getInt("availableBooks"),
+                        resultSet.getInt("totalBooks")
                 );
                 bookList.add(book);
             }
@@ -83,5 +84,29 @@ public class UserRepository extends BaseRepository {
         return bookList;
     }
 
-}
+    public List<Loan> getAllTransactions() {
+        String query = "SELECT * FROM Loans";
+        List<Loan> loanList = new ArrayList<>();
 
+        try (Connection connection = connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Loan loan = new Loan(
+                        resultSet.getInt("transaction_id"),
+                        resultSet.getString("userAccount"),
+                        resultSet.getInt("book_id"),
+                        resultSet.getDate("borrowDate").toLocalDate(),
+                        resultSet.getDate("endDate").toLocalDate(),
+                        resultSet.getDate("returnDate") == null ? null : resultSet.getDate("returnDate").toLocalDate(),
+                        Loan.LoanStatus.valueOf(resultSet.getString("status").toUpperCase())
+                );
+                loanList.add(loan);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return loanList;
+    }
+}

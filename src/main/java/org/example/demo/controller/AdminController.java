@@ -491,7 +491,44 @@ public class AdminController extends GiaoDienChung {
     }
 
     public void onDeleteUserButtonClick(ActionEvent actionEvent) {
+        String idText = userID.getText().trim();
+
+        if (idText.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Xóa người dùng");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng nhập ID người dùng để xóa!");
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            int userId = Integer.parseInt(idText);
+            int rowsDeleted = adminService.deleteUser(userId);
+
+            if (rowsDeleted > 0) {
+                refreshUserList();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Thành công");
+                alert.setHeaderText(null);
+                alert.setContentText("Người dùng đã được xóa thành công!");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Thất bại");
+                alert.setHeaderText(null);
+                alert.setContentText("Không thể xóa người dùng! Hãy kiểm tra ID.");
+                alert.showAndWait();
+            }
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("ID phải là số hợp lệ!");
+            alert.showAndWait();
+        }
     }
+
 
     public void onBookManageButtonClick(Event event) {
     }
@@ -500,62 +537,60 @@ public class AdminController extends GiaoDienChung {
         String bookName = bookNameTextField.getText().trim();
         String author = authorTextField.getText().trim();
         String publisher = publisherTextField.getText().trim();
-        String publishedYear = publishedYearTextField.getText().trim();
+        String publishYear = publishedYearTextField.getText().trim();
         String availableBooks = availableBooksInBookManage.getText().trim();
         String totalBooks = totalInBookManage.getText().trim();
 
-        if (bookName.isEmpty() || author.isEmpty() || publishedYear.isEmpty() ||
-                totalBooks.isEmpty() || availableBooks.isEmpty()) {
+        if (bookName.isEmpty() || author.isEmpty() || publisher.isEmpty() ||
+                publishYear.isEmpty() || availableBooks.isEmpty() || totalBooks.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Thiếu thông tin");
             alert.setHeaderText(null);
-            alert.setContentText("Vui lòng điền đầy đủ thông tin để thêm sách!");
+            alert.setContentText("Vui lòng nhập đầy đủ thông tin để thêm sách!");
             alert.showAndWait();
             return;
         }
 
         try {
-            Book newBook = new Book(
-                    0,
-                    bookName,
-                    author,
-                    publisher,
-                    Integer.parseInt(publishedYear),
-                    Integer.parseInt(availableBooks),
-                    Integer.parseInt(totalBooks)
-            );
+            int available = Integer.parseInt(availableBooks);
+            int total = Integer.parseInt(totalBooks);
+            int year = Integer.parseInt(publishYear);
 
-            int generatedId = adminService.addBook(newBook);
-            if (generatedId > 0) {
-                newBook.setId(generatedId);
+            if (available > total) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Thông tin không hợp lệ");
+                alert.setHeaderText(null);
+                alert.setContentText("Số lượng còn lại không được lớn hơn tổng số sách!");
+                alert.showAndWait();
+                return;
+            }
+
+            Book book = new Book(0, bookName, author, publisher, year, available, total);
+            int result = adminService.addBook(book);
+
+            if (result > 0) {
                 refreshBookList();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Thành công");
                 alert.setHeaderText(null);
-                alert.setContentText("Sách đã được thêm thành công! ID: " + generatedId);
+                alert.setContentText("Sách đã được thêm thành công!");
                 alert.showAndWait();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Thất bại");
                 alert.setHeaderText(null);
-                alert.setContentText("Không thể thêm sách vào cơ sở dữ liệu!");
+                alert.setContentText("Không thể thêm sách! Hãy kiểm tra lại thông tin.");
                 alert.showAndWait();
             }
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi dữ liệu");
+            alert.setTitle("Lỗi định dạng");
             alert.setHeaderText(null);
-            alert.setContentText("Năm XB, SL còn lại và Tổng số sách phải là số hợp lệ!");
-            alert.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi hệ thống");
-            alert.setHeaderText(null);
-            alert.setContentText("Đã xảy ra lỗi: " + e.getMessage());
+            alert.setContentText("Vui lòng nhập số hợp lệ cho năm xuất bản, tổng số sách và số lượng còn lại.");
             alert.showAndWait();
         }
     }
+
 
 
     public void onEditBookButtonClick(ActionEvent actionEvent) {
@@ -668,8 +703,8 @@ public class AdminController extends GiaoDienChung {
         String author = authorTextField.getText().trim();
         String publisher = publisherTextField.getText().trim();
         String publishedYear = publishedYearTextField.getText().trim();
-        String availableBooks = availableBooksInBookManage.getText().trim();
         String totalBooks = totalInBookManage.getText().trim();
+        String availableBooks = availableBooksInBookManage.getText().trim();
 
         if (id.isEmpty() && bookName.isEmpty() && publishedYear.isEmpty() &&
                 availableBooks.isEmpty() && totalBooks.isEmpty() &&
@@ -679,6 +714,7 @@ public class AdminController extends GiaoDienChung {
             alert.setHeaderText(null);
             alert.setContentText("Vui lòng nhập ít nhất một từ khóa để tìm kiếm sách!");
             alert.showAndWait();
+            refreshBookList();
             return;
         }
 
@@ -698,6 +734,7 @@ public class AdminController extends GiaoDienChung {
             alert.setHeaderText(null);
             alert.setContentText("Không tìm thấy sách nào với thông tin đã nhập.");
             alert.showAndWait();
+            refreshBookList();
         } else {
             bookList.clear();
             bookList.addAll(books);
@@ -705,7 +742,6 @@ public class AdminController extends GiaoDienChung {
             bookTableView.refresh();
         }
     }
-
 
     public void onBorrowReturnManageClick(Event event) {
     }

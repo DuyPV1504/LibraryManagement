@@ -13,18 +13,33 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.Book;
+import models.Loan;
+import models.User;
 import org.example.demo.GiaoDienChung;
 import org.example.demo.HelloApplication;
+import org.example.demo.SignUp;
+import org.example.demo.data.LoanRepository;
+import org.example.demo.database;
 import org.example.demo.service.AdminService;
+import org.example.demo.service.LoanService;
 import org.example.demo.service.UserService;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 public class UserController extends GiaoDienChung {
 
     private final UserService userService = new UserService();
+    private final LoanService loanService = new LoanService();
 
+    public TableView<Loan> loanTableView;
     public TableView<Book> bookTableView;
     @FXML
     public SplitMenuButton optionU;
@@ -65,8 +80,6 @@ public class UserController extends GiaoDienChung {
     @FXML
     public Button exitButton;
     public TextField availableBooksTextFields;
-    public TableColumn availableBooksInBorrowCollum;
-    public TableColumn borrowDateCollum;
     public TextField bookIDInForTextField;
     public TextField bookNameInForTextFiled;
     public TextField authorInForTextFiled;
@@ -86,22 +99,28 @@ public class UserController extends GiaoDienChung {
     public TextField borrowDateTextField;
     public TextField returnDateTextField;
     public TextField statusTextField;
-    public TableColumn transaction_idCollumn;
-    public TableColumn userAccountCollumn;
-    public TableColumn book_idCollumn;
-    public TableColumn returnDateCollumn;
-    public TableColumn statusCollumn;
+    public TableColumn<Loan, Integer> transaction_idCollumn;
+    public TableColumn<Loan, String> userAccountCollumn;
+    public TableColumn<Loan, Integer> book_idCollumn;
+    public TableColumn<Loan, Integer> availableBooksInBorrowCollum;
+    public TableColumn<Loan, LocalDate> borrowDateCollum;
+    public TableColumn<Loan, LocalDate> returnDateCollumn;
+    public TableColumn<Loan, Loan.LoanStatus> statusCollumn;
+
     public TextField bookIDReviewField;
     public TextField bookNameReviewField;
     public TextField authorReviewField;
     public TextField publisherReviewField;
     public TextField publishedYearReviewField;
+    public Button searchBookBorrow;
 
+    private ObservableList<Loan> loanList = FXCollections.observableArrayList();
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
     public void initialize() {
 
         refreshBookList();
+        refreshLoanList();
 
         bookIDInForCollumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         bookNameCollumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
@@ -111,7 +130,16 @@ public class UserController extends GiaoDienChung {
         totalBooksCollumn.setCellValueFactory(new PropertyValueFactory<>("totalBooks"));
         availableBooksInInfoBookCollumn.setCellValueFactory(new PropertyValueFactory<>("availableBooks"));
 
+        transaction_idCollumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
+        userAccountCollumn.setCellValueFactory(new PropertyValueFactory<>("userAccount"));
+        book_idCollumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+        availableBooksInBorrowCollum.setCellValueFactory(new PropertyValueFactory<>("availableBooks"));
+        borrowDateCollum.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
+        returnDateCollumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+        statusCollumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+
         bookTableView.setItems(bookList);
+        loanTableView.setItems(loanList);
     }
 
     private void refreshBookList() {
@@ -121,6 +149,15 @@ public class UserController extends GiaoDienChung {
         bookTableView.setItems(bookList);
         bookTableView.refresh();
     }
+
+    private void refreshLoanList() {
+        List<Loan> loans = userService.getAllTransactions();
+        loanList.clear();
+        loanList.addAll(loans);
+        loanTableView.setItems(loanList);
+        loanTableView.refresh();
+    }
+
 
     public void onOptionMenuUClick(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -158,7 +195,7 @@ public class UserController extends GiaoDienChung {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/signUp.fxml"));
                     Parent root = loader.load();
-                    Stage stage =(Stage) logOutU.getParentPopup().getOwnerWindow();
+                    Stage stage = (Stage) logOutU.getParentPopup().getOwnerWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
@@ -215,16 +252,98 @@ public class UserController extends GiaoDienChung {
         }
     }
 
-
+    //nút tab
     public void onBorrowReturnUManageClick(Event event) {
     }
 
-    public void onBorrowButtonClick(ActionEvent actionEvent) {
+    public void onBorrowButtonClick(ActionEvent actionEvent) throws SQLException {
+        Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
+        if (searchBook == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn sách");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn sách để mượn!");
+            alert.showAndWait();
+            return;
+        }
+        bookIDInForTextField.setText(String.valueOf(searchBook.getId()));
+        bookNameInForTextFiled.setText(searchBook.getBookName());
+        authorInForTextFiled.setText(searchBook.getAuthor());
+        publishedYearInForTextFiled.setText(searchBook.getPublisher());
+        publisherInForTextFiled.setText(String.valueOf(searchBook.getPublishYear()));
+        int avai = searchBook.getAvailableBooks();
+        Alert alert;
+        if (avai == 0) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Hết sách rồi!");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn sách khác hoặc thử lại sau");
+            alert.showAndWait();
+            return;
+        }
+
+        LocalDate borrowDate = LocalDate.now();
+        LocalDate returnDate = borrowDate.plusDays(5);
+        Loan newLoan = new Loan(
+                SignUp.account,
+                searchBook.getId(),
+                borrowDate,
+                returnDate
+        );
+        if(loanService.addTransaction(newLoan)) {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thành công");
+            alert.setHeaderText(null);
+            alert.setContentText("Hãy trả thư viện trong 5 ngày tới nhé");
+            alert.showAndWait();
+            searchBook.setAvailableBooks(avai - 1);
+
+        }else{
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Test loi");
+        }
+        loanList.add(newLoan);
+        bookTableView.refresh();
+        loanTableView.refresh();
     }
 
-    public void onReturnButtonClick(ActionEvent actionEvent) {
+    public void onReturnButtonClick(ActionEvent actionEvent)  {
+        Loan selectedLoan = loanTableView.getSelectionModel().getSelectedItem();
+        if (selectedLoan == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn sách");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn sách để trả!");
+            alert.showAndWait();
+            return;
+        }
+        boolean success = loanService.deleteTransaction(selectedLoan.getTransactionId());
+        if (success) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thành công");
+            alert.setHeaderText(null);
+            alert.setContentText("Sách được trả lại!");
+            alert.showAndWait();
+            selectedLoan.setReturnDate(LocalDate.now());
+            loanList.remove(selectedLoan);
+            loanTableView.setItems(loanList);
+            loanTableView.refresh();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Thất bại");
+            alert.setHeaderText(null);
+            alert.setContentText("Không thể xóa giao dịch!");
+            alert.showAndWait();
+        }
+
+        Book book = (Book) userService.searchBook(String.valueOf(selectedLoan.getBookId()),
+                null, null, null, null);
+        book.setAvailableBooks(book.getAvailableBooks() + 1);
+        loanTableView.refresh();
+        bookTableView.refresh();
     }
 
+    //nút tab
     public void onBookReviewClick(Event event) {
     }
 
@@ -239,10 +358,10 @@ public class UserController extends GiaoDienChung {
 
 
     public void onVolumeClick(ActionEvent actionEvent) {
-        if(HelloApplication.isMusic()){
+        if (HelloApplication.isMusic()) {
             HelloApplication.getMediaPlayer().pause();
             HelloApplication.setMusic(false);
-        }else{
+        } else {
             HelloApplication.getMediaPlayer().play();
             HelloApplication.setMusic(true);
         }
@@ -250,5 +369,9 @@ public class UserController extends GiaoDienChung {
 
     public void onExitButton(ActionEvent actionEvent) {
         thoat();
+    }
+
+    public void onSearchBookBorrowButtonClick(ActionEvent actionEvent) {
+
     }
 }

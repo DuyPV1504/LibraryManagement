@@ -17,6 +17,10 @@ public class AdminService {
         return adminRepository.searchBookByKeyword(id, bookName, publishedYear, availableBooks, totalBooks, author, publisher);
     }
 
+    public List<Loan> searchTransaction(String transactionId, String userAccount, String bookId, String borrowDate, String endDate, String status) {
+        return adminRepository.searchTransactionByKeyword(transactionId, userAccount, bookId, borrowDate, endDate, status);
+    }
+
     public List<Book> getAllBooks() {
         return adminRepository.getAllBooks();
     }
@@ -29,6 +33,9 @@ public class AdminService {
         return adminRepository.getAllUsers();
     }
 
+    public int deleteUser(int userId) {
+        return adminRepository.deleteUser(userId);
+    }
 
     public int addBook(Book book) {
         return adminRepository.addBook(book);
@@ -36,10 +43,6 @@ public class AdminService {
 
     public int deleteBook(int bookId) {
         return adminRepository.deleteBook(bookId);
-    }
-
-    public List<Loan> searchTransaction(String transactionId, String userAccount, String bookId, String borrowDate, String endDate, String status) {
-        return adminRepository.searchTransactionByKeyword(transactionId, userAccount, bookId, borrowDate, endDate, status);
     }
 
     public int addTransaction(Loan loan) {
@@ -63,16 +66,6 @@ public class AdminService {
     public boolean updateUser(User user) {
         try {
             adminRepository.updateUser(user);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean deleteUserById(int userId) {
-        try {
-            adminRepository.deleteUserById(userId);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

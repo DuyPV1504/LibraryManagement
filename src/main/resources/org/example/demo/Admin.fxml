@@ -101,16 +101,16 @@
                         </Button>
                         <TableView fx:id="userTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0">
                            <columns>
-                              <TableColumn fx:id="idUserColum" prefWidth="65.60000914335251" style="-fx-background-color: #127AFF;" text="ID" />
-                              <TableColumn fx:id="surnameColum" prefWidth="81.60000610351562" style="-fx-background-color: #127AFF;" text="Họ" />
-                              <TableColumn fx:id="lastnameColum" minWidth="108.79997253417969" prefWidth="108.79997253417969" style="-fx-background-color: #127AFF;" text="Tên" />
-                              <TableColumn fx:id="dateOfBirthColum" minWidth="109.5999755859375" prefWidth="128.0" style="-fx-background-color: #127AFF;" text="Ngày sinh" />
-                              <TableColumn fx:id="genderColum" minWidth="56.0" prefWidth="80.800048828125" style="-fx-background-color: #127AFF;" text="Giới tính" />
-                              <TableColumn fx:id="emailColum" minWidth="123.20001220703125" prefWidth="150.39996337890625" style="-fx-background-color: #127AFF;" text="Email" />
-                              <TableColumn fx:id="userNameColum" minWidth="78.39996337890625" prefWidth="78.39996337890625" style="-fx-background-color: #127AFF;" text="Tên TK" />
-                              <TableColumn fx:id="accountNameColum" prefWidth="102.4000244140625" style="-fx-background-color: #127AFF;" text="Tài khoản" />
-                              <TableColumn fx:id="userPasswordColum" minWidth="0.0" prefWidth="69.60009765625" style="-fx-background-color: #127AFF;" text="Mật khẩu" />
-                              <TableColumn fx:id="warningColum" prefWidth="89.60003662109375" style="-fx-background-color: #127AFF;" text="Cảnh cáo" />
+                              <TableColumn fx:id="idUserColum" prefWidth="65.60000914335251" text="ID" />
+                              <TableColumn fx:id="surnameColum" prefWidth="81.60000610351562" text="Họ" />
+                              <TableColumn fx:id="lastnameColum" minWidth="108.79997253417969" prefWidth="108.79997253417969" text="Tên" />
+                              <TableColumn fx:id="dateOfBirthColum" minWidth="109.5999755859375" prefWidth="128.0" text="Ngày sinh" />
+                              <TableColumn fx:id="genderColum" minWidth="56.0" prefWidth="80.800048828125" text="Giới tính" />
+                              <TableColumn fx:id="emailColum" minWidth="123.20001220703125" prefWidth="150.39996337890625" text="Email" />
+                              <TableColumn fx:id="userNameColum" minWidth="78.39996337890625" prefWidth="78.39996337890625" text="Tên TK" />
+                              <TableColumn fx:id="accountNameColum" prefWidth="102.4000244140625" text="Tài khoản" />
+                              <TableColumn fx:id="userPasswordColum" minWidth="0.0" prefWidth="69.60009765625" text="Mật khẩu" />
+                              <TableColumn fx:id="warningColum" prefWidth="89.60003662109375" text="Cảnh cáo" />
                            </columns>
                         </TableView>
                      </children>
@@ -185,13 +185,13 @@
                         </Button>
                         <TableView fx:id="bookTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0">
                            <columns>
-                              <TableColumn fx:id="idOfBookInBookManageColum" style="-fx-background-color: #127AFF;" text="ID" />
-                              <TableColumn fx:id="bookNameInBookManageColum" prefWidth="240.0" style="-fx-background-color: #127AFF;" text="Tên sách" />
-                              <TableColumn fx:id="authorInBookManageColum" minWidth="70.0" prefWidth="180.0" style="-fx-background-color: #127AFF;" text="Tác giả" />
-                              <TableColumn fx:id="publisherInBookManageColum" minWidth="24.79998779296875" prefWidth="180.0" style="-fx-background-color: #127AFF;" text="NXB" />
-                              <TableColumn fx:id="publishYearInBookManageColum" minWidth="70.0" prefWidth="90.0" style="-fx-background-color: #127AFF;" text="Năm XB" />
-                              <TableColumn fx:id="availableBooksInBookManageColum" minWidth="50.0" prefWidth="100.0" style="-fx-background-color: #127AFF;" text="Số lượng còn lại" />
-                              <TableColumn fx:id="totalBooksInBookManageColum" minWidth="70.0" style="-fx-background-color: #127AFF;" text="Tổng số sách" />
+                              <TableColumn fx:id="idOfBookInBookManageColum" text="ID" />
+                              <TableColumn fx:id="bookNameInBookManageColum" prefWidth="240.0" text="Tên sách" />
+                              <TableColumn fx:id="authorInBookManageColum" minWidth="70.0" prefWidth="180.0" text="Tác giả" />
+                              <TableColumn fx:id="publisherInBookManageColum" minWidth="24.79998779296875" prefWidth="180.0" text="NXB" />
+                              <TableColumn fx:id="publishYearInBookManageColum" minWidth="70.0" prefWidth="90.0" text="Năm XB" />
+                              <TableColumn fx:id="availableBooksInBookManageColum" minWidth="50.0" prefWidth="100.0" text="Số lượng còn lại" />
+                              <TableColumn fx:id="totalBooksInBookManageColum" minWidth="70.0" text="Tổng số sách" />
                            </columns>
                         </TableView>
                      </children>
@@ -260,13 +260,13 @@
                         </Button>
                         <TableView fx:id="loanTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0">
                            <columns>
-                              <TableColumn fx:id="transaction_idColum" prefWidth="120.0" style="-fx-background-color: #127AFF;" text="Mã giao dịch" />
-                              <TableColumn fx:id="userAccountColum" prefWidth="120.0" style="-fx-background-color: #127AFF;" text="Tài khoản mượn" />
-                              <TableColumn fx:id="book_idColum" prefWidth="120.0" style="-fx-background-color: #127AFF;" text="Mã sách" />
-                              <TableColumn fx:id="borrowDateColum" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Ngày mượn" />
-                              <TableColumn fx:id="endDateColum" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Hạn trả" />
-                              <TableColumn fx:id="returnDateColum" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Ngày trả" />
-                              <TableColumn fx:id="statusColum" prefWidth="150.0" style="-fx-background-color: #127AFF;" text="Tình trạng" />
+                              <TableColumn fx:id="transaction_idColum" prefWidth="120.0" text="Mã giao dịch" />
+                              <TableColumn fx:id="userAccountColum" prefWidth="120.0" text="Tài khoản mượn" />
+                              <TableColumn fx:id="book_idColum" prefWidth="120.0" text="Mã sách" />
+                              <TableColumn fx:id="borrowDateColum" prefWidth="150.0" text="Ngày mượn" />
+                              <TableColumn fx:id="endDateColum" prefWidth="150.0" text="Hạn trả" />
+                              <TableColumn fx:id="returnDateColum" prefWidth="150.0" text="Ngày trả" />
+                              <TableColumn fx:id="statusColum" prefWidth="150.0" text="Tình trạng" />
                            </columns>
                         </TableView>
                      </children></AnchorPane>
