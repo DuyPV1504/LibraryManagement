@@ -280,7 +280,6 @@ public class AdminController extends GiaoDienChung {
     }
 
     public void onUserManageButtonClick(Event event) {
-
     }
 
     public void onSearchUserButtonClick(ActionEvent actionEvent) {

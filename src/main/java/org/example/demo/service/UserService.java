@@ -19,12 +19,8 @@ public class UserService {
         return userRepository.searchBookByKeyword(id, bookName, publishedYear, author, publisher);
     }
 
-    public List<Loan> getUserTransactions(String userAccount) {
-        return userRepository.getUserTransactions(userAccount);
-    }
-
-    public List<Loan> searchUserTransactions(Integer transactionId, String userAccount, Integer bookId) {
-        return userRepository.searchUserTransactions(transactionId, userAccount, bookId);
+    public List<Loan> getAllTransactions() {
+        return userRepository.getAllTransactions();
     }
 
 }

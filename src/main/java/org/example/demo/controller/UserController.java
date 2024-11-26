@@ -149,20 +149,7 @@ public class UserController extends GiaoDienChung {
     }
 
     private void refreshLoanList() {
-        String currentUserAccount = SignUp.account; // Lấy tài khoản người dùng hiện tại
 
-        if (currentUserAccount == null || currentUserAccount.isEmpty()) {
-            loanList.clear();
-            loanTableView.setItems(loanList);
-            loanTableView.refresh();
-            return;
-        }
-
-        List<Loan> loans = userService.getUserTransactions(currentUserAccount); // Lấy giao dịch của người dùng hiện tại
-        loanList.clear();
-        loanList.addAll(loans);
-        loanTableView.setItems(loanList);
-        loanTableView.refresh();
     }
 
     public void onOptionMenuUClick(ActionEvent actionEvent) {
@@ -199,15 +186,13 @@ public class UserController extends GiaoDienChung {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    // Xóa dữ liệu người dùng hiện tại
+
                     SignUp.account = null;
 
-                    // Xóa dữ liệu trong bảng loanTableView
                     loanList.clear();
                     loanTableView.setItems(loanList);
                     loanTableView.refresh();
 
-                    // Chuyển về màn hình đăng nhập
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/signUp.fxml"));
                     Parent root = loader.load();
                     Stage stage = (Stage) logOutU.getParentPopup().getOwnerWindow();
@@ -215,7 +200,6 @@ public class UserController extends GiaoDienChung {
                     stage.setScene(scene);
                     stage.show();
 
-                    // Đóng cửa sổ hiện tại
                     ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow()).close();
 
                     System.out.println("Đăng xuất thành công.");
@@ -272,31 +256,7 @@ public class UserController extends GiaoDienChung {
 
     //nút tab
     public void onBorrowReturnUManageClick(Event event) {
-        String currentUserAccount = SignUp.account;
 
-        if (currentUserAccount == null || currentUserAccount.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Không thể xác định tài khoản người dùng hiện tại.");
-            alert.showAndWait();
-            return;
-        }
-
-        List<Loan> loans = userService.getUserTransactions(currentUserAccount);
-
-        if (loans.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Không có giao dịch nào để hiển thị.");
-            alert.showAndWait();
-        } else {
-            loanList.clear();
-            loanList.addAll(loans);
-            loanTableView.setItems(loanList);
-            loanTableView.refresh();
-        }
     }
 
     public void onBorrowButtonClick(ActionEvent actionEvent) throws SQLException {
@@ -369,8 +329,16 @@ public class UserController extends GiaoDienChung {
             alert.showAndWait();
             selectedLoan.setReturnDate(LocalDate.now());
             loanList.remove(selectedLoan);
-            loanTableView.setItems(loanList);
+
+            for (Book book : bookList) {
+                if (book.getId() == selectedLoan.getBookId()) {
+                    book.setAvailableBooks(book.getAvailableBooks() + 1);
+                    break;
+                }
+            }
+
             loanTableView.refresh();
+            bookTableView.refresh();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Thất bại");
@@ -379,11 +347,7 @@ public class UserController extends GiaoDienChung {
             alert.showAndWait();
         }
 
-        Book book = (Book) userService.searchBook(String.valueOf(selectedLoan.getBookId()),
-                null, null, null, null);
-        book.setAvailableBooks(book.getAvailableBooks() + 1);
-        loanTableView.refresh();
-        bookTableView.refresh();
+
     }
 
     //nút tab
@@ -415,36 +379,6 @@ public class UserController extends GiaoDienChung {
     }
 
     public void onSearchBookBorrowButtonClick(ActionEvent actionEvent) {
-        String transactionId = transactionIDTextField.getText().trim();
-        String bookId = book_idTextField.getText().trim();
-        String currentUserAccount = SignUp.account;
 
-        if (currentUserAccount == null || currentUserAccount.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Không thể xác định tài khoản người dùng hiện tại.");
-            alert.showAndWait();
-            return;
-        }
-
-        Integer transactionIdInt = transactionId.isEmpty() ? null : Integer.parseInt(transactionId);
-        Integer bookIdInt = bookId.isEmpty() ? null : Integer.parseInt(bookId);
-
-        // Gọi UserService để tìm kiếm giao dịch
-        List<Loan> loans = userService.searchUserTransactions(transactionIdInt, currentUserAccount, bookIdInt);
-
-        if (loans.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Kết quả tìm kiếm");
-            alert.setHeaderText(null);
-            alert.setContentText("Không tìm thấy giao dịch nào với thông tin đã nhập.");
-            alert.showAndWait();
-        } else {
-            loanList.clear();
-            loanList.addAll(loans);
-            loanTableView.setItems(loanList);
-            loanTableView.refresh();
-        }
     }
 }
