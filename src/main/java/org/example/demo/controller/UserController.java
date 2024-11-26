@@ -138,6 +138,12 @@ public class UserController extends GiaoDienChung {
 
         bookTableView.setItems(bookList);
         loanTableView.setItems(loanList);
+
+        borrownReturnUManage.setOnSelectionChanged(event -> {
+            if (borrownReturnUManage.isSelected()) {
+                refreshLoanList();
+            }
+        });
     }
 
     private void refreshBookList() {
@@ -149,7 +155,12 @@ public class UserController extends GiaoDienChung {
     }
 
     private void refreshLoanList() {
-
+        String currentUserAccount = SignUp.account; // Lấy tài khoản đăng nhập hiện tại
+        List<Loan> loans = userService.getTransactionsByUser(currentUserAccount); // Lấy giao dịch từ UserService
+        loanList.clear();
+        loanList.addAll(loans);
+        loanTableView.setItems(loanList);
+        loanTableView.refresh();
     }
 
     public void onOptionMenuUClick(ActionEvent actionEvent) {
@@ -379,6 +390,25 @@ public class UserController extends GiaoDienChung {
     }
 
     public void onSearchBookBorrowButtonClick(ActionEvent actionEvent) {
+        String transactionId = transactionIDTextField.getText().trim();
+        String userAccount = userAccountTextField.getText().trim();
+        String bookId = book_idTextField.getText().trim();
+        String borrowDate = borrowDateTextField.getText().trim();
+        String returnDate = returnDateTextField.getText().trim();
+        String status = statusTextField.getText().trim();
 
+        List<Loan> results = userService.searchTransactions(
+                transactionId.isEmpty() ? null : Integer.parseInt(transactionId),
+                userAccount.isEmpty() ? null : userAccount,
+                bookId.isEmpty() ? null : Integer.parseInt(bookId),
+                borrowDate.isEmpty() ? null : LocalDate.parse(borrowDate),
+                returnDate.isEmpty() ? null : LocalDate.parse(returnDate),
+                status.isEmpty() ? null : Loan.LoanStatus.valueOf(status.toUpperCase())
+        );
+
+        loanList.clear();
+        loanList.addAll(results);
+        loanTableView.setItems(loanList);
+        loanTableView.refresh();
     }
 }

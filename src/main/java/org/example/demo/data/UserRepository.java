@@ -6,6 +6,7 @@ import models.Book;
 import org.example.demo.database;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,13 +85,14 @@ public class UserRepository extends BaseRepository {
         return bookList;
     }
 
-    public List<Loan> getAllTransactions() {
-        String query = "SELECT * FROM Loans";
+    public List<Loan> getTransactionsByUser(String userAccount) {
+        String query = "SELECT * FROM Loans WHERE userAccount = ?";
         List<Loan> loanList = new ArrayList<>();
 
         try (Connection connection = connectDB();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userAccount);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Loan loan = new Loan(
@@ -109,4 +111,51 @@ public class UserRepository extends BaseRepository {
         }
         return loanList;
     }
+
+    public List<Loan> searchTransactions(Integer transactionId, String userAccount, Integer bookId, LocalDate borrowDate,
+                                         LocalDate returnDate, Loan.LoanStatus status) {
+        String query = "SELECT * FROM Loans WHERE " +
+                "(? IS NULL OR transaction_id = ?) AND " +
+                "(? IS NULL OR userAccount = ?) AND " +
+                "(? IS NULL OR book_id = ?) AND " +
+                "(? IS NULL OR borrowDate = ?) AND " +
+                "(? IS NULL OR returnDate = ?) AND " +
+                "(? IS NULL OR status = ?)";
+        List<Loan> loanList = new ArrayList<>();
+
+        try (Connection connection = connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setObject(1, transactionId);
+            preparedStatement.setObject(2, transactionId);
+            preparedStatement.setObject(3, userAccount);
+            preparedStatement.setObject(4, userAccount);
+            preparedStatement.setObject(5, bookId);
+            preparedStatement.setObject(6, bookId);
+            preparedStatement.setObject(7, borrowDate);
+            preparedStatement.setObject(8, borrowDate);
+            preparedStatement.setObject(9, returnDate);
+            preparedStatement.setObject(10, returnDate);
+            preparedStatement.setObject(11, status == null ? null : status.name());
+            preparedStatement.setObject(12, status == null ? null : status.name());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Loan loan = new Loan(
+                        resultSet.getInt("transaction_id"),
+                        resultSet.getString("userAccount"),
+                        resultSet.getInt("book_id"),
+                        resultSet.getDate("borrowDate").toLocalDate(),
+                        resultSet.getDate("endDate").toLocalDate(),
+                        resultSet.getDate("returnDate") == null ? null : resultSet.getDate("returnDate").toLocalDate(),
+                        Loan.LoanStatus.valueOf(resultSet.getString("status").toUpperCase())
+                );
+                loanList.add(loan);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return loanList;
+    }
+
 }
