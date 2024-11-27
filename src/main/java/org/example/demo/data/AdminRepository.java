@@ -202,12 +202,12 @@ public class AdminRepository extends BaseRepository {
                                           String totalBooks, String author, String publisher) {
         String query = "SELECT * FROM Books WHERE " +
                 "(? IS NULL OR id = ?) AND " +
-                "(? IS NULL OR bookName = ?) AND " +
-                "(? IS NULL OR publishYear = ?) AND " +
+                "(? IS NULL OR bookName LIKE ?) AND " +
+                "(? IS NULL OR publishYear LIKE ?) AND " +
                 "(? IS NULL OR availableBooks = ?) AND " +
                 "(? IS NULL OR totalBooks = ?) AND " +
-                "(? IS NULL OR author = ?) AND " +
-                "(? IS NULL OR publisher = ?)";
+                "(? IS NULL OR author LIKE ?) AND " +
+                "(? IS NULL OR publisher LIKE ?)";
 
         List<Book> bookList = new ArrayList<>();
 
@@ -217,7 +217,7 @@ public class AdminRepository extends BaseRepository {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, id);
             preparedStatement.setString(3, bookName);
-            preparedStatement.setString(4, bookName);
+            preparedStatement.setString(4, bookName != null ? bookName + "%" : null);
             preparedStatement.setString(5, publishedYear);
             preparedStatement.setString(6, publishedYear);
             preparedStatement.setString(7, availableBooks);
@@ -225,9 +225,9 @@ public class AdminRepository extends BaseRepository {
             preparedStatement.setString(9, totalBooks);
             preparedStatement.setString(10, totalBooks);
             preparedStatement.setString(11, author);
-            preparedStatement.setString(12, author);
+            preparedStatement.setString(12, author != null ? "%" + author + "%" : null);
             preparedStatement.setString(13, publisher);
-            preparedStatement.setString(14, publisher);
+            preparedStatement.setString(14, publisher != null ? "%" + publisher + "%" : null);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -248,7 +248,6 @@ public class AdminRepository extends BaseRepository {
         }
         return bookList;
     }
-
 
     public int addBook(Book book) {
         String query = "INSERT INTO Books (bookName, author, publisher, publishYear, availableBooks, totalBooks) " +

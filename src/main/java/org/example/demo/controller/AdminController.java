@@ -173,6 +173,29 @@ public class AdminController extends GiaoDienChung {
         refreshLoanList();
         refreshUserList();
 
+        bookIDTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        bookNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        authorTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        publisherTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        publishedYearTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        availableBooksInBookManage.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        totalInBookManage.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+
+
         idUserColum.setCellValueFactory(new PropertyValueFactory<>("id"));
         surnameColum.setCellValueFactory(new PropertyValueFactory<>("surname"));
         lastnameColum.setCellValueFactory(new PropertyValueFactory<>("lastname"));
@@ -203,6 +226,36 @@ public class AdminController extends GiaoDienChung {
         userTableView.setItems(userList);
         bookTableView.setItems(bookList);
         loanTableView.setItems(loanList);
+    }
+
+    private void searchBooksDynamic() {
+        String id = bookIDTextField.getText().trim();
+        String bookName = bookNameTextField.getText().trim();
+        String author = authorTextField.getText().trim();
+        String publisher = publisherTextField.getText().trim();
+        String publishedYear = publishedYearTextField.getText().trim();
+        String totalBooks = totalInBookManage.getText().trim();
+        String availableBooks = availableBooksInBookManage.getText().trim();
+
+        List<Book> books = adminService.searchBook(
+                id.isEmpty() ? null : id,
+                bookName.isEmpty() ? null : bookName,
+                publishedYear.isEmpty() ? null : publishedYear,
+                availableBooks.isEmpty() ? null : availableBooks,
+                totalBooks.isEmpty() ? null : totalBooks,
+                author.isEmpty() ? null : author,
+                publisher.isEmpty() ? null : publisher
+        );
+
+        if (books.isEmpty()) {
+            bookList.clear();
+            bookTableView.setItems(bookList);
+        } else {
+            bookList.clear();
+            bookList.addAll(books);
+            bookTableView.setItems(bookList);
+            bookTableView.refresh();
+        }
     }
 
     private void refreshBookList() {
