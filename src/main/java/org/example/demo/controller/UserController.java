@@ -660,6 +660,13 @@ public class UserController extends GiaoDienChung {
     }
 
     public void onSearchBookBorrowButtonClick(ActionEvent actionEvent) {
+        String currentUserAccount = SignUp.account;
+
+        if (currentUserAccount == null || currentUserAccount.isEmpty()) {
+            System.out.println("User is not logged in.");
+            return;
+        }
+
         String transactionId = transactionIDTextField.getText().trim();
         String userAccount = userAccountTextField.getText().trim();
         String bookId = book_idTextField.getText().trim();
@@ -669,7 +676,7 @@ public class UserController extends GiaoDienChung {
 
         List<Loan> results = userService.searchTransactions(
                 transactionId.isEmpty() ? null : Integer.parseInt(transactionId),
-                userAccount.isEmpty() ? null : userAccount,
+                userAccount.isEmpty() ? currentUserAccount : userAccount,
                 bookId.isEmpty() ? null : Integer.parseInt(bookId),
                 borrowDate.isEmpty() ? null : LocalDate.parse(borrowDate),
                 returnDate.isEmpty() ? null : LocalDate.parse(returnDate),
@@ -681,5 +688,4 @@ public class UserController extends GiaoDienChung {
         loanTableView.setItems(loanList);
         loanTableView.refresh();
     }
-
 }
