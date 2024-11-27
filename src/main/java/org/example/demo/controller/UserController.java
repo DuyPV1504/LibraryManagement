@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -128,6 +129,19 @@ public class UserController extends GiaoDienChung {
         refreshBookList();
         refreshLoanList();
 
+        bookNameInForTextFiled.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        authorInForTextFiled.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        publisherInForTextFiled.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+        publishedYearInForTextFiled.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBooksDynamic();
+        });
+
         bookIDInForCollumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         bookNameCollumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
         authorCollumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -151,6 +165,33 @@ public class UserController extends GiaoDienChung {
             }
         });
     }
+
+    private void searchBooksDynamic() {
+        String id = bookIDInForTextField.getText().trim();
+        String bookName = bookNameInForTextFiled.getText().trim();
+        String author = authorInForTextFiled.getText().trim();
+        String publisher = publisherInForTextFiled.getText().trim();
+        String publishedYear = publishedYearInForTextFiled.getText().trim();
+
+        List<Book> books = userService.searchBook(
+                id.isEmpty() ? null : id,
+                bookName.isEmpty() ? null : bookName,
+                publishedYear.isEmpty() ? null : publishedYear,
+                author.isEmpty() ? null : author,
+                publisher.isEmpty() ? null : publisher
+        );
+
+        if (books.isEmpty()) {
+            bookList.clear();
+            bookTableView.setItems(bookList);
+        } else {
+            bookList.clear();
+            bookList.addAll(books);
+            bookTableView.setItems(bookList);
+            bookTableView.refresh();
+        }
+    }
+
 
     private void refreshBookList() {
         List<Book> books = userService.getAllBooks();

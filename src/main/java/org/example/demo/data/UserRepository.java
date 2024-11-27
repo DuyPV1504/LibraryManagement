@@ -44,11 +44,11 @@ public class UserRepository extends BaseRepository {
 
     public List<Book> searchBookByKeyword(String id, String bookName, String publishedYear, String author, String publisher) {
         String query = "SELECT * FROM Books WHERE " +
-                "(? IS NULL OR id = ?) AND " +
-                "(? IS NULL OR bookName = ?) AND " +
-                "(? IS NULL OR publishYear = ?) AND " +
-                "(? IS NULL OR author = ?) AND " +
-                "(? IS NULL OR publisher = ?)";
+                "(? IS NULL OR id LIKE ?) AND " +
+                "(? IS NULL OR bookName LIKE ?) AND " +
+                "(? IS NULL OR publishYear LIKE ?) AND " +
+                "(? IS NULL OR author LIKE ?) AND " +
+                "(? IS NULL OR publisher LIKE ?)";
 
         List<Book> bookList = new ArrayList<>();
 
@@ -56,15 +56,15 @@ public class UserRepository extends BaseRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, id);
-            preparedStatement.setString(2, id);
+            preparedStatement.setString(2, id != null ? "%" + id + "%" : null);
             preparedStatement.setString(3, bookName);
-            preparedStatement.setString(4, bookName);
+            preparedStatement.setString(4, bookName != null ? "%" + bookName + "%" : null);
             preparedStatement.setString(5, publishedYear);
-            preparedStatement.setString(6, publishedYear);
+            preparedStatement.setString(6, publishedYear != null ? "%" + publishedYear + "%" : null);
             preparedStatement.setString(7, author);
-            preparedStatement.setString(8, author);
+            preparedStatement.setString(8, author != null ? "%" + author + "%" : null);
             preparedStatement.setString(9, publisher);
-            preparedStatement.setString(10, publisher);
+            preparedStatement.setString(10, publisher != null ? "%" + publisher + "%" : null);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
