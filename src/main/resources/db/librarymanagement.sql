@@ -55,6 +55,15 @@ CREATE TABLE IF NOT EXISTS Loans
     FOREIGN KEY (book_id) REFERENCES Books (id) ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Comments
+(
+    bookId int,
+    comment varchar(2000),
+    userName varchar(50),
+    FOREIGN KEY (bookId) REFERENCES Books (id) ON UPDATE CASCADE,
+    FOREIGN KEY (userName) REFERENCES Users (userName) ON UPDATE CASCADE
+);
+
 INSERT INTO Users (surname, lastname, dateOfBirth, gender, email, userName, userAccount, userPassword, roles, warning)
 VALUES ('Nguyen', 'Van A', '1990-01-15', 'Male', 'nguyenvana@example.com', 'nguyenvana', 'user1', 'ehem', 'User', 0),
        ('Tran', 'Thi B', '1995-05-20', 'Female', 'tranthib@example.com', 'tranthib', 'user2', 'ehem', 'Admin', 1),

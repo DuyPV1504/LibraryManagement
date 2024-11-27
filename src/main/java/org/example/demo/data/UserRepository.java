@@ -1,5 +1,6 @@
 package org.example.demo.data;
 
+import models.Comment;
 import models.Loan;
 import models.User;
 import models.Book;
@@ -112,6 +113,29 @@ public class UserRepository extends BaseRepository {
         return loanList;
     }
 
+    public List<Comment> getCommentByIdBook(int idBook) {
+        String query = "SELECT * FROM Loans WHERE userAccount = ?";
+        List<Comment> commentList = new ArrayList<>();
+
+        try (Connection connection = connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, String.valueOf(idBook));
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Comment loan = new Comment(
+                        resultSet.getInt("book_id"),
+                        resultSet.getString("comment"),
+                        resultSet.getString("userAccount")
+                );
+                commentList.add(loan);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return commentList;
+    }
+
     public List<Loan> searchTransactions(Integer transactionId, String userAccount, Integer bookId, LocalDate borrowDate,
                                          LocalDate returnDate, Loan.LoanStatus status) {
         String query = "SELECT * FROM Loans WHERE " +
@@ -157,5 +181,4 @@ public class UserRepository extends BaseRepository {
         }
         return loanList;
     }
-
 }

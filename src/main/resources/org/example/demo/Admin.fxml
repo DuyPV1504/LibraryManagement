@@ -79,22 +79,22 @@
                         <TextField fx:id="genderInuser" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="emailInUser" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="accountNameInUser" layoutX="660.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Button fx:id="searchUserButton" layoutX="75.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
+                        <Button fx:id="searchUserButton" layoutX="219.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="addUserButton" layoutX="295.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm người dùng" textFill="WHITE">
+                        <Button fx:id="addUserButton" layoutX="411.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm người dùng" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="editInforButton" layoutX="515.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditInforButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa thông tin" textFill="WHITE">
+                        <Button fx:id="editInforButton" layoutX="585.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditInforButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa thông tin" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="deleteUserButton" layoutX="735.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa người dùng" textFill="WHITE">
+                        <Button fx:id="deleteUserButton" layoutX="773.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteUserButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa người dùng" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -113,6 +113,11 @@
                               <TableColumn fx:id="warningColum" prefWidth="89.60003662109375" text="Cảnh cáo" />
                            </columns>
                         </TableView>
+                        <Button fx:id="select" layoutX="40.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSelectUserButton" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Chọn" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </content>
@@ -163,22 +168,22 @@
                         <TextField fx:id="publishedYearTextField" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="availableBooksInBookManage" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="totalInBookManage" layoutX="660.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Button fx:id="addBookButton" layoutX="295.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm sách" textFill="WHITE">
+                        <Button fx:id="addBookButton" layoutX="405.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm sách" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="editBookButton" layoutX="515.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa thông tin" textFill="#fffefe">
+                        <Button fx:id="editBookButton" layoutX="610.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa thông tin" textFill="#fffefe">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="deleteBookButton" layoutX="735.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa sách" textFill="#fffbfb">
+                        <Button fx:id="deleteBookButton" layoutX="789.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa sách" textFill="#fffbfb">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="searchBookButton" layoutX="75.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
+                        <Button fx:id="searchBookButton" layoutX="209.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchBookButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -194,6 +199,11 @@
                               <TableColumn fx:id="totalBooksInBookManageColum" minWidth="70.0" text="Tổng số sách" />
                            </columns>
                         </TableView>
+                        <Button fx:id="selectBook" layoutX="29.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSelectBook" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Chọn" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </content>
@@ -238,22 +248,22 @@
                         <TextField fx:id="borrowDateTextField" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="endDateTextField" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="statusTextField" layoutX="660.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Button fx:id="searchTransactionButton" layoutX="75.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
+                        <Button fx:id="searchTransactionButton" layoutX="180.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="editTransactionButton" layoutX="295.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa giao dịch" textFill="WHITE">
+                        <Button fx:id="editTransactionButton" layoutX="385.0" layoutY="140.0" mnemonicParsing="false" onAction="#onEditTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Sửa giao dịch" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="deleteTransaction" layoutX="515.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteTransactionButtonCLick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa giao dịch" textAlignment="CENTER" textFill="WHITE">
+                        <Button fx:id="deleteTransaction" layoutX="609.0" layoutY="140.0" mnemonicParsing="false" onAction="#onDeleteTransactionButtonCLick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Xóa giao dịch" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="addTransaction" layoutX="735.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm giao dịch" textFill="WHITE">
+                        <Button fx:id="addTransaction" layoutX="789.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddTransactionButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm giao dịch" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -269,6 +279,11 @@
                               <TableColumn fx:id="statusColum" prefWidth="150.0" text="Tình trạng" />
                            </columns>
                         </TableView>
+                        <Button fx:id="selectTrans" layoutX="7.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSelectTrans" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Chọn" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children></AnchorPane>
                </content>
             </Tab>

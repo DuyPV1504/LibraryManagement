@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.Book;
+import models.Comment;
 import models.Loan;
 import models.User;
 import org.example.demo.GiaoDienChung;
@@ -25,10 +26,7 @@ import org.example.demo.service.LoanService;
 import org.example.demo.service.UserService;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -39,8 +37,11 @@ public class UserController extends GiaoDienChung {
     private final UserService userService = new UserService();
     private final LoanService loanService = new LoanService();
 
+
     public TableView<Loan> loanTableView;
     public TableView<Book> bookTableView;
+    public TableView commentTableView;
+
     @FXML
     public SplitMenuButton optionU;
     @FXML
@@ -113,9 +114,14 @@ public class UserController extends GiaoDienChung {
     public TextField publisherReviewField;
     public TextField publishedYearReviewField;
     public Button searchBookBorrow;
+    public TableColumn commentColumn;
+    public Button searchBookInComment;
+    public Button selectBook;
+    public TableColumn nameUser;
 
     private ObservableList<Loan> loanList = FXCollections.observableArrayList();
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
+    private ObservableList<Comment> commentsList = FXCollections.observableArrayList();
 
     public void initialize() {
 
@@ -154,9 +160,18 @@ public class UserController extends GiaoDienChung {
         bookTableView.refresh();
     }
 
+    private void refreshComment(){
+        int idBook = Integer.parseInt(bookIDInForTextField.getText());
+        List<Comment> coms = userService.getCommentByIdBook(idBook);
+        commentsList.clear();
+        commentsList.addAll(coms);
+        commentTableView.setItems(commentsList);
+        commentTableView.refresh();
+    }
+
     private void refreshLoanList() {
-        String currentUserAccount = SignUp.account; // Lấy tài khoản đăng nhập hiện tại
-        List<Loan> loans = userService.getTransactionsByUser(currentUserAccount); // Lấy giao dịch từ UserService
+        String currentUserAccount = SignUp.account;
+        List<Loan> loans = userService.getTransactionsByUser(currentUserAccount);
         loanList.clear();
         loanList.addAll(loans);
         loanTableView.setItems(loanList);
@@ -226,6 +241,36 @@ public class UserController extends GiaoDienChung {
     public void onBookInforButtonClick(Event event) {
     }
 
+    public void onSelectBookButton(ActionEvent actionEvent) {
+        Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
+        if (searchBook == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn sách");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn sách để sửa!");
+            alert.showAndWait();
+            return;
+        }
+        bookIDInForTextField.setText(String.valueOf(searchBook.getId()));
+        bookNameInForTextFiled.setText(searchBook.getBookName());
+        authorInForTextFiled.setText(searchBook.getAuthor());
+        publisherInForTextFiled.setText(searchBook.getPublisher());
+        publishedYearInForTextFiled.setText(String.valueOf(searchBook.getPublishYear()));
+
+        bookIDReviewField.setText(String.valueOf(searchBook.getId()));
+        bookNameReviewField.setText(searchBook.getBookName());
+        authorReviewField.setText(searchBook.getAuthor());
+        publisherReviewField.setText(searchBook.getPublisher());
+        publishedYearReviewField.setText(String.valueOf(searchBook.getPublishYear()));
+
+        refreshComment();
+
+        nameUser.setCellValueFactory(new PropertyValueFactory<>("userAccount"));
+        commentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
+
+        commentTableView.setItems(commentsList);
+    }
+
     public void onSearchBookUButtonClick(ActionEvent actionEvent) {
         String id = bookIDInForTextField.getText().trim();
         String bookName = bookNameInForTextFiled.getText().trim();
@@ -267,8 +312,24 @@ public class UserController extends GiaoDienChung {
 
     //nút tab
     public void onBorrowReturnUManageClick(Event event) {
-
     }
+
+    public boolean updateAvailableBooks(int bookId, int newAvailableBooks) {
+        String sql = "UPDATE Books SET availableBooks = ? WHERE id = ?";
+        try (Connection con = database.connectDB()) {
+            assert con != null;
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setInt(1, newAvailableBooks);
+                ps.setInt(2, bookId);
+                int rowsAffected = ps.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public void onBorrowButtonClick(ActionEvent actionEvent) throws SQLException {
         Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
@@ -286,12 +347,13 @@ public class UserController extends GiaoDienChung {
         publishedYearInForTextFiled.setText(searchBook.getPublisher());
         publisherInForTextFiled.setText(String.valueOf(searchBook.getPublishYear()));
         int avai = searchBook.getAvailableBooks();
+
         Alert alert;
-        if (avai == 0) {
+        if (avai <= 0) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Hết sách rồi!");
             alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn sách khác hoặc thử lại sau");
+            alert.setContentText("Vui lòng chọn sách khác hoặc thử lại sau.");
             alert.showAndWait();
             return;
         }
@@ -304,24 +366,37 @@ public class UserController extends GiaoDienChung {
                 borrowDate,
                 returnDate
         );
-        if(loanService.addTransaction(newLoan)) {
+
+        if (!updateAvailableBooks(searchBook.getId(), avai - 1)) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi hệ thống");
+            alert.setHeaderText(null);
+            alert.setContentText("Không thể cập nhật số lượng sách. Vui lòng thử lại.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (loanService.addTransaction(newLoan)) {
             alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thành công");
             alert.setHeaderText(null);
-            alert.setContentText("Hãy trả thư viện trong 5 ngày tới nhé");
+            alert.setContentText("Hãy trả sách trong 5 ngày tới nhé!");
             alert.showAndWait();
             searchBook.setAvailableBooks(avai - 1);
-
-        }else{
+            loanList.add(newLoan);
+            bookTableView.refresh();
+            loanTableView.refresh();
+        } else {
+            updateAvailableBooks(searchBook.getId(), avai);
             alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Test loi");
+            alert.setTitle("Lỗi giao dịch");
+            alert.setHeaderText(null);
+            alert.setContentText("Không thể hoàn tất giao dịch. Vui lòng thử lại.");
+            alert.showAndWait();
         }
-        loanList.add(newLoan);
-        bookTableView.refresh();
-        loanTableView.refresh();
     }
 
-    public void onReturnButtonClick(ActionEvent actionEvent)  {
+    public void onReturnButtonClick(ActionEvent actionEvent) {
         Loan selectedLoan = loanTableView.getSelectionModel().getSelectedItem();
         if (selectedLoan == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -331,22 +406,35 @@ public class UserController extends GiaoDienChung {
             alert.showAndWait();
             return;
         }
+
+        Book selectedBook = bookList.stream()
+                .filter(book -> book.getId() == selectedLoan.getBookId())
+                .findFirst()
+                .orElse(null);
+
+        if (selectedBook == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Không tìm thấy sách");
+            alert.setHeaderText(null);
+            alert.setContentText("Không tìm thấy sách trong danh sách. Vui lòng thử lại!");
+            alert.showAndWait();
+            return;
+        }
+        int currentAvailableBooks = selectedBook.getAvailableBooks();
         boolean success = loanService.deleteTransaction(selectedLoan.getTransactionId());
-        if (success) {
+
+        boolean update = updateAvailableBooks(selectedBook.getId(), currentAvailableBooks + 1);
+
+        if (success && update) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thành công");
             alert.setHeaderText(null);
-            alert.setContentText("Sách được trả lại!");
+            alert.setContentText("Sách được trả lại thành công!");
             alert.showAndWait();
-            selectedLoan.setReturnDate(LocalDate.now());
+
             loanList.remove(selectedLoan);
 
-            for (Book book : bookList) {
-                if (book.getId() == selectedLoan.getBookId()) {
-                    book.setAvailableBooks(book.getAvailableBooks() + 1);
-                    break;
-                }
-            }
+            selectedBook.setAvailableBooks(currentAvailableBooks + 1);
 
             loanTableView.refresh();
             bookTableView.refresh();
@@ -354,24 +442,206 @@ public class UserController extends GiaoDienChung {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Thất bại");
             alert.setHeaderText(null);
-            alert.setContentText("Không thể xóa giao dịch!");
+            alert.setContentText("Không thể trả sách. Vui lòng thử lại!");
             alert.showAndWait();
         }
-
 
     }
 
     //nút tab
-    public void onBookReviewClick(Event event) {
+    public void onBookReviewClick(Event event) throws SQLException {
+        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+        if (selectedBook == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn sách");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn sách để xem bình luận!");
+            alert.showAndWait();
+            return;
+        }
+
+        int bookId = selectedBook.getId();
+        String query = "SELECT comment,userName FROM Comments WHERE bookId = ?;";
+        connection = database.connectDB();
+        assert connection != null;
+        preparedStatement = connection.prepareStatement(query);
+
+        preparedStatement.setInt(1, bookId);
+
+        resultSet = preparedStatement.executeQuery();
+        commentTableView.getItems().clear();
+        while (resultSet.next()) {
+
+            String userName = resultSet.getString("userName");
+            String content = resultSet.getString("comment");
+            Comment comment = new Comment(bookId, content,userName);
+
+            commentTableView.getItems().add(comment);
+        }
+        if (commentTableView.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Không có bình luận");
+            alert.setHeaderText(null);
+            alert.setContentText("Không tìm thấy bình luận nào cho sách này!");
+            alert.showAndWait();
+        }
+        commentTableView.refresh();
+
     }
 
-    public void onAddCommentButtonClick(ActionEvent actionEvent) {
+    public void onAddCommentButtonClick(ActionEvent actionEvent) throws SQLException {
+        Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
+        if (searchBook == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn sách");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn sách để bình luận!");
+            alert.showAndWait();
+            return;
+        }
+
+        String comment = comments.getText().trim();
+        if (comment.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Thiếu thông tin");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng nhập bình luận trước khi thêm!");
+            alert.showAndWait();
+            return;
+        }
+
+        String query = "INSERT INTO Comments (bookId, comment,userName) VALUES (?, ?,?)";
+        connection = database.connectDB();
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, searchBook.getId());
+        preparedStatement.setString(2, comment);
+        preparedStatement.setString(3,SignUp.nameString);
+
+        int rowsAffected = preparedStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thành công");
+            alert.setHeaderText(null);
+            alert.setContentText("Bình luận đã được thêm thành công!");
+            alert.showAndWait();
+
+            comments.clear();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Lỗi ở đâu đó trong hàm addComments");
+            alert.showAndWait();
+        }
+        Comment cmt = new Comment(searchBook.getId(), comment, SignUp.nameString);
+        commentsList.add(cmt);
+        commentTableView.setItems(commentsList);
+        commentTableView.refresh();
+
+    }
+
+    public boolean updateCom(Comment comment) {
+        try {
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void onEditCommentButtonClick(ActionEvent actionEvent) {
+        Comment searchCom = (Comment) commentTableView.getSelectionModel().getSelectedItem();
+        if (searchCom == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn Comment");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn Comment để sửa!");
+            alert.showAndWait();
+            return;
+        }
+        //sua
+        try {
+
+            String comment = comments.getText().trim();
+
+            if (comment.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Lỗi comment");
+                alert.setHeaderText(null);
+                alert.setContentText("Vui lòng không để trống Comment");
+                alert.showAndWait();
+                return;
+            }
+
+            boolean checkTrung = !Objects.equals(searchCom.getContent(), comment);
+
+            if (!checkTrung) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Không có thay đổi");
+                alert.setHeaderText(null);
+                alert.setContentText("Không có Comment nào được thay đổi.");
+                alert.showAndWait();
+                return;
+            }
+
+            searchCom.setContent(comment);
+
+            boolean success = updateCom(searchCom);
+
+            Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+            alert.setTitle("Cập nhật thông tin");
+            alert.setHeaderText(null);
+            alert.setContentText(success ? "Cập nhật thông tin Comment thành công!"
+                    : "Cập nhật thông tin giao dịch thất bại!");
+            alert.showAndWait();
+
+            searchCom.setContent(comment);
+            commentTableView.refresh();
+        } catch (Exception ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
+            alert.showAndWait();
+        }
     }
 
     public void onDeleteCommentButtonClick(ActionEvent actionEvent) {
+        Comment selectedComt = (Comment) commentTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedComt == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Thiếu lựa chọn");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn giao dịch để xóa!");
+            alert.showAndWait();
+            return;
+        }
+
+        if(!SignUp.nameString.equals(selectedComt.getUserAccount())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi xóa comment người khác");
+            alert.setHeaderText(null);
+            alert.setContentText("Bạn không có quyền xóa comment người khác");
+        }
+
+        boolean success = userService.deleteComment(selectedComt.getContent(),selectedComt.getUserAccount());
+        if (success) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thành công");
+            alert.setHeaderText(null);
+            alert.setContentText("Comment đã được xóa thành công!");
+            alert.showAndWait();
+            commentsList.remove(selectedComt);
+            commentTableView.setItems(commentsList);
+            commentTableView.refresh();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Thất bại");
+            alert.setHeaderText(null);
+            alert.setContentText("Không thể xóa Comment!");
+            alert.showAndWait();
+        }
     }
 
 
@@ -411,4 +681,5 @@ public class UserController extends GiaoDienChung {
         loanTableView.setItems(loanList);
         loanTableView.refresh();
     }
+
 }

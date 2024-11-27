@@ -54,6 +54,9 @@ public class AdminController extends GiaoDienChung {
     public TextField borrowDateTextField;
     public TextField statusTextField;
     public TextField endDateTextField;
+    public Button select;
+    public Button selectBook;
+    public Button selectTrans;
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
@@ -189,7 +192,6 @@ public class AdminController extends GiaoDienChung {
         availableBooksInBookManageColum.setCellValueFactory(new PropertyValueFactory<>("availableBooks"));
         totalBooksInBookManageColum.setCellValueFactory(new PropertyValueFactory<>("totalBooks"));
 
-
         transaction_idColum.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
         userAccountColum.setCellValueFactory(new PropertyValueFactory<>("userAccount"));
         book_idColum.setCellValueFactory(new PropertyValueFactory<>("bookId"));
@@ -264,7 +266,7 @@ public class AdminController extends GiaoDienChung {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/signUp.fxml"));
                     Parent root = loader.load();
-                    Stage stage =(Stage) logOut.getParentPopup().getOwnerWindow();
+                    Stage stage = (Stage) logOut.getParentPopup().getOwnerWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
@@ -419,9 +421,8 @@ public class AdminController extends GiaoDienChung {
         return true;
     }
 
-
-    public void onEditInforButtonClick(ActionEvent actionEvent) {
-        User searchUser=userTableView.getSelectionModel().getSelectedItem();
+    public void onSelectUserButton(ActionEvent actionEvent) {
+        User searchUser = userTableView.getSelectionModel().getSelectedItem();
         if (searchUser == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Chưa chọn người dùng");
@@ -437,56 +438,74 @@ public class AdminController extends GiaoDienChung {
         genderInuser.setText(searchUser.getGender());
         emailInUser.setText(searchUser.getEmail());
         accountNameInUser.setText(searchUser.getUserAccount());
+    }
 
-        editInforButton.setOnAction(e -> {
-            try {
-                int id = Integer.parseInt(userID.getText().trim());
-                String surname = userSurname.getText().trim();
-                String lastname = lastName.getText().trim();
-                LocalDate dateOfBirth = LocalDate.parse(dateOfBirthInUserMana.getText().trim());
-                String gender = genderInuser.getText().trim();
-                String email = emailInUser.getText().trim();
-                String userAccount = accountNameInUser.getText().trim();
+    public void onEditInforButtonClick(ActionEvent actionEvent) {
+        User searchUser = userTableView.getSelectionModel().getSelectedItem();
+        if (searchUser == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn người dùng");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn một người dùng để chỉnh sửa!");
+            alert.showAndWait();
+            return;
+        }
+        try {
+            int id = Integer.parseInt(userID.getText().trim());
+            String surname = userSurname.getText().trim();
+            String lastname = lastName.getText().trim();
+            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthInUserMana.getText().trim());
+            String gender = genderInuser.getText().trim();
+            String email = emailInUser.getText().trim();
+            String userAccount = accountNameInUser.getText().trim();
 
-                boolean checkTrung = !searchUser.getSurname().equals(surname) ||
-                        !searchUser.getLastname().equals(lastname) ||
-                        !searchUser.getDateOfBirth().equals(dateOfBirth) ||
-                        !searchUser.getGender().equals(gender) ||
-                        !searchUser.getEmail().equals(email) ||
-                        !searchUser.getUserAccount().equals(userAccount);
-
-                if (!checkTrung) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Không có thay đổi");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Không có thông tin nào được thay đổi.");
-                    alert.showAndWait();
-                    return;
-                }
-
-                searchUser.setSurname(surname);
-                searchUser.setLastname(lastname);
-                searchUser.setDateOfBirth(dateOfBirth);
-                searchUser.setGender(gender);
-                searchUser.setEmail(email);
-                searchUser.setUserAccount(userAccount);
-
-                boolean success = adminService.updateUser(searchUser);
-
-                Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
-                alert.setTitle("Cập nhật thông tin");
-                alert.setHeaderText(null);
-                alert.setContentText(success ? "Cập nhật thông tin người dùng thành công!" : "Cập nhật thông tin người dùng thất bại!");
-                alert.showAndWait();
-                userTableView.refresh();
-            } catch (Exception ex) {
+            if (id != searchUser.getId()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Lỗi");
+                alert.setTitle("Lỗi đổi id người dùng");
                 alert.setHeaderText(null);
-                alert.setContentText("Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
+                alert.setContentText("ID người dùng được tạo tự động vui lòng không đổi");
                 alert.showAndWait();
             }
-        });
+
+            boolean checkTrung = !searchUser.getSurname().equals(surname) ||
+                    !searchUser.getLastname().equals(lastname) ||
+                    !searchUser.getDateOfBirth().equals(dateOfBirth) ||
+                    !searchUser.getGender().equals(gender) ||
+                    !searchUser.getEmail().equals(email) ||
+                    !searchUser.getUserAccount().equals(userAccount);
+
+            if (!checkTrung) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Không có thay đổi");
+                alert.setHeaderText(null);
+                alert.setContentText("Không có thông tin nào được thay đổi.");
+                alert.showAndWait();
+                return;
+            }
+
+            searchUser.setSurname(surname);
+            searchUser.setLastname(lastname);
+            searchUser.setDateOfBirth(dateOfBirth);
+            searchUser.setGender(gender);
+            searchUser.setEmail(email);
+            searchUser.setUserAccount(userAccount);
+
+            boolean success = adminService.updateUser(searchUser);
+
+            Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+            alert.setTitle("Cập nhật thông tin");
+            alert.setHeaderText(null);
+            alert.setContentText(success ? "Cập nhật thông tin người dùng thành công!" : "Cập nhật thông tin người dùng thất bại!");
+            alert.showAndWait();
+            userTableView.refresh();
+        } catch (Exception ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
+            alert.showAndWait();
+        }
+        ;
     }
 
     public void onDeleteUserButtonClick(ActionEvent actionEvent) {
@@ -590,11 +609,9 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
-
-
-    public void onEditBookButtonClick(ActionEvent actionEvent) {
-        Book searchBook=bookTableView.getSelectionModel().getSelectedItem();
-        if(searchBook==null) {
+    public void onSelectBook(ActionEvent actionEvent) {
+        Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
+        if (searchBook == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Chưa chọn sách");
             alert.setHeaderText(null);
@@ -609,61 +626,81 @@ public class AdminController extends GiaoDienChung {
         publishedYearTextField.setText(String.valueOf(searchBook.getPublishYear()));
         availableBooksInBookManage.setText(String.valueOf(searchBook.getAvailableBooks()));
         totalInBookManage.setText(String.valueOf(searchBook.getTotalBooks()));
+    }
 
 
-        editBookButton.setOnAction(e -> {
-            try {
-                int id = Integer.parseInt(bookIDTextField.getText().trim());
-                String bookString = bookNameTextField.getText().trim();
-                String authorString = authorTextField.getText().trim();
-                String publisherString = publisherTextField.getText().trim();
-                int publishedYear = Integer.parseInt(publishedYearTextField.getText().trim());
-                int availableBooksInBookManageInt = Integer.parseInt(availableBooksInBookManage.getText().trim());
-                int totalInBookManageInt = Integer.parseInt(totalInBookManage.getText().trim());
+    public void onEditBookButtonClick(ActionEvent actionEvent) {
+        Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
+        if (searchBook == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn sách");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn sách để sửa!");
+            alert.showAndWait();
+            return;
+        }
 
-                boolean checkTrung = !(searchBook.getId()==id) ||
-                        !searchBook.getBookName().equals(bookString)||
-                        !searchBook.getAuthor().equals(authorString)||
-                        !searchBook.getPublisher().equals(publisherString)||
-                        !(searchBook.getPublishYear()==publishedYear)||
-                        searchBook.getAvailableBooks() != availableBooksInBookManageInt ||
-                        searchBook.getTotalBooks() != totalInBookManageInt;
 
-                if (!checkTrung) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Không có thay đổi");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Không có thông tin nào được thay đổi.");
-                    alert.showAndWait();
-                    return;
-                }
+        try {
+            int id = Integer.parseInt(bookIDTextField.getText().trim());
+            String bookString = bookNameTextField.getText().trim();
+            String authorString = authorTextField.getText().trim();
+            String publisherString = publisherTextField.getText().trim();
+            int publishedYear = Integer.parseInt(publishedYearTextField.getText().trim());
+            int availableBooksInBookManageInt = Integer.parseInt(availableBooksInBookManage.getText().trim());
+            int totalInBookManageInt = Integer.parseInt(totalInBookManage.getText().trim());
 
-                searchBook.setId(id);
-                searchBook.setBookName(bookString);
-                searchBook.setAuthor(authorString);
-                searchBook.setPublisher(publisherString);
-                searchBook.setPublishYear(publishedYear);
-                searchBook.setAvailableBooks(availableBooksInBookManageInt);
-                searchBook.setTotalBooks(totalInBookManageInt);
-
-                boolean success = bookService.updateBook(searchBook);
-
-                Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
-                alert.setTitle("Cập nhật thông tin");
-                alert.setHeaderText(null);
-                alert.setContentText(success ? "Cập nhật thông tin sách thành công!"
-                        : "Cập nhật thông tin sách thất bại!");
-                alert.showAndWait();
-
-                bookTableView.refresh();
-            } catch (Exception ex) {
+            if (!(searchBook.getId() == id)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Lỗi");
+                alert.setTitle("Lỗi đổi id book");
                 alert.setHeaderText(null);
-                alert.setContentText("Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
+                alert.setContentText("ID sách được tạo tự động vui lòng không đổi");
                 alert.showAndWait();
+                return;
             }
-        });
+
+            boolean checkTrung = !(searchBook.getId() == id) ||
+                    !searchBook.getBookName().equals(bookString) ||
+                    !searchBook.getAuthor().equals(authorString) ||
+                    !searchBook.getPublisher().equals(publisherString) ||
+                    !(searchBook.getPublishYear() == publishedYear) ||
+                    searchBook.getAvailableBooks() != availableBooksInBookManageInt ||
+                    searchBook.getTotalBooks() != totalInBookManageInt;
+
+            if (!checkTrung) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Không có thay đổi");
+                alert.setHeaderText(null);
+                alert.setContentText("Không có thông tin nào được thay đổi.");
+                alert.showAndWait();
+                return;
+            }
+
+            searchBook.setBookName(bookString);
+            searchBook.setAuthor(authorString);
+            searchBook.setPublisher(publisherString);
+            searchBook.setPublishYear(publishedYear);
+            searchBook.setAvailableBooks(availableBooksInBookManageInt);
+            searchBook.setTotalBooks(totalInBookManageInt);
+
+            boolean success = bookService.updateBook(searchBook);
+
+            Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+            alert.setTitle("Cập nhật thông tin");
+            alert.setHeaderText(null);
+            alert.setContentText(success ? "Cập nhật thông tin sách thành công!"
+                    : "Cập nhật thông tin sách thất bại!");
+            alert.showAndWait();
+
+            bookTableView.refresh();
+        } catch (Exception ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
+            alert.showAndWait();
+        }
+        ;
     }
 
     public void onDeleteBookButtonClick(ActionEvent actionEvent) {
@@ -786,10 +823,9 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
-
-    public void onEditTransactionButtonClick(ActionEvent actionEvent) {
-        Loan searchLoan =loanTableView.getSelectionModel().getSelectedItem();
-        if(searchLoan==null) {
+    public void onSelectTrans(ActionEvent actionEvent) {
+        Loan searchLoan = loanTableView.getSelectionModel().getSelectedItem();
+        if (searchLoan == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Chưa chọn giao dịch");
             alert.setHeaderText(null);
@@ -805,55 +841,67 @@ public class AdminController extends GiaoDienChung {
         endDateTextField.setText(String.valueOf(searchLoan.getEndDate()));
         statusTextField.setText(String.valueOf(searchLoan.getStatus()));
 
-        editTransactionButton.setOnAction(e -> {
-            try {
-                int transactionId = Integer.parseInt(transactionIDTextField.getText().trim());
-                String userAccount = userAccountTextField.getText().trim();
-                int bookId = Integer.parseInt(bookIDInBorrowTextField.getText().trim());
-                LocalDate borrowDate = LocalDate.parse(borrowDateTextField.getText().trim());
-                LocalDate endDate = LocalDate.parse(endDateTextField.getText().trim());
-                String status = statusTextField.getText().trim();
+    }
 
-                boolean checkTrung = searchLoan.getTransactionId() != transactionId ||
-                        !Objects.equals(searchLoan.getUserAccount(), userAccount) ||
-                        searchLoan.getBookId() != bookId ||
-                        !Objects.equals(searchLoan.getBorrowDate(), borrowDate) ||
-                        !Objects.equals(searchLoan.getEndDate(), endDate) ||
-                        !Objects.equals(searchLoan.getStatus(), status);;
+    public void onEditTransactionButtonClick(ActionEvent actionEvent) {
+        Loan searchLoan = loanTableView.getSelectionModel().getSelectedItem();
+        if (searchLoan == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Chưa chọn giao dịch");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn giao dịch để sửa!");
+            alert.showAndWait();
+            return;
+        }
+        try {
+            int transactionId = Integer.parseInt(transactionIDTextField.getText().trim());
+            String userAccount = userAccountTextField.getText().trim();
+            int bookId = Integer.parseInt(bookIDInBorrowTextField.getText().trim());
+            LocalDate borrowDate = LocalDate.parse(borrowDateTextField.getText().trim());
+            LocalDate endDate = LocalDate.parse(endDateTextField.getText().trim());
+            String status = statusTextField.getText().trim();
 
-                if (!checkTrung) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Không có thay đổi");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Không có thông tin nào được thay đổi.");
-                    alert.showAndWait();
-                    return;
-                }
+            boolean checkTrung = searchLoan.getTransactionId() != transactionId ||
+                    !Objects.equals(searchLoan.getUserAccount(), userAccount) ||
+                    searchLoan.getBookId() != bookId ||
+                    !Objects.equals(searchLoan.getBorrowDate(), borrowDate) ||
+                    !Objects.equals(searchLoan.getEndDate(), endDate) ||
+                    !Objects.equals(searchLoan.getStatus(), status);
+            ;
 
-                searchLoan.setTransactionId(transactionId);
-                searchLoan.setUserAccount(userAccount);
-                searchLoan.setBookId(bookId);
-                searchLoan.setBorrowDate(borrowDate);
-                searchLoan.setEndDate(endDate);
-
-                boolean success = loanService.updateTransaction(searchLoan);
-
-                Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
-                alert.setTitle("Cập nhật thông tin");
+            if (!checkTrung) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Không có thay đổi");
                 alert.setHeaderText(null);
-                alert.setContentText(success ? "Cập nhật thông tin gaio dịch thành công!"
-                        : "Cập nhật thông tin giao dịch thất bại!");
+                alert.setContentText("Không có thông tin nào được thay đổi.");
                 alert.showAndWait();
-
-                loanTableView.refresh();
-            } catch (Exception ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Lỗi");
-                alert.setHeaderText(null);
-                alert.setContentText("Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
-                alert.showAndWait();
+                return;
             }
-        });
+
+            searchLoan.setTransactionId(transactionId);
+            searchLoan.setUserAccount(userAccount);
+            searchLoan.setBookId(bookId);
+            searchLoan.setBorrowDate(borrowDate);
+            searchLoan.setEndDate(endDate);
+
+            boolean success = loanService.updateTransaction(searchLoan);
+
+            Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+            alert.setTitle("Cập nhật thông tin");
+            alert.setHeaderText(null);
+            alert.setContentText(success ? "Cập nhật thông tin gaio dịch thành công!"
+                    : "Cập nhật thông tin giao dịch thất bại!");
+            alert.showAndWait();
+
+            loanTableView.refresh();
+        } catch (Exception ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
+            alert.showAndWait();
+        }
+        ;
     }
 
     public void onAddTransactionButtonClick(ActionEvent actionEvent) {
@@ -955,12 +1003,13 @@ public class AdminController extends GiaoDienChung {
     }
 
     public void onVolumeClick(ActionEvent actionEvent) {
-        if(HelloApplication.isMusic()){
+        if (HelloApplication.isMusic()) {
             HelloApplication.getMediaPlayer().pause();
             HelloApplication.setMusic(false);
-        }else{
+        } else {
             HelloApplication.getMediaPlayer().play();
             HelloApplication.setMusic(true);
         }
     }
+
 }
