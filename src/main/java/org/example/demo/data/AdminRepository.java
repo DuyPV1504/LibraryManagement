@@ -15,6 +15,25 @@ import static org.example.demo.database.connectDB;
 
 public class AdminRepository extends BaseRepository {
 
+    public void updateUserRoleToAdmin(int userId) {
+        String query = "UPDATE Users SET roles = 'Admin' WHERE id = ?";
+
+        try (Connection connection = connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("User role updated to Admin successfully!");
+            } else {
+                System.out.println("No user found with the given ID.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<User> getAllUsers() {
         String query = "SELECT * FROM Users";
         List<User> users = new ArrayList<>();

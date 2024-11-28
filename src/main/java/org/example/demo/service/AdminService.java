@@ -9,6 +9,11 @@ import java.util.List;
 
 public class AdminService {
     private final AdminRepository adminRepository = new AdminRepository();
+
+    public void updateRoleToAdmin(int userId) {
+        adminRepository.updateUserRoleToAdmin(userId);
+    }
+
     public List<User> searchUser(String id, String surname, String lastname, String dateOfBirth, String gender, String email, String userAccount) {
         return adminRepository.searchUserByKeyword(id, surname, lastname, dateOfBirth, gender, email, userAccount);
     }

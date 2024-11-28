@@ -389,94 +389,24 @@ public class AdminController extends GiaoDienChung {
 
 
     public void onAddUserButtonClick(ActionEvent actionEvent) {
-        if (!validateUserInput()) {
-            return;
-        }
+        User selectedUser = userTableView.getSelectionModel().getSelectedItem();
 
-        try {
-            int id = Integer.parseInt(userID.getText().trim());
-            String surname = userSurname.getText().trim();
-            String lastname = lastName.getText().trim();
-            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthInUserMana.getText().trim());
-            String gender = genderInuser.getText().trim();
-            String email = emailInUser.getText().trim();
-            String userName = accountNameInUser.getText().trim();
-            String userAccount = accountNameInUser.getText().trim();
-            String roles = rolesInUser.getText().trim();
-            int warning = Integer.parseInt(warningInUser.getText().trim());
+        if (selectedUser != null) {
+            int userId = selectedUser.getId();
+            adminService.updateRoleToAdmin(userId);
 
-            User newUser = new User(id, surname, lastname, dateOfBirth, gender, email, userName, userAccount, roles, warning);
-            boolean success = adminService.addUser(newUser);
-
-            Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
-            alert.setTitle("Thêm người dùng");
-            alert.setHeaderText(null);
-            alert.setContentText(success ? "Người dùng đã được thêm thành công!" : "Thêm người dùng thất bại!");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("User role updated");
+            alert.setContentText("The selected user has been successfully updated to Admin.");
             alert.showAndWait();
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi định dạng ngày");
-            alert.setHeaderText(null);
-            alert.setContentText("Ngày sinh không đúng định dạng. Vui lòng nhập đúng định dạng yyyy-MM-dd!");
-            alert.showAndWait();
-        }
-    }
-
-    public boolean validateUserInput() {
-        String id = userID.getText().trim();
-        String surname = userSurname.getText().trim();
-        String lastname = lastName.getText().trim();
-        String dateOfBirthString = dateOfBirthInUserMana.getText().trim();
-        String gender = genderInuser.getText().trim();
-        String email = emailInUser.getText().trim();
-        String userName = accountNameInUser.getText().trim();
-        String roles = rolesInUser.getText().trim();
-        String warningString = warningInUser.getText().trim();
-
-        if (id.isEmpty() || surname.isEmpty() || lastname.isEmpty() || dateOfBirthString.isEmpty() ||
-                gender.isEmpty() || email.isEmpty() || userName.isEmpty() || roles.isEmpty()) {
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Thiếu thông tin");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng điền đầy đủ thông tin!");
+            alert.setTitle("Error");
+            alert.setHeaderText("No user selected");
+            alert.setContentText("Please select a user to update.");
             alert.showAndWait();
-            return false;
         }
-
-        try {
-            LocalDate.parse(dateOfBirthString);
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi định dạng ngày");
-            alert.setHeaderText(null);
-            alert.setContentText("Ngày sinh không đúng định dạng. Vui lòng nhập đúng định dạng yyyy-MM-dd!");
-            alert.showAndWait();
-            return false;
-        }
-
-        if (!warningString.isEmpty()) {
-            try {
-                Integer.parseInt(warningString);
-            } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Lỗi định dạng cảnh báo");
-                alert.setHeaderText(null);
-                alert.setContentText("Giá trị cảnh báo không hợp lệ. Vui lòng nhập số nguyên!");
-                alert.showAndWait();
-                return false;
-            }
-        }
-
-        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi định dạng email");
-            alert.setHeaderText(null);
-            alert.setContentText("Địa chỉ email không hợp lệ. Vui lòng nhập lại!");
-            alert.showAndWait();
-            return false;
-        }
-
-        return true;
     }
 
     public void onSelectUserButton(ActionEvent actionEvent) {
