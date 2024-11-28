@@ -63,7 +63,6 @@ public class AdminRepository extends BaseRepository {
         return users;
     }
 
-
     public List<User> searchUserByKeyword(String id, String surname, String lastname, String dateOfBirth, String gender, String email, String userAccount) {
         String query = "SELECT * FROM Users WHERE " +
                 "(? IS NULL OR id = ?) AND " +
@@ -82,17 +81,18 @@ public class AdminRepository extends BaseRepository {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, id);
             preparedStatement.setString(3, surname);
-            preparedStatement.setString(4, "%" + surname + "%");
+            preparedStatement.setString(4, surname != null ? "%" + surname.toLowerCase() + "%" : null);
             preparedStatement.setString(5, lastname);
-            preparedStatement.setString(6, "%" + lastname + "%");
+            preparedStatement.setString(6, lastname != null ? "%" + lastname.toLowerCase() + "%" : null);
             preparedStatement.setString(7, dateOfBirth);
             preparedStatement.setString(8, dateOfBirth);
             preparedStatement.setString(9, gender);
             preparedStatement.setString(10, gender);
             preparedStatement.setString(11, email);
-            preparedStatement.setString(12, "%" + email + "%");
+            preparedStatement.setString(12, email != null ? "%" + email.toLowerCase() + "%" : null);
             preparedStatement.setString(13, userAccount);
-            preparedStatement.setString(14, "%" + userAccount + "%");
+            preparedStatement.setString(14, userAccount != null ? "%" + userAccount.toLowerCase() + "%" : null);
+
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -116,6 +116,7 @@ public class AdminRepository extends BaseRepository {
         }
         return userList;
     }
+
 
     public boolean addUser(User user) {
         String query = "INSERT INTO Users (surname, lastname, dateOfBirth, gender, email, userName, userAccount, roles, warning) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -331,11 +332,10 @@ public class AdminRepository extends BaseRepository {
         return 0;
     }
 
-
     public List<Loan> searchTransactionByKeyword(String transactionId, String userAccount, String bookId, String borrowDate, String endDate, String status) {
         String query = "SELECT * FROM Loans WHERE " +
                 "(? IS NULL OR transaction_id = ?) AND " +
-                "(? IS NULL OR userAccount = ?) AND " +
+                "(? IS NULL OR userAccount LIKE ?) AND " +
                 "(? IS NULL OR book_id = ?) AND " +
                 "(? IS NULL OR borrowDate = ?) AND " +
                 "(? IS NULL OR endDate = ?) AND " +
@@ -349,7 +349,7 @@ public class AdminRepository extends BaseRepository {
             preparedStatement.setString(1, transactionId);
             preparedStatement.setString(2, transactionId);
             preparedStatement.setString(3, userAccount);
-            preparedStatement.setString(4, userAccount);
+            preparedStatement.setString(4, userAccount != null ? "%" + userAccount + "%" : null);
             preparedStatement.setString(5, bookId);
             preparedStatement.setString(6, bookId);
             preparedStatement.setString(7, borrowDate);

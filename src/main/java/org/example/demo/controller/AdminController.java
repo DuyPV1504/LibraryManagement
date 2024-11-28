@@ -179,6 +179,32 @@ public class AdminController extends GiaoDienChung {
         refreshLoanList();
         refreshUserList();
 
+        // cho user
+
+        userID.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchUserDynamic();
+        });
+        userSurname.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchUserDynamic();
+        });
+        lastName.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchUserDynamic();
+        });
+        dateOfBirthInUserMana.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchUserDynamic();
+        });
+        genderInuser.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchUserDynamic();
+        });
+        emailInUser.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchUserDynamic();
+        });
+        userAccountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchUserDynamic();
+        });
+
+        // cho book
+
         bookIDTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchBooksDynamic();
         });
@@ -199,6 +225,27 @@ public class AdminController extends GiaoDienChung {
         });
         totalInBookManage.textProperty().addListener((observable, oldValue, newValue) -> {
             searchBooksDynamic();
+        });
+
+        // cho giao dịch
+
+        transactionIDTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchTransactionDynamic();
+        });
+        userAccountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchTransactionDynamic();
+        });
+        bookIDInBorrowTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchTransactionDynamic();
+        });
+        borrowDateTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchTransactionDynamic();
+        });
+        endDateTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchTransactionDynamic();
+        });
+        statusTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchTransactionDynamic();
         });
 
         idUserColum.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -233,6 +280,36 @@ public class AdminController extends GiaoDienChung {
         loanTableView.setItems(loanList);
     }
 
+    private void searchUserDynamic() {
+        String id = userID.getText().trim();
+        String surname = userSurname.getText().trim();
+        String lastname = lastName.getText().trim();
+        String dateOfBirth = dateOfBirthInUserMana.getText().trim();
+        String gender = genderInuser.getText().trim();
+        String email = emailInUser.getText().trim();
+        String userAccount = userAccountTextField.getText().trim();
+
+        ArrayList<User> users = (ArrayList<User>) adminService.searchUser(
+                id.isEmpty() ? null : id,
+                surname.isEmpty() ? null : surname,
+                lastname.isEmpty() ? null : lastname,
+                dateOfBirth.isEmpty() ? null : dateOfBirth,
+                gender.isEmpty() ? null : gender,
+                email.isEmpty() ? null : email,
+                userAccount.isEmpty() ? null : userAccount
+        );
+
+        if (users.isEmpty()) {
+            userList.clear();
+            userTableView.setItems(userList);
+        } else {
+            userList.clear();
+            userList.addAll(users);
+            userTableView.setItems(userList);
+            userTableView.refresh();
+        }
+    }
+
     private void searchBooksDynamic() {
         String id = bookIDTextField.getText().trim();
         String bookName = bookNameTextField.getText().trim();
@@ -260,6 +337,34 @@ public class AdminController extends GiaoDienChung {
             bookList.addAll(books);
             bookTableView.setItems(bookList);
             bookTableView.refresh();
+        }
+    }
+
+    private void searchTransactionDynamic() {
+        String transactionId = transactionIDTextField.getText().trim();
+        String userAccount = userAccountTextField.getText().trim();
+        String bookId = bookIDInBorrowTextField.getText().trim();
+        String borrowDate = borrowDateTextField.getText().trim();
+        String endDate = endDateTextField.getText().trim();
+        String status = statusTextField.getText().trim();
+
+        List<Loan> transactions = adminService.searchTransaction(
+                transactionId.isEmpty() ? null : transactionId,
+                userAccount.isEmpty() ? null : userAccount,
+                bookId.isEmpty() ? null : bookId,
+                borrowDate.isEmpty() ? null : borrowDate,
+                endDate.isEmpty() ? null : endDate,
+                status.isEmpty() ? null : status
+        );
+
+        if (transactions.isEmpty()) {
+            loanList.clear();
+            loanTableView.setItems(loanList);
+        } else {
+            loanList.clear();
+            loanList.addAll(transactions);
+            loanTableView.setItems(loanList);
+            loanTableView.refresh();
         }
     }
 
@@ -647,7 +752,6 @@ public class AdminController extends GiaoDienChung {
 
     }
 
-
     public void onEditBookButtonClick(ActionEvent actionEvent) {
         Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
         if (searchBook == null) {
@@ -795,7 +899,6 @@ public class AdminController extends GiaoDienChung {
         }
 
     }
-
 
     public void onSearchBookButtonClick(ActionEvent actionEvent) {
         String id = bookIDTextField.getText().trim();
