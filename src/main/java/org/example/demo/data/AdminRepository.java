@@ -163,7 +163,7 @@ public class AdminRepository extends BaseRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
-            return preparedStatement.executeUpdate(); // Trả về số dòng bị xóa
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
@@ -219,7 +219,7 @@ public class AdminRepository extends BaseRepository {
             preparedStatement.setString(3, bookName);
             preparedStatement.setString(4, bookName != null ? bookName + "%" : null);
             preparedStatement.setString(5, publishedYear);
-            preparedStatement.setString(6, publishedYear);
+            preparedStatement.setString(6, publishedYear != null ? "%" + publishedYear + "%" : null);
             preparedStatement.setString(7, availableBooks);
             preparedStatement.setString(8, availableBooks);
             preparedStatement.setString(9, totalBooks);
@@ -248,6 +248,7 @@ public class AdminRepository extends BaseRepository {
         }
         return bookList;
     }
+
 
     public int addBook(Book book) {
         String query = "INSERT INTO Books (bookName, author, publisher, publishYear, availableBooks, totalBooks) " +

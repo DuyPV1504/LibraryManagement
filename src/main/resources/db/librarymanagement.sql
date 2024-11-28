@@ -39,14 +39,15 @@ CREATE TABLE IF NOT EXISTS Books
     publisher      VARCHAR(255),
     publishYear    year,
     availableBooks INT default 0,
-    totalBooks     INT DEFAULT 0
+    totalBooks     INT DEFAULT 0,
+    CONSTRAINT unique_book_author UNIQUE (bookName, author)
 );
 
 CREATE TABLE IF NOT EXISTS Loans
 (
     transaction_id int auto_increment PRIMARY KEY,
     userAccount    VARCHAR(50),
-    book_id        int ,
+    book_id        int,
     borrowDate     DATE        NOT NULL,
     endDate        DATE        NOT NULL,
     returnDate     DATE,
@@ -55,10 +56,22 @@ CREATE TABLE IF NOT EXISTS Loans
     FOREIGN KEY (book_id) REFERENCES Books (id) ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Images
+(
+    bookName VARCHAR(255) NOT NULL,
+    author   VARCHAR(255) NOT NULL,
+    urlImage VARCHAR(255),
+    CONSTRAINT fk_images_bookName_author
+        FOREIGN KEY (bookName, author)
+            REFERENCES Books (bookName, author)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS Comments
 (
-    bookId int,
-    comment varchar(2000),
+    bookId   int,
+    comment  varchar(2000),
     userName varchar(50),
     FOREIGN KEY (bookId) REFERENCES Books (id) ON UPDATE CASCADE,
     FOREIGN KEY (userName) REFERENCES Users (userName) ON UPDATE CASCADE
@@ -82,4 +95,3 @@ VALUES ('To Kill a Mockingbird', 'Harper Lee', 'J.B. Lippincott & Co.',
 INSERT INTO Loans (userAccount, book_id, borrowDate, endDate, returnDate, status)
 VALUES ('user1', 1, '2024-10-01', '2024-10-15', NULL, 'Borrowed'),
        ('user2', 2, '2024-10-05', '2024-10-20', NULL, 'Borrowed');
-

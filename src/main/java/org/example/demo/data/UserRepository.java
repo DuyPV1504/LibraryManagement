@@ -44,7 +44,7 @@ public class UserRepository extends BaseRepository {
 
     public List<Book> searchBookByKeyword(String id, String bookName, String publishedYear, String author, String publisher) {
         String query = "SELECT * FROM Books WHERE " +
-                "(? IS NULL OR id LIKE ?) AND " +
+                "(? IS NULL OR id = ?) AND " +
                 "(? IS NULL OR bookName LIKE ?) AND " +
                 "(? IS NULL OR publishYear LIKE ?) AND " +
                 "(? IS NULL OR author LIKE ?) AND " +
@@ -56,9 +56,9 @@ public class UserRepository extends BaseRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, id);
-            preparedStatement.setString(2, id != null ? "%" + id + "%" : null);
+            preparedStatement.setString(2, id);
             preparedStatement.setString(3, bookName);
-            preparedStatement.setString(4, bookName != null ? "%" + bookName + "%" : null);
+            preparedStatement.setString(4, bookName != null ? bookName + "%" : null);
             preparedStatement.setString(5, publishedYear);
             preparedStatement.setString(6, publishedYear != null ? "%" + publishedYear + "%" : null);
             preparedStatement.setString(7, author);

@@ -1,5 +1,6 @@
 package org.example.demo.controller;
 
+import API.RenImage;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import models.Book;
 import models.Comment;
@@ -22,14 +25,15 @@ import org.example.demo.SignUp;
 import org.example.demo.data.LoanRepository;
 import org.example.demo.database;
 import org.example.demo.service.AdminService;
+import org.example.demo.service.ImageService;
 import org.example.demo.service.LoanService;
 import org.example.demo.service.UserService;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +41,7 @@ public class UserController extends GiaoDienChung {
 
     private final UserService userService = new UserService();
     private final LoanService loanService = new LoanService();
+    private final ImageService imageService = new ImageService();
 
 
     public TableView<Loan> loanTableView;
@@ -119,6 +124,7 @@ public class UserController extends GiaoDienChung {
     public Button searchBookInComment;
     public Button selectBook;
     public TableColumn nameUser;
+    public ImageView renImageBook;
 
     private ObservableList<Loan> loanList = FXCollections.observableArrayList();
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
@@ -201,7 +207,7 @@ public class UserController extends GiaoDienChung {
         bookTableView.refresh();
     }
 
-    private void refreshComment(){
+    private void refreshComment() {
         int idBook = Integer.parseInt(bookIDInForTextField.getText());
         List<Comment> coms = userService.getCommentByIdBook(idBook);
         commentsList.clear();
@@ -310,6 +316,32 @@ public class UserController extends GiaoDienChung {
         commentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
 
         commentTableView.setItems(commentsList);
+        String bookName = searchBook.getBookName();
+        String author = searchBook.getAuthor();
+        try {
+            String imageUrl;
+            if (imageService.getUrlByBookNameAndAuthor(bookName, author) == null) {
+                imageUrl = "";
+            }else{
+                imageUrl = imageService.getImagePath(imageService.getUrlByBookNameAndAuthor(bookName, author));
+            }
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                File imageFile = new File(imageUrl);
+                if (imageFile.exists()) {
+                    Image image = new Image(imageFile.toURI().toString());
+                    renImageBook.setImage(image);
+                } else {
+                    renImageBook.setImage(new Image("F:\\btlOOP\\demo\\src\\main\\resources\\image\\document.jpg"));
+                }
+            } else {
+                renImageBook.setImage(new Image("F:\\btlOOP\\demo\\src\\main\\resources\\image\\document.jpg"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            renImageBook.setImage(new Image("F:\\btlOOP\\demo\\src\\main\\resources\\image\\document.jpg")); // Hiển thị ảnh mặc định nếu có lỗi
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void onSearchBookUButtonClick(ActionEvent actionEvent) {
@@ -515,7 +547,7 @@ public class UserController extends GiaoDienChung {
 
             String userName = resultSet.getString("userName");
             String content = resultSet.getString("comment");
-            Comment comment = new Comment(bookId, content,userName);
+            Comment comment = new Comment(bookId, content, userName);
 
             commentTableView.getItems().add(comment);
         }
@@ -556,7 +588,7 @@ public class UserController extends GiaoDienChung {
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, searchBook.getId());
         preparedStatement.setString(2, comment);
-        preparedStatement.setString(3,SignUp.nameString);
+        preparedStatement.setString(3, SignUp.nameString);
 
         int rowsAffected = preparedStatement.executeUpdate();
         if (rowsAffected > 0) {
@@ -659,14 +691,14 @@ public class UserController extends GiaoDienChung {
             return;
         }
 
-        if(!SignUp.nameString.equals(selectedComt.getUserAccount())) {
+        if (!SignUp.nameString.equals(selectedComt.getUserAccount())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi xóa comment người khác");
             alert.setHeaderText(null);
             alert.setContentText("Bạn không có quyền xóa comment người khác");
         }
 
-        boolean success = userService.deleteComment(selectedComt.getContent(),selectedComt.getUserAccount());
+        boolean success = userService.deleteComment(selectedComt.getContent(), selectedComt.getUserAccount());
         if (success) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thành công");
@@ -729,4 +761,5 @@ public class UserController extends GiaoDienChung {
         loanTableView.setItems(loanList);
         loanTableView.refresh();
     }
+
 }

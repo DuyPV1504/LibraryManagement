@@ -196,11 +196,6 @@
                         <TextField fx:id="authorReviewField" layoutX="180.0" layoutY="70.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="publisherReviewField" layoutX="660.0" layoutY="40.0" prefHeight="10.0" prefWidth="280.0" />
                         <TextField fx:id="publishedYearReviewField" layoutX="660.0" layoutY="10.0" prefHeight="10.0" prefWidth="280.0" />
-                        <Label layoutX="10.0" layoutY="135.0" prefHeight="30.0" prefWidth="100.0" text="Bình luận:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
                         <TextArea fx:id="comments" layoutX="2.0" layoutY="335.0" prefHeight="67.0" prefWidth="960.0" />
                         <Button fx:id="addCommentButton" layoutX="105.0" layoutY="410.0" mnemonicParsing="false" onAction="#onAddCommentButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Thêm đánh giá" textFill="WHITE">
                            <font>
@@ -217,12 +212,17 @@
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <TableView fx:id="commentTableView" layoutX="6.0" layoutY="114.0" prefHeight="200.0" prefWidth="960.0">
-                          <columns>
+                        <TableView fx:id="commentTableView" layoutX="265.0" layoutY="114.0" prefHeight="200.0" prefWidth="701.0">
+                           <columns>
                               <TableColumn fx:id="nameUser" prefWidth="192.00000286102295" text="Tên tài khoản" />
-                              <TableColumn fx:id="commentColumn" prefWidth="762.4000091552734" text="Comment" />
-                          </columns>
+                              <TableColumn fx:id="commentColumn" prefWidth="493.5999755859375" text="Comment" />
+                           </columns>
                         </TableView>
+                        <AnchorPane layoutX="40.0" layoutY="114.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;">
+                           <children>
+                              <ImageView fx:id="renImageBook" fitHeight="196.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </content>

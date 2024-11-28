@@ -1,5 +1,6 @@
 package org.example.demo.controller;
 
+import API.RenImage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import models.Image;
 import models.Loan;
 import models.User;
 import models.Book;
@@ -18,9 +20,11 @@ import org.example.demo.GiaoDienChung;
 import org.example.demo.HelloApplication;
 import org.example.demo.service.AdminService;
 import org.example.demo.service.BookService;
+import org.example.demo.service.ImageService;
 import org.example.demo.service.LoanService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,7 @@ public class AdminController extends GiaoDienChung {
     private final AdminService adminService = new AdminService();
     private final BookService bookService = new BookService();
     private final LoanService loanService = new LoanService();
+    private final ImageService imageService = new ImageService();
 
     public TableView<User> userTableView;
     public TableView<Book> bookTableView;
@@ -57,6 +62,7 @@ public class AdminController extends GiaoDienChung {
     public Button select;
     public Button selectBook;
     public Button selectTrans;
+    public TextField linkAdress;
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
@@ -194,7 +200,6 @@ public class AdminController extends GiaoDienChung {
         totalInBookManage.textProperty().addListener((observable, oldValue, newValue) -> {
             searchBooksDynamic();
         });
-
 
         idUserColum.setCellValueFactory(new PropertyValueFactory<>("id"));
         surnameColum.setCellValueFactory(new PropertyValueFactory<>("surname"));
@@ -484,6 +489,9 @@ public class AdminController extends GiaoDienChung {
             alert.showAndWait();
             return;
         }
+
+        //chua co ham lay link anh
+
         userID.setText(String.valueOf(searchUser.getId()));
         userSurname.setText(searchUser.getSurname());
         lastName.setText(searchUser.getLastname());
@@ -491,6 +499,7 @@ public class AdminController extends GiaoDienChung {
         genderInuser.setText(searchUser.getGender());
         emailInUser.setText(searchUser.getEmail());
         accountNameInUser.setText(searchUser.getUserAccount());
+
     }
 
     public void onEditInforButtonClick(ActionEvent actionEvent) {
@@ -611,6 +620,7 @@ public class AdminController extends GiaoDienChung {
         String publishYear = publishedYearTextField.getText().trim();
         String availableBooks = availableBooksInBookManage.getText().trim();
         String totalBooks = totalInBookManage.getText().trim();
+        String linkImg = linkAdress.getText().trim();
 
         if (bookName.isEmpty() || author.isEmpty() || publisher.isEmpty() ||
                 publishYear.isEmpty() || availableBooks.isEmpty() || totalBooks.isEmpty()) {
@@ -636,8 +646,30 @@ public class AdminController extends GiaoDienChung {
                 return;
             }
 
+            if (linkImg.isEmpty()) {
+                linkAdress.setText("");
+            }else{
+                if(!imageService.isValidImageUrl(linkImg)){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Lỗi URL");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Không tìm thấy URL của ảnh");
+                    alert.showAndWait();
+                    return;
+                }
+            }
             Book book = new Book(0, bookName, author, publisher, year, available, total);
+            Image img = new Image(bookName, author, linkImg);
+
             int result = adminService.addBook(book);
+            boolean resultImg = imageService.addImg(img);
+            RenImage.downImage(linkImg);
+            if (!resultImg) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Cảnh báo");
+                alert.setHeaderText(null);
+                alert.setTitle("Không tạo được ảnh cho sách");
+            }
 
             if (result > 0) {
                 refreshBookList();
@@ -659,10 +691,12 @@ public class AdminController extends GiaoDienChung {
             alert.setHeaderText(null);
             alert.setContentText("Vui lòng nhập số hợp lệ cho năm xuất bản, tổng số sách và số lượng còn lại.");
             alert.showAndWait();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void onSelectBook(ActionEvent actionEvent) {
+    public void onSelectBook(ActionEvent actionEvent) throws SQLException {
         Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
         if (searchBook == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -679,6 +713,8 @@ public class AdminController extends GiaoDienChung {
         publishedYearTextField.setText(String.valueOf(searchBook.getPublishYear()));
         availableBooksInBookManage.setText(String.valueOf(searchBook.getAvailableBooks()));
         totalInBookManage.setText(String.valueOf(searchBook.getTotalBooks()));
+        linkAdress.setText(imageService.getUrlByBookNameAndAuthor(searchBook.getBookName(), searchBook.getAuthor()));
+
     }
 
 
@@ -702,6 +738,26 @@ public class AdminController extends GiaoDienChung {
             int publishedYear = Integer.parseInt(publishedYearTextField.getText().trim());
             int availableBooksInBookManageInt = Integer.parseInt(availableBooksInBookManage.getText().trim());
             int totalInBookManageInt = Integer.parseInt(totalInBookManage.getText().trim());
+            String linkInput = linkAdress.getText().trim();
+            String link = imageService.getUrlByBookNameAndAuthor(searchBook.getBookName(), searchBook.getAuthor());
+
+            if (link == null || link.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Lỗi chưa có ảnh sẵn");
+                alert.setHeaderText(null);
+                alert.setContentText("Chưa có ảnh này trong database.");
+                alert.showAndWait();
+                link = "";
+            }
+
+            if (!imageService.isValidImageUrl(linkInput)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Lỗi Link Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Lỗi không tìm được link ảnh");
+                alert.showAndWait();
+                return;
+            }
 
             if (!(searchBook.getId() == id)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -718,7 +774,8 @@ public class AdminController extends GiaoDienChung {
                     !searchBook.getPublisher().equals(publisherString) ||
                     !(searchBook.getPublishYear() == publishedYear) ||
                     searchBook.getAvailableBooks() != availableBooksInBookManageInt ||
-                    searchBook.getTotalBooks() != totalInBookManageInt;
+                    searchBook.getTotalBooks() != totalInBookManageInt ||
+                    !link.equals(linkInput);
 
             if (!checkTrung) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -736,7 +793,20 @@ public class AdminController extends GiaoDienChung {
             searchBook.setAvailableBooks(availableBooksInBookManageInt);
             searchBook.setTotalBooks(totalInBookManageInt);
 
-            boolean success = bookService.updateBook(searchBook);
+            boolean checkUpdateLink = false;
+
+            if(link.isEmpty()){
+                checkUpdateLink = imageService.addImg(new Image(searchBook.getBookName(),
+                        searchBook.getAuthor(),linkInput));
+            }else{
+                checkUpdateLink = imageService.updateLink(searchBook.getBookName(),
+                        searchBook.getAuthor(), linkInput);
+            }
+
+
+            System.out.println(checkUpdateLink);
+
+            boolean success = bookService.updateBook(searchBook) && checkUpdateLink;
 
             Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
             alert.setTitle("Cập nhật thông tin");
@@ -756,7 +826,7 @@ public class AdminController extends GiaoDienChung {
         ;
     }
 
-    public void onDeleteBookButtonClick(ActionEvent actionEvent) {
+    public void onDeleteBookButtonClick(ActionEvent actionEvent) throws SQLException {
         Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
 
         if (selectedBook == null) {
@@ -764,6 +834,16 @@ public class AdminController extends GiaoDienChung {
             alert.setTitle("Xóa sách");
             alert.setHeaderText(null);
             alert.setContentText("Vui lòng chọn một sách để xóa!");
+            alert.showAndWait();
+            return;
+        }
+
+        boolean checkXoaAnh = imageService.deleteLink(selectedBook.getBookName(), selectedBook.getAuthor());
+        if (!checkXoaAnh) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Xóa hình ảnh thất bại");
+            alert.setHeaderText(null);
+            alert.setContentText("Không thể xóa hình ảnh liên kết với sách!");
             alert.showAndWait();
             return;
         }
@@ -783,6 +863,7 @@ public class AdminController extends GiaoDienChung {
             alert.setContentText("Không thể xóa sách!");
             alert.showAndWait();
         }
+
     }
 
 
