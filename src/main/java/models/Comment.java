@@ -5,6 +5,13 @@ public class Comment {
     private String content;
     private String userAccount;
 
+    /**
+     * ham tao.
+     *
+     * @param bookId      idSach
+     * @param content     text
+     * @param userAccount ten nguoi dung
+     */
     public Comment(int bookId, String content, String userAccount) {
         this.bookId = bookId;
         this.content = content;
@@ -18,6 +25,7 @@ public class Comment {
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
     }
+
     public String getContent() {
         return content;
     }

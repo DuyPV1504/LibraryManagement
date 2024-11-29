@@ -179,6 +179,7 @@ public class AdminController extends GiaoDienChung {
         refreshLoanList();
         refreshUserList();
 
+
         // cho user
 
         userID.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -272,7 +273,6 @@ public class AdminController extends GiaoDienChung {
         book_idColum.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         borrowDateColum.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         endDateColum.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        returnDateColum.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         statusColum.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         userTableView.setItems(userList);
@@ -280,6 +280,9 @@ public class AdminController extends GiaoDienChung {
         loanTableView.setItems(loanList);
     }
 
+    /**
+     * ham tim nguoi.
+     */
     private void searchUserDynamic() {
         String id = userID.getText().trim();
         String surname = userSurname.getText().trim();
@@ -310,6 +313,9 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * ham tim sach.
+     */
     private void searchBooksDynamic() {
         String id = bookIDTextField.getText().trim();
         String bookName = bookNameTextField.getText().trim();
@@ -340,6 +346,9 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * ham tim giao dich
+     */
     private void searchTransactionDynamic() {
         String transactionId = transactionIDTextField.getText().trim();
         String userAccount = userAccountTextField.getText().trim();
@@ -368,6 +377,9 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * ham refresh sach.
+     */
     private void refreshBookList() {
         List<Book> books = adminService.getAllBooks();
         bookList.clear();
@@ -376,6 +388,9 @@ public class AdminController extends GiaoDienChung {
         bookTableView.refresh();
     }
 
+    /**
+     * ham refresh loan.
+     */
     private void refreshLoanList() {
         List<Loan> loans = adminService.getAllTransactions();
         loanList.clear();
@@ -384,6 +399,9 @@ public class AdminController extends GiaoDienChung {
         loanTableView.refresh();
     }
 
+    /**
+     * ham refresh user.
+     */
     private void refreshUserList() {
         List<User> users = adminService.getAllUsers();
         userList.clear();
@@ -393,6 +411,11 @@ public class AdminController extends GiaoDienChung {
     }
 
 
+    /**
+     * ham lay thao tac chon.
+     *
+     * @param actionEvent chon 3 che do
+     */
     public void onOptionMenuClick(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Option Menu");
@@ -401,6 +424,11 @@ public class AdminController extends GiaoDienChung {
         alert.showAndWait();
     }
 
+    /**
+     * chon thong tin nguoi dung.
+     *
+     * @param actionEvent click
+     */
     public void onInforClick(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Personal Information");
@@ -419,6 +447,11 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * dang xuat.
+     *
+     * @param actionEvent click
+     */
     public void onLogOutClick(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
@@ -427,7 +460,7 @@ public class AdminController extends GiaoDienChung {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/signUp.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/logIn.fxml"));
                     Parent root = loader.load();
                     Stage stage = (Stage) logOut.getParentPopup().getOwnerWindow();
                     Scene scene = new Scene(root);
@@ -444,9 +477,20 @@ public class AdminController extends GiaoDienChung {
         });
     }
 
+    /**
+     * tab.
+     *
+     * @param event click
+     */
     public void onUserManageButtonClick(Event event) {
+        refreshUserList();
     }
 
+    /**
+     * tim nguoi.
+     *
+     * @param actionEvent click
+     */
     public void onSearchUserButtonClick(ActionEvent actionEvent) {
 
         String id = userID.getText().trim();
@@ -493,6 +537,11 @@ public class AdminController extends GiaoDienChung {
     }
 
 
+    /**
+     * them user thanhAdmin.
+     *
+     * @param actionEvent click
+     */
     public void onAddUserButtonClick(ActionEvent actionEvent) {
         User selectedUser = userTableView.getSelectionModel().getSelectedItem();
 
@@ -514,6 +563,11 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * chon user.
+     *
+     * @param actionEvent click
+     */
     public void onSelectUserButton(ActionEvent actionEvent) {
         User searchUser = userTableView.getSelectionModel().getSelectedItem();
         if (searchUser == null) {
@@ -537,6 +591,11 @@ public class AdminController extends GiaoDienChung {
 
     }
 
+    /**
+     * sua thong tin user.
+     *
+     * @param actionEvent click
+     */
     public void onEditInforButtonClick(ActionEvent actionEvent) {
         User searchUser = userTableView.getSelectionModel().getSelectedItem();
         if (searchUser == null) {
@@ -605,6 +664,11 @@ public class AdminController extends GiaoDienChung {
         ;
     }
 
+    /**
+     * xoa user.
+     *
+     * @param actionEvent click
+     */
     public void onDeleteUserButtonClick(ActionEvent actionEvent) {
         String idText = userID.getText().trim();
 
@@ -645,9 +709,20 @@ public class AdminController extends GiaoDienChung {
     }
 
 
+    /**
+     * tab bookManage.
+     *
+     * @param event click
+     */
     public void onBookManageButtonClick(Event event) {
+        refreshBookList();
     }
 
+    /**
+     * them sach.
+     *
+     * @param actionEvent click
+     */
     public void onAddBookButtonClick(ActionEvent actionEvent) {
         String bookName = bookNameTextField.getText().trim();
         String author = authorTextField.getText().trim();
@@ -683,8 +758,8 @@ public class AdminController extends GiaoDienChung {
 
             if (linkImg.isEmpty()) {
                 linkAdress.setText("");
-            }else{
-                if(!imageService.isValidImageUrl(linkImg)){
+            } else {
+                if (!imageService.isValidImageUrl(linkImg)) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Lỗi URL");
                     alert.setHeaderText(null);
@@ -731,6 +806,12 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * chon sach.
+     *
+     * @param actionEvent click
+     * @throws SQLException nem ex
+     */
     public void onSelectBook(ActionEvent actionEvent) throws SQLException {
         Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
         if (searchBook == null) {
@@ -752,6 +833,12 @@ public class AdminController extends GiaoDienChung {
 
     }
 
+
+    /**
+     * sua sach.
+     *
+     * @param actionEvent click
+     */
     public void onEditBookButtonClick(ActionEvent actionEvent) {
         Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
         if (searchBook == null) {
@@ -829,10 +916,10 @@ public class AdminController extends GiaoDienChung {
 
             boolean checkUpdateLink = false;
 
-            if(link.isEmpty()){
+            if (link.isEmpty()) {
                 checkUpdateLink = imageService.addImg(new Image(searchBook.getBookName(),
-                        searchBook.getAuthor(),linkInput));
-            }else{
+                        searchBook.getAuthor(), linkInput));
+            } else {
                 checkUpdateLink = imageService.updateLink(searchBook.getBookName(),
                         searchBook.getAuthor(), linkInput);
             }
@@ -860,6 +947,12 @@ public class AdminController extends GiaoDienChung {
         ;
     }
 
+    /**
+     * xoa sach.
+     *
+     * @param actionEvent click
+     * @throws SQLException nem ex
+     */
     public void onDeleteBookButtonClick(ActionEvent actionEvent) throws SQLException {
         Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
 
@@ -900,6 +993,12 @@ public class AdminController extends GiaoDienChung {
 
     }
 
+
+    /**
+     * tim sach.
+     *
+     * @param actionEvent click
+     */
     public void onSearchBookButtonClick(ActionEvent actionEvent) {
         String id = bookIDTextField.getText().trim();
         String bookName = bookNameTextField.getText().trim();
@@ -946,9 +1045,20 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * nut tab
+     *
+     * @param event click
+     */
     public void onBorrowReturnManageClick(Event event) {
+        refreshLoanList();
     }
 
+    /**
+     * nut tim giao dich.
+     *
+     * @param actionEvent click
+     */
     public void onSearchTransactionButtonClick(ActionEvent actionEvent) {
         String transactionId = transactionIDTextField.getText().trim();
         String userAccount = userAccountTextField.getText().trim();
@@ -990,6 +1100,11 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * chon gd.
+     *
+     * @param actionEvent click
+     */
     public void onSelectTrans(ActionEvent actionEvent) {
         Loan searchLoan = loanTableView.getSelectionModel().getSelectedItem();
         if (searchLoan == null) {
@@ -1010,6 +1125,11 @@ public class AdminController extends GiaoDienChung {
 
     }
 
+    /**
+     * sua gd.
+     *
+     * @param actionEvent click
+     */
     public void onEditTransactionButtonClick(ActionEvent actionEvent) {
         Loan searchLoan = loanTableView.getSelectionModel().getSelectedItem();
         if (searchLoan == null) {
@@ -1071,6 +1191,11 @@ public class AdminController extends GiaoDienChung {
         ;
     }
 
+    /**
+     * them giao dich.
+     *
+     * @param actionEvent click
+     */
     public void onAddTransactionButtonClick(ActionEvent actionEvent) {
         String userAccount = userAccountTextField.getText().trim();
         String bookId = bookIDInBorrowTextField.getText().trim();
@@ -1134,10 +1259,20 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * thoat.
+     *
+     * @param actionEvent click
+     */
     public void onExitButton(ActionEvent actionEvent) {
         thoat();
     }
 
+    /**
+     * xoa gd.
+     *
+     * @param actionEvent click
+     */
     public void onDeleteTransactionButtonCLick(ActionEvent actionEvent) {
         Loan selectedLoan = loanTableView.getSelectionModel().getSelectedItem();
 
@@ -1169,6 +1304,11 @@ public class AdminController extends GiaoDienChung {
         }
     }
 
+    /**
+     * nhac.
+     *
+     * @param actionEvent click
+     */
     public void onVolumeClick(ActionEvent actionEvent) {
         if (HelloApplication.isMusic()) {
             HelloApplication.getMediaPlayer().pause();

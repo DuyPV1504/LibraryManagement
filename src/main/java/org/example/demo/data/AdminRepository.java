@@ -15,6 +15,11 @@ import static org.example.demo.database.connectDB;
 
 public class AdminRepository extends BaseRepository {
 
+    /**
+     * query update role.
+     *
+     * @param userId id
+     */
     public void updateUserRoleToAdmin(int userId) {
         String query = "UPDATE Users SET roles = 'Admin' WHERE id = ?";
 
@@ -26,14 +31,17 @@ public class AdminRepository extends BaseRepository {
 
             if (rowsAffected > 0) {
                 System.out.println("User role updated to Admin successfully!");
-            } else {
-                System.out.println("No user found with the given ID.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * query lay user.
+     *
+     * @return list
+     */
     public List<User> getAllUsers() {
         String query = "SELECT * FROM Users";
         List<User> users = new ArrayList<>();
@@ -63,15 +71,28 @@ public class AdminRepository extends BaseRepository {
         return users;
     }
 
-    public List<User> searchUserByKeyword(String id, String surname, String lastname, String dateOfBirth, String gender, String email, String userAccount) {
-        String query = "SELECT * FROM Users WHERE " +
-                "(? IS NULL OR id = ?) AND " +
-                "(? IS NULL OR LOWER(surname) LIKE LOWER(?)) AND " +
-                "(? IS NULL OR LOWER(lastname) LIKE LOWER(?)) AND " +
-                "(? IS NULL OR dateOfBirth = ?) AND " +
-                "(? IS NULL OR LOWER(gender) = LOWER(?)) AND " +
-                "(? IS NULL OR LOWER(email) LIKE LOWER(?)) AND " +
-                "(? IS NULL OR LOWER(userAccount) LIKE LOWER(?))";
+    /**
+     * tim sach.
+     *
+     * @param id          id
+     * @param surname     ho
+     * @param lastname    ten
+     * @param dateOfBirth sn
+     * @param gender      gioi tinh
+     * @param email       mail
+     * @param userAccount ten
+     * @return list
+     */
+    public List<User> searchUserByKeyword(String id, String surname, String lastname,
+                                          String dateOfBirth, String gender,
+                                          String email, String userAccount) {
+        String query = "SELECT * FROM Users WHERE " + "(? IS NULL OR id = ?) AND "
+                + "(? IS NULL OR LOWER(surname) LIKE LOWER(?)) AND "
+                + "(? IS NULL OR LOWER(lastname) LIKE LOWER(?)) AND "
+                + "(? IS NULL OR dateOfBirth = ?) AND "
+                + "(? IS NULL OR LOWER(gender) = LOWER(?)) AND "
+                + "(? IS NULL OR LOWER(email) LIKE LOWER(?)) AND "
+                + "(? IS NULL OR LOWER(userAccount) LIKE LOWER(?))";
 
         List<User> userList = new ArrayList<>();
 
@@ -117,9 +138,16 @@ public class AdminRepository extends BaseRepository {
         return userList;
     }
 
-
+    /**
+     * them nguoi.
+     *
+     * @param user user
+     * @return logic
+     */
     public boolean addUser(User user) {
-        String query = "INSERT INTO Users (surname, lastname, dateOfBirth, gender, email, userName, userAccount, roles, warning) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Users (surname, lastname, dateOfBirth, "
+                + "gender, email, userName, userAccount, roles, "
+                + "warning) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -154,8 +182,16 @@ public class AdminRepository extends BaseRepository {
         }
     }
 
+    /**
+     * update nguoi.
+     *
+     * @param user
+     * @return
+     */
     public boolean updateUser(User user) {
-        String query = "UPDATE Users SET surname = ?, lastname = ?, dateOfBirth = ?, gender = ?, email = ?, userName = ?, userAccount = ?, roles = ?, warning = ? WHERE id = ?";
+        String query = "UPDATE Users SET surname = ?, lastname = ?, dateOfBirth = ?, "
+                + "gender = ?, email = ?, userName = ?, userAccount = ?, "
+                + "roles = ?, warning = ? WHERE id = ?";
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -177,6 +213,12 @@ public class AdminRepository extends BaseRepository {
         }
     }
 
+    /**
+     * xoa nguoi.
+     *
+     * @param userId id
+     * @return so
+     */
     public int deleteUser(int userId) {
         String query = "DELETE FROM Users WHERE id = ?";
         try (Connection connection = connectDB();
@@ -190,6 +232,11 @@ public class AdminRepository extends BaseRepository {
         }
     }
 
+    /**
+     * lay sach.
+     *
+     * @return list
+     */
     public List<Book> getAllBooks() {
         String query = "SELECT * FROM Books";
         List<Book> books = new ArrayList<>();
@@ -218,16 +265,28 @@ public class AdminRepository extends BaseRepository {
     }
 
 
+    /**
+     * tim sach.
+     *
+     * @param id             id
+     * @param bookName       ten
+     * @param publishedYear  nam xb
+     * @param availableBooks con
+     * @param totalBooks     tong
+     * @param author         tac gia
+     * @param publisher      nxb
+     * @return list
+     */
     public List<Book> searchBookByKeyword(String id, String bookName, String publishedYear, String availableBooks,
                                           String totalBooks, String author, String publisher) {
-        String query = "SELECT * FROM Books WHERE " +
-                "(? IS NULL OR id = ?) AND " +
-                "(? IS NULL OR bookName LIKE ?) AND " +
-                "(? IS NULL OR publishYear LIKE ?) AND " +
-                "(? IS NULL OR availableBooks = ?) AND " +
-                "(? IS NULL OR totalBooks = ?) AND " +
-                "(? IS NULL OR author LIKE ?) AND " +
-                "(? IS NULL OR publisher LIKE ?)";
+        String query = "SELECT * FROM Books WHERE "
+                + "(? IS NULL OR id = ?) AND "
+                + "(? IS NULL OR bookName LIKE ?) AND "
+                + "(? IS NULL OR publishYear LIKE ?) AND "
+                + "(? IS NULL OR availableBooks = ?) AND "
+                + "(? IS NULL OR totalBooks = ?) AND "
+                + "(? IS NULL OR author LIKE ?) AND "
+                + "(? IS NULL OR publisher LIKE ?)";
 
         List<Book> bookList = new ArrayList<>();
 
@@ -269,13 +328,20 @@ public class AdminRepository extends BaseRepository {
         return bookList;
     }
 
-
+    /**
+     * them sach.
+     *
+     * @param book book
+     * @return so
+     */
     public int addBook(Book book) {
-        String query = "INSERT INTO Books (bookName, author, publisher, publishYear, availableBooks, totalBooks) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Books (bookName, author, publisher, "
+                + "publishYear, availableBooks, totalBooks) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = connectDB();
-             PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query,
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, book.getBookName());
             preparedStatement.setString(2, book.getAuthor());
@@ -299,8 +365,15 @@ public class AdminRepository extends BaseRepository {
     }
 
 
+    /**
+     * update sach.
+     *
+     * @param book sach
+     * @return logic
+     */
     public boolean updateBook(Book book) {
-        String query = "UPDATE Books SET bookName = ?, author = ?, publisher = ?, publishYear = ?, totalBooks = ?, availableBooks = ? WHERE id = ?";
+        String query = "UPDATE Books SET bookName = ?, author = ?, publisher = ?, "
+                + "publishYear = ?, totalBooks = ?, availableBooks = ? WHERE id = ?";
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -319,6 +392,12 @@ public class AdminRepository extends BaseRepository {
         }
     }
 
+    /**
+     * xoa sach.
+     *
+     * @param bookId id
+     * @return so
+     */
     public int deleteBook(int bookId) {
         String query = "DELETE FROM Books WHERE id = ?";
         try (Connection connection = connectDB();
@@ -332,14 +411,26 @@ public class AdminRepository extends BaseRepository {
         return 0;
     }
 
-    public List<Loan> searchTransactionByKeyword(String transactionId, String userAccount, String bookId, String borrowDate, String endDate, String status) {
-        String query = "SELECT * FROM Loans WHERE " +
-                "(? IS NULL OR transaction_id = ?) AND " +
-                "(? IS NULL OR userAccount LIKE ?) AND " +
-                "(? IS NULL OR book_id = ?) AND " +
-                "(? IS NULL OR borrowDate = ?) AND " +
-                "(? IS NULL OR endDate = ?) AND " +
-                "(? IS NULL OR status = ?)";
+    /**
+     * danh sach loan.
+     *
+     * @param transactionId id
+     * @param userAccount   tenAcc
+     * @param bookId        idBook
+     * @param borrowDate    ngay muon
+     * @param endDate       han
+     * @param status        tinh trang
+     * @return list
+     */
+    public List<Loan> searchTransactionByKeyword(String transactionId, String userAccount,
+                                                 String bookId, String borrowDate, String endDate, String status) {
+        String query = "SELECT * FROM Loans WHERE "
+                + "(? IS NULL OR transaction_id = ?) AND "
+                + "(? IS NULL OR userAccount LIKE ?) AND "
+                + "(? IS NULL OR book_id = ?) AND "
+                + "(? IS NULL OR borrowDate = ?) AND "
+                + "(? IS NULL OR endDate = ?) AND "
+                + "(? IS NULL OR status = ?)";
 
         List<Loan> transactionList = new ArrayList<>();
 
@@ -368,7 +459,8 @@ public class AdminRepository extends BaseRepository {
                         resultSet.getInt("book_id"),
                         resultSet.getDate("borrowDate").toLocalDate(),
                         resultSet.getDate("endDate").toLocalDate(),
-                        resultSet.getDate("returnDate") != null ? resultSet.getDate("returnDate").toLocalDate() : null,
+                        resultSet.getDate("returnDate") != null
+                                ? resultSet.getDate("returnDate").toLocalDate() : null,
                         Loan.LoanStatus.valueOf(resultSet.getString("status").toUpperCase())
                 );
                 transactionList.add(loan);
@@ -379,6 +471,12 @@ public class AdminRepository extends BaseRepository {
         return transactionList;
     }
 
+    /**
+     * them sach.
+     *
+     * @param loan loan
+     * @return so
+     */
     public int addTransaction(Loan loan) {
         String query = "INSERT INTO Loans (userAccount, book_id, borrowDate, endDate, returnDate, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -391,11 +489,22 @@ public class AdminRepository extends BaseRepository {
                 loan.getStatus().toString());
     }
 
+    /**
+     * xoa gd.
+     *
+     * @param transactionId gd
+     * @return logic
+     */
     public boolean deleteTransactionById(int transactionId) {
         String query = "DELETE FROM Loans WHERE transaction_id = ?";
         return delete(query, transactionId);
     }
 
+    /**
+     * lay trans.
+     *
+     * @return list
+     */
     public List<Loan> getAllTransactions() {
         String query = "SELECT * FROM Loans";
         List<Loan> loanList = new ArrayList<>();
@@ -411,7 +520,8 @@ public class AdminRepository extends BaseRepository {
                         resultSet.getInt("book_id"),
                         resultSet.getDate("borrowDate").toLocalDate(),
                         resultSet.getDate("endDate").toLocalDate(),
-                        resultSet.getDate("returnDate") == null ? null : resultSet.getDate("returnDate").toLocalDate(),
+                        resultSet.getDate("returnDate") == null
+                                ? null : resultSet.getDate("returnDate").toLocalDate(),
                         Loan.LoanStatus.valueOf(resultSet.getString("status").toUpperCase())
                 );
                 loanList.add(loan);
@@ -422,9 +532,15 @@ public class AdminRepository extends BaseRepository {
         return loanList;
     }
 
-
+    /**
+     * update trans
+     *
+     * @param loan loan
+     * @return logic
+     */
     public boolean updateTransaction(Loan loan) {
-        String query = "UPDATE Loans SET userAccount = ?, book_id = ?, borrowDate = ?, endDate = ?, returnDate = ?, status = ? WHERE transaction_id = ?";
+        String query = "UPDATE Loans SET userAccount = ?, book_id = ?, borrowDate = ?, "
+                + "endDate = ?, returnDate = ?, status = ? WHERE transaction_id = ?";
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -432,7 +548,8 @@ public class AdminRepository extends BaseRepository {
             preparedStatement.setInt(2, loan.getBookId());
             preparedStatement.setDate(3, java.sql.Date.valueOf(loan.getBorrowDate()));
             preparedStatement.setDate(4, java.sql.Date.valueOf(loan.getEndDate()));
-            preparedStatement.setDate(5, loan.getReturnDate() != null ? java.sql.Date.valueOf(loan.getReturnDate()) : null);
+            preparedStatement.setDate(5,
+                    loan.getReturnDate() != null ? java.sql.Date.valueOf(loan.getReturnDate()) : null);
             preparedStatement.setString(6, loan.getStatus().name());
             preparedStatement.setInt(7, loan.getTransactionId());
 

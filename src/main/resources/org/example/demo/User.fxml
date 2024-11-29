@@ -97,7 +97,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="borrownReturnUManage" onSelectionChanged="#onBorrowReturnUManageClick" text="Mượn/Trả sách">
+            <Tab fx:id="borrownReturnUManage" onSelectionChanged="#onBorrowReturnUManageClick" text="Trả sách">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #1F2A42;">
                      <children>
@@ -145,12 +145,10 @@
                         <TableView fx:id="loanTableView" layoutY="190.0" prefHeight="268.0" prefWidth="960.0" styleClass="column-header-background" stylesheets="@TableColumnText.css">
                            <columns>
                               <TableColumn fx:id="transaction_idCollumn" prefWidth="120.0" text="Mã giao dịch" />
-                              <TableColumn fx:id="userAccountCollumn" prefWidth="135.99996948242188" text="Tài khoản mượn" />
-                              <TableColumn fx:id="book_idCollumn" prefWidth="126.40003967285156" text="Mã sách" />
-                              <TableColumn fx:id="availableBooksInBorrowCollum" prefWidth="103.20001220703125" text="Số lượng" />
-                              <TableColumn fx:id="borrowDateCollum" prefWidth="169.5999755859375" text="Ngày mượn" />
-                              <TableColumn fx:id="returnDateCollumn" prefWidth="157.60003662109375" text="Ngày trả" />
-                              <TableColumn fx:id="statusCollumn" prefWidth="150.0" text="Tình trạng" />
+                              <TableColumn fx:id="userAccountCollumn" prefWidth="251.20005798339844" text="Tài khoản mượn" />
+                              <TableColumn fx:id="book_idCollumn" prefWidth="139.199951171875" text="Mã sách" />
+                              <TableColumn fx:id="borrowDateCollum" prefWidth="267.20001220703125" text="Ngày mượn" />
+                              <TableColumn fx:id="statusCollumn" prefWidth="184.7999267578125" text="Tình trạng" />
                            </columns>
                         </TableView>
                         <Button fx:id="searchBookBorrow" layoutX="244.0" layoutY="140.0" mnemonicParsing="false" onAction="#onSearchBookBorrowButtonClick" prefHeight="40.0" prefWidth="150.0" styleClass="button-custom" stylesheets="@ButtonSheet.css" text="Tìm kiếm" textFill="WHITE">
@@ -218,11 +216,7 @@
                               <TableColumn fx:id="commentColumn" prefWidth="493.5999755859375" text="Comment" />
                            </columns>
                         </TableView>
-                        <AnchorPane layoutX="40.0" layoutY="114.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;">
-                           <children>
-                              <ImageView fx:id="renImageBook" fitHeight="196.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
+                        <ImageView fx:id="renImageBook" fitHeight="196.0" fitWidth="200.0" layoutX="40.0" layoutY="116.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="146.39999999999998" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="727.2" AnchorPane.topAnchor="116.0" />
                      </children>
                   </AnchorPane>
                </content>

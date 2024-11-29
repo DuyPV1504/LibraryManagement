@@ -21,7 +21,7 @@ import models.Loan;
 import models.User;
 import org.example.demo.GiaoDienChung;
 import org.example.demo.HelloApplication;
-import org.example.demo.SignUp;
+import org.example.demo.LogIn;
 import org.example.demo.data.LoanRepository;
 import org.example.demo.database;
 import org.example.demo.service.AdminService;
@@ -172,6 +172,9 @@ public class UserController extends GiaoDienChung {
         });
     }
 
+    /**
+     * tim sach.
+     */
     private void searchBooksDynamic() {
         String id = bookIDInForTextField.getText().trim();
         String bookName = bookNameInForTextFiled.getText().trim();
@@ -199,6 +202,9 @@ public class UserController extends GiaoDienChung {
     }
 
 
+    /**
+     * refresh sach.
+     */
     private void refreshBookList() {
         List<Book> books = userService.getAllBooks();
         bookList.clear();
@@ -207,6 +213,9 @@ public class UserController extends GiaoDienChung {
         bookTableView.refresh();
     }
 
+    /**
+     * comment.
+     */
     private void refreshComment() {
         int idBook = Integer.parseInt(bookIDInForTextField.getText());
         List<Comment> coms = userService.getCommentByIdBook(idBook);
@@ -216,8 +225,11 @@ public class UserController extends GiaoDienChung {
         commentTableView.refresh();
     }
 
+    /**
+     * giao dich.
+     */
     private void refreshLoanList() {
-        String currentUserAccount = SignUp.account;
+        String currentUserAccount = LogIn.account;
         List<Loan> loans = userService.getTransactionsByUser(currentUserAccount);
         loanList.clear();
         loanList.addAll(loans);
@@ -225,6 +237,11 @@ public class UserController extends GiaoDienChung {
         loanTableView.refresh();
     }
 
+    /**
+     * lua chon.
+     *
+     * @param actionEvent click
+     */
     public void onOptionMenuUClick(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Option Menu");
@@ -233,6 +250,11 @@ public class UserController extends GiaoDienChung {
         alert.showAndWait();
     }
 
+    /**
+     * info nguoi dung.
+     *
+     * @param actionEvent click
+     */
     public void onInforUClick(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Personal Information");
@@ -251,6 +273,11 @@ public class UserController extends GiaoDienChung {
         }
     }
 
+    /**
+     * dang xuat.
+     *
+     * @param actionEvent click
+     */
     public void onLogOutUClick(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Đăng xuất");
@@ -260,13 +287,13 @@ public class UserController extends GiaoDienChung {
             if (response == ButtonType.OK) {
                 try {
 
-                    SignUp.account = null;
+                    LogIn.account = null;
 
                     loanList.clear();
                     loanTableView.setItems(loanList);
                     loanTableView.refresh();
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/signUp.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/logIn.fxml"));
                     Parent root = loader.load();
                     Stage stage = (Stage) logOutU.getParentPopup().getOwnerWindow();
                     Scene scene = new Scene(root);
@@ -285,16 +312,26 @@ public class UserController extends GiaoDienChung {
     }
 
 
+    /**
+     * tab.
+     *
+     * @param event click
+     */
     public void onBookInforButtonClick(Event event) {
     }
 
+    /**
+     * chon sach.
+     *
+     * @param actionEvent click
+     */
     public void onSelectBookButton(ActionEvent actionEvent) {
         Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
         if (searchBook == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Chưa chọn sách");
             alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn sách để sửa!");
+            alert.setContentText("Vui lòng chọn sách!");
             alert.showAndWait();
             return;
         }
@@ -322,7 +359,7 @@ public class UserController extends GiaoDienChung {
             String imageUrl;
             if (imageService.getUrlByBookNameAndAuthor(bookName, author) == null) {
                 imageUrl = "";
-            }else{
+            } else {
                 imageUrl = imageService.getImagePath(imageService.getUrlByBookNameAndAuthor(bookName, author));
             }
             if (imageUrl != null && !imageUrl.isEmpty()) {
@@ -338,12 +375,18 @@ public class UserController extends GiaoDienChung {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            renImageBook.setImage(new Image("F:\\btlOOP\\demo\\src\\main\\resources\\image\\document.jpg")); // Hiển thị ảnh mặc định nếu có lỗi
+            // Hiển thị ảnh mặc định nếu có lỗi
+            renImageBook.setImage(new Image("F:\\btlOOP\\demo\\src\\main\\resources\\image\\document.jpg"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * tim sach.
+     *
+     * @param actionEvent click.
+     */
     public void onSearchBookUButtonClick(ActionEvent actionEvent) {
         String id = bookIDInForTextField.getText().trim();
         String bookName = bookNameInForTextFiled.getText().trim();
@@ -383,10 +426,21 @@ public class UserController extends GiaoDienChung {
         }
     }
 
-    //nút tab
+    /**
+     * nut tab.
+     *
+     * @param event clcik
+     */
     public void onBorrowReturnUManageClick(Event event) {
     }
 
+    /**
+     * quey update book.
+     *
+     * @param bookId            id
+     * @param newAvailableBooks sach con lai
+     * @return logic
+     */
     public boolean updateAvailableBooks(int bookId, int newAvailableBooks) {
         String sql = "UPDATE Books SET availableBooks = ? WHERE id = ?";
         try (Connection con = database.connectDB()) {
@@ -404,6 +458,12 @@ public class UserController extends GiaoDienChung {
     }
 
 
+    /**
+     * muon sach.
+     *
+     * @param actionEvent click
+     * @throws SQLException loi sql
+     */
     public void onBorrowButtonClick(ActionEvent actionEvent) throws SQLException {
         Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
         if (searchBook == null) {
@@ -434,7 +494,7 @@ public class UserController extends GiaoDienChung {
         LocalDate borrowDate = LocalDate.now();
         LocalDate returnDate = borrowDate.plusDays(5);
         Loan newLoan = new Loan(
-                SignUp.account,
+                LogIn.account,
                 searchBook.getId(),
                 borrowDate,
                 returnDate
@@ -469,6 +529,11 @@ public class UserController extends GiaoDienChung {
         }
     }
 
+    /**
+     * tra sach.
+     *
+     * @param actionEvent click
+     */
     public void onReturnButtonClick(ActionEvent actionEvent) {
         Loan selectedLoan = loanTableView.getSelectionModel().getSelectedItem();
         if (selectedLoan == null) {
@@ -521,7 +586,12 @@ public class UserController extends GiaoDienChung {
 
     }
 
-    //nút tab
+    /**
+     * nut tab.
+     *
+     * @param event click
+     * @throws SQLException sql
+     */
     public void onBookReviewClick(Event event) throws SQLException {
         Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
         if (selectedBook == null) {
@@ -562,6 +632,12 @@ public class UserController extends GiaoDienChung {
 
     }
 
+    /**
+     * ham them comment.
+     *
+     * @param actionEvent click
+     * @throws SQLException loi sql
+     */
     public void onAddCommentButtonClick(ActionEvent actionEvent) throws SQLException {
         Book searchBook = bookTableView.getSelectionModel().getSelectedItem();
         if (searchBook == null) {
@@ -588,7 +664,7 @@ public class UserController extends GiaoDienChung {
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, searchBook.getId());
         preparedStatement.setString(2, comment);
-        preparedStatement.setString(3, SignUp.nameString);
+        preparedStatement.setString(3, LogIn.nameString);
 
         int rowsAffected = preparedStatement.executeUpdate();
         if (rowsAffected > 0) {
@@ -606,13 +682,19 @@ public class UserController extends GiaoDienChung {
             alert.setContentText("Lỗi ở đâu đó trong hàm addComments");
             alert.showAndWait();
         }
-        Comment cmt = new Comment(searchBook.getId(), comment, SignUp.nameString);
+        Comment cmt = new Comment(searchBook.getId(), comment, LogIn.nameString);
         commentsList.add(cmt);
         commentTableView.setItems(commentsList);
         commentTableView.refresh();
 
     }
 
+    /**
+     * check update
+     *
+     * @param comment cmt
+     * @return logic
+     */
     public boolean updateCom(Comment comment) {
         try {
             return true;
@@ -622,6 +704,11 @@ public class UserController extends GiaoDienChung {
         }
     }
 
+    /**
+     * sua comment.
+     *
+     * @param actionEvent click
+     */
     public void onEditCommentButtonClick(ActionEvent actionEvent) {
         Comment searchCom = (Comment) commentTableView.getSelectionModel().getSelectedItem();
         if (searchCom == null) {
@@ -679,6 +766,11 @@ public class UserController extends GiaoDienChung {
         }
     }
 
+    /**
+     * xoa cmt.
+     *
+     * @param actionEvent click
+     */
     public void onDeleteCommentButtonClick(ActionEvent actionEvent) {
         Comment selectedComt = (Comment) commentTableView.getSelectionModel().getSelectedItem();
 
@@ -691,7 +783,7 @@ public class UserController extends GiaoDienChung {
             return;
         }
 
-        if (!SignUp.nameString.equals(selectedComt.getUserAccount())) {
+        if (!LogIn.nameString.equals(selectedComt.getUserAccount())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi xóa comment người khác");
             alert.setHeaderText(null);
@@ -718,6 +810,11 @@ public class UserController extends GiaoDienChung {
     }
 
 
+    /**
+     * tat bat nhac.
+     *
+     * @param actionEvent click
+     */
     public void onVolumeClick(ActionEvent actionEvent) {
         if (HelloApplication.isMusic()) {
             HelloApplication.getMediaPlayer().pause();
@@ -728,12 +825,22 @@ public class UserController extends GiaoDienChung {
         }
     }
 
+    /**
+     * thaot.
+     *
+     * @param actionEvent click
+     */
     public void onExitButton(ActionEvent actionEvent) {
         thoat();
     }
 
+    /**
+     * tim sach.
+     *
+     * @param actionEvent click
+     */
     public void onSearchBookBorrowButtonClick(ActionEvent actionEvent) {
-        String currentUserAccount = SignUp.account;
+        String currentUserAccount = LogIn.account;
 
         if (currentUserAccount == null || currentUserAccount.isEmpty()) {
             System.out.println("User is not logged in.");

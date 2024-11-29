@@ -16,6 +16,11 @@ import static org.example.demo.database.connectDB;
 
 public class UserRepository extends BaseRepository {
 
+    /**
+     * lay list sach.
+     *
+     * @return book
+     */
     public List<Book> getAllBooks() {
         String query = "SELECT id, bookName, author, publisher, publishYear, availableBooks, totalBooks FROM Books";
         List<Book> books = new ArrayList<>();
@@ -42,6 +47,16 @@ public class UserRepository extends BaseRepository {
         return books;
     }
 
+    /**
+     * tim list sach.
+     *
+     * @param id            id
+     * @param bookName      ten
+     * @param publishedYear nam xb
+     * @param author        tac gia
+     * @param publisher     nxb
+     * @return list
+     */
     public List<Book> searchBookByKeyword(String id, String bookName, String publishedYear, String author, String publisher) {
         String query = "SELECT * FROM Books WHERE " +
                 "(? IS NULL OR id = ?) AND " +
@@ -86,6 +101,12 @@ public class UserRepository extends BaseRepository {
         return bookList;
     }
 
+    /**
+     * lay list loan.
+     *
+     * @param userAccount ten
+     * @return list
+     */
     public List<Loan> getTransactionsByUser(String userAccount) {
         String query = "SELECT * FROM Loans WHERE userAccount = ?";
         List<Loan> loanList = new ArrayList<>();
@@ -113,6 +134,12 @@ public class UserRepository extends BaseRepository {
         return loanList;
     }
 
+    /**
+     * list comment.
+     *
+     * @param idBook id
+     * @return list
+     */
     public List<Comment> getCommentByIdBook(int idBook) {
         String query = "SELECT * FROM Loans WHERE userAccount = ?";
         List<Comment> commentList = new ArrayList<>();
@@ -136,6 +163,17 @@ public class UserRepository extends BaseRepository {
         return commentList;
     }
 
+    /**
+     * tim list giao dich.
+     *
+     * @param transactionId id
+     * @param userAccount   userAcc
+     * @param bookId        id
+     * @param borrowDate    ngay muon
+     * @param returnDate    tra
+     * @param status        tinh trang
+     * @return list
+     */
     public List<Loan> searchTransactions(Integer transactionId, String userAccount, Integer bookId, LocalDate borrowDate,
                                          LocalDate returnDate, Loan.LoanStatus status) {
         String query = "SELECT * FROM Loans WHERE " +

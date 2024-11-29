@@ -15,6 +15,13 @@ public abstract class BaseRepository {
         return connectDB();
     }
 
+    /**
+     * add.them object.
+     *
+     * @param query  query
+     * @param params pa
+     * @return so
+     */
     protected int add(String query, Object... params) {
         try (Connection connection = connectDB();
              PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -38,8 +45,13 @@ public abstract class BaseRepository {
         }
     }
 
-
-
+    /**
+     * xoa ob.
+     *
+     * @param query  query
+     * @param params tham so
+     * @return logic
+     */
     public boolean delete(String query, Object... params) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {

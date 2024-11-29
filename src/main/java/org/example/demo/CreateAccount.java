@@ -47,8 +47,10 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
      */
     public boolean checkEmailHopLy() {
         System.out.println(emailCreateText.getText());
-        Pattern p = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)" +
-                "*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
+        Pattern p = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]"
+                + "+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)"
+                + "*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9]"
+                + "(?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
         Matcher M = p.matcher(emailCreateText.getText());
         if (M.find() && M.group().equals(emailCreateText.getText())) {
             System.out.println("Valid email");
@@ -64,6 +66,9 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
         }
     }
 
+    /**
+     * tao acc.
+     */
     public void onCreateButton() {
 
         String queryCreateAccount = "INSERT INTO Users ( surname, lastname, dateOfBirth, "
@@ -99,7 +104,7 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
                     alert.setContentText("Account created successfully");
                     alert.showAndWait();
                     ps.executeUpdate();
-                    chuyenCanh(createButton, "signUp.fxml");
+                    chuyenCanh(createButton, "logIn.fxml");
                 } else {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
@@ -119,6 +124,12 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
         }
     }
 
+    /**
+     * check trung ten.
+     *
+     * @return logic
+     * @throws SQLException sql
+     */
     public boolean checkTrungUserName() throws SQLException {
         connection = database.connectDB();
         String check = "SELECT Count(*) FROM Users WHERE userName = ?";
@@ -147,6 +158,12 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
     }
 
 
+    /**
+     * trung acc va email
+     *
+     * @return logic
+     * @throws SQLException sql
+     */
     public boolean checkTrungAccountVaEmail() throws SQLException {
         connection = database.connectDB();
         String check = "SELECT Count(*) FROM Users WHERE userAccount = ? or email = ?";
@@ -177,6 +194,11 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
         return true;
     }
 
+    /**
+     * check date.
+     *
+     * @return logic
+     */
     public boolean checkDateValid() {
         try {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -197,14 +219,25 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
 
     }
 
+    /**
+     * check fill
+     *
+     * @return logic
+     */
     public boolean checkAllFieldIsFill() {
-        return !(firstNameText.getText().isEmpty() || lastNameText.getText().isEmpty() || monthDateText.getText().isEmpty()
+        return !(firstNameText.getText().isEmpty() || lastNameText.getText().isEmpty()
+                || monthDateText.getText().isEmpty()
                 || onDayDateText.getText().isEmpty() || onGenderText.getText().isEmpty()
                 || emailCreateText.getText().isEmpty() || onUserName.getText().isEmpty()
                 || accountCreateUserNameText.getText().isEmpty()
                 || userCreatePasswordText.getText().isEmpty());
     }
 
+    /**
+     * check pass.
+     *
+     * @return logic
+     */
     public boolean checkValidPassword() {
         if (userCreatePasswordText.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -219,6 +252,11 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
         return true;
     }
 
+    /**
+     * check gen.
+     *
+     * @return logic
+     */
     public boolean checkValidGender() {
         if (onGenderText.getText().equals("Male") || onGenderText.getText().equals("Female")) {
             return true;
@@ -232,7 +270,11 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
         return false;
     }
 
-
+    /**
+     * check trung pass.
+     *
+     * @return logic
+     */
     boolean checkTrungPassword() {
         if (userCreatePasswordText.getText().equals(userCreatePasswordTextPart.getText())) {
             return true;
@@ -252,6 +294,11 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
+    /**
+     * nut quay lai.
+     *
+     * @param actionEvent click
+     */
     public void onBackToLogginButton(ActionEvent actionEvent) {
         firstNameText.clear();
         lastNameText.clear();
@@ -263,9 +310,14 @@ public class CreateAccount extends GiaoDienChung implements Initializable {
         accountCreateUserNameText.clear();
         userCreatePasswordText.clear();
         userCreatePasswordTextPart.clear();
-        chuyenCanh(backToLogginButton, "signUp.fxml");
+        chuyenCanh(backToLogginButton, "logIn.fxml");
     }
 
+    /**
+     * thoat.
+     *
+     * @param actionEvent click
+     */
     public void onExitButton(ActionEvent actionEvent) {
         thoat();
     }

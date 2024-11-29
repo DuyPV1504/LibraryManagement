@@ -22,12 +22,12 @@ public abstract class GiaoDienChung {
 
     /**
      * chuyen canh.
-     * @param button nut click de chuyen
+     *
+     * @param button   nut click de chuyen
      * @param fileName ten file fxml
      */
-
-    public void chuyenCanh(Button button,String fileName) {
-        try{
+    public void chuyenCanh(Button button, String fileName) {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
             Parent root = loader.load();
             Stage stage = (Stage) button.getScene().getWindow();
@@ -38,8 +38,14 @@ public abstract class GiaoDienChung {
         }
     }
 
+    /**
+     * chuyen canh static.
+     *
+     * @param button   nut
+     * @param fileName fxml
+     */
     public static void chuyenCanhStatic(Button button, String fileName) {
-        try{
+        try {
             FXMLLoader loader = new FXMLLoader(GiaoDienChung.class.getResource(fileName));
             Parent root = loader.load();
             Stage stage = (Stage) button.getScene().getWindow();
@@ -50,11 +56,17 @@ public abstract class GiaoDienChung {
         }
     }
 
-    public void thoat(){
+    /**
+     * thoat.
+     */
+    public void thoat() {
         thoatStatic();
     }
 
-    public static void thoatStatic(){
+    /**
+     * thoatStatic.
+     */
+    public static void thoatStatic() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Xác nhận thoát");
         alert.setHeaderText("Bạn có chắc chắn muốn thoát?");

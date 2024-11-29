@@ -15,6 +15,11 @@ public class BookRepository {
         connection = database.connectDB();
     }
 
+    /**
+     * lay list.
+     *
+     * @return list
+     */
     public List<Book> getAllBooks() {
         List<Book> bookList = new ArrayList<>();
         String sql = "SELECT * FROM Books";
@@ -30,6 +35,12 @@ public class BookRepository {
         return bookList;
     }
 
+    /**
+     * lay sach bang id.
+     *
+     * @param bookId id
+     * @return sach
+     */
     public Book getBookById(int bookId) {
         String sql = "SELECT * FROM Books WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -44,9 +55,17 @@ public class BookRepository {
         return null;
     }
 
+    /**
+     * them sach.
+     *
+     * @param book sach
+     * @return logic
+     */
     public boolean addBook(Book book) {
-        String sql = "INSERT INTO Books (bookName, author, publisher, publishYear, totalBooks, availableBooks) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO Books (bookName, author, publisher, "
+                + "publishYear, totalBooks, availableBooks) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS)) {
             setBookPreparedStatement(stmt, book);
             int rowsAffected = stmt.executeUpdate();
 
@@ -70,8 +89,15 @@ public class BookRepository {
         }
     }
 
+    /**
+     * update sach.
+     *
+     * @param book sach
+     * @return logic
+     */
     public boolean updateBook(Book book) {
-        String sql = "UPDATE Books SET bookName = ?, author = ?, publisher = ?, publishYear = ?, totalBooks = ?, availableBooks = ? WHERE id = ?";
+        String sql = "UPDATE Books SET bookName = ?, author = ?, publisher = ?, "
+                + "publishYear = ?, totalBooks = ?, availableBooks = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             setBookPreparedStatement(stmt, book);
             stmt.setInt(7, book.getId());
@@ -83,6 +109,12 @@ public class BookRepository {
         }
     }
 
+    /**
+     * xoa sach.
+     *
+     * @param bookId id
+     * @return logic
+     */
     public boolean deleteBookById(int bookId) {
         String sql = "DELETE FROM Books WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -95,9 +127,16 @@ public class BookRepository {
         }
     }
 
+    /**
+     * tim sach.
+     *
+     * @param keyword key
+     * @return list
+     */
     public List<Book> searchBookByKeyword(String keyword) {
         List<Book> bookList = new ArrayList<>();
-        String sql = "SELECT * FROM Books WHERE LOWER(bookName) LIKE LOWER(?) OR LOWER(author) LIKE LOWER(?)";
+        String sql = "SELECT * FROM Books WHERE LOWER(bookName) "
+                + "LIKE LOWER(?) OR LOWER(author) LIKE LOWER(?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             String likeKeyword = "%" + keyword + "%";
             stmt.setString(1, likeKeyword);
@@ -113,6 +152,13 @@ public class BookRepository {
         return bookList;
     }
 
+    /**
+     * set chu.
+     *
+     * @param stmt stmt
+     * @param book sach
+     * @throws SQLException nem sql
+     */
     private void setBookPreparedStatement(PreparedStatement stmt, Book book) throws SQLException {
         stmt.setString(1, book.getBookName());
         stmt.setString(2, book.getAuthor());
@@ -122,6 +168,13 @@ public class BookRepository {
         stmt.setInt(6, book.getAvailableBooks());
     }
 
+    /**
+     * noi.
+     *
+     * @param rs re
+     * @return sach
+     * @throws SQLException sql
+     */
     private Book mapResultSetToBook(ResultSet rs) throws SQLException {
         return new Book(
                 rs.getInt("id"),

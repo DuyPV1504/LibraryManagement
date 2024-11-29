@@ -17,6 +17,20 @@ public class User {
     private int warning;
     private List<Loan> loans;
 
+    /**
+     * ham tao user.
+     *
+     * @param id          id
+     * @param surname     ho
+     * @param lastname    ten
+     * @param dateOfBirth ngay sinh
+     * @param gender      gioi tinh
+     * @param email       mail
+     * @param userName    ho
+     * @param userAccount ten
+     * @param roles       role
+     * @param warning     cnah bao
+     */
     public User(int id, String surname, String lastname, LocalDate dateOfBirth, String gender, String email,
                 String userName, String userAccount, String roles, int warning) {
         this.id = id;

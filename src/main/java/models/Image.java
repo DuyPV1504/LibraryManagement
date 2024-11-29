@@ -5,6 +5,13 @@ public class Image {
     String author;
     String urlImage;
 
+    /**
+     * ham tao anh.
+     *
+     * @param nameBook ten Sach
+     * @param author   tgia
+     * @param urlImage link
+     */
     public Image(String nameBook, String author, String urlImage) {
         this.nameBook = nameBook;
         this.author = author;

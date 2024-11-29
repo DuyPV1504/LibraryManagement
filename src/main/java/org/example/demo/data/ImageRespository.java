@@ -1,4 +1,5 @@
 package org.example.demo.data;
+
 import API.RenImage;
 import models.Image;
 import models.User;
@@ -13,6 +14,15 @@ import java.sql.*;
 
 
 public class ImageRespository extends BaseRepository {
+
+    /**
+     * lay anh.
+     *
+     * @param bookName tenSach
+     * @param author   tac gia
+     * @return link
+     * @throws SQLException sql
+     */
     public String getImageUrl(String bookName, String author) throws SQLException {
         String query = "SELECT urlImage FROM Images WHERE bookName = ? AND author = ?";
 
@@ -36,6 +46,13 @@ public class ImageRespository extends BaseRepository {
     }
 
 
+    /**
+     * them anh.
+     *
+     * @param image anh
+     * @return logic
+     * @throws SQLException sql
+     */
     public boolean addImage(Image image) throws SQLException {
         String query = "INSERT INTO Images (bookName, author, urlImage) VALUES (?, ?, ?)";
         try (Connection connection = getConnection();
@@ -54,6 +71,15 @@ public class ImageRespository extends BaseRepository {
         }
     }
 
+    /**
+     * update link.
+     *
+     * @param bookName ten
+     * @param author   tac gia
+     * @param newUrl   url
+     * @return logic
+     * @throws SQLException sql
+     */
     public boolean updateImageUrl(String bookName, String author, String newUrl) throws SQLException {
         if (newUrl == null || newUrl.trim().isEmpty()) {
             newUrl = null;
@@ -75,6 +101,14 @@ public class ImageRespository extends BaseRepository {
         }
     }
 
+    /**
+     * xoa anh.
+     *
+     * @param bookName ten
+     * @param author   tac gia
+     * @return logic
+     * @throws SQLException sql
+     */
     public boolean deleteImage(String bookName, String author) throws SQLException {
         String query = "DELETE FROM Images WHERE bookName = ? AND author = ?";
         try (Connection connection = getConnection();
@@ -92,6 +126,12 @@ public class ImageRespository extends BaseRepository {
         }
     }
 
+    /**
+     * check url hop ly.
+     *
+     * @param imageUrl url
+     * @return logic
+     */
     public static boolean isValidImageUrl(String imageUrl) {
         try {
             URL url = new URL(imageUrl);
@@ -123,6 +163,13 @@ public class ImageRespository extends BaseRepository {
         }
     }
 
+    /**
+     * lay link trong src.
+     *
+     * @param imageUrl url
+     * @return url
+     * @throws IOException file
+     */
     public static String getImagePath(String imageUrl) throws IOException {
         String saveDir = "F:\\btlOOP\\demo\\src\\main\\resources\\image";
 
@@ -137,7 +184,6 @@ public class ImageRespository extends BaseRepository {
             throw new FileNotFoundException("Ảnh không tồn tại trong thư mục: " + saveFile.getAbsolutePath());
         }
     }
-
 
 
 }

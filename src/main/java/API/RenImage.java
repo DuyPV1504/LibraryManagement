@@ -1,19 +1,20 @@
 package API;
 
 import org.example.demo.GiaoDienChung;
-import org.example.demo.database;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class RenImage extends GiaoDienChung {
 
-    public static String downImage(String imageUrl) throws IOException {
+    /**
+     * API down ảnh về bằng url của ảnh
+     *
+     * @param imageUrl url của ảnh trên web
+     * @throws IOException bắt exception nếu không tồn tại thư mục
+     */
+    public static void downImage(String imageUrl) throws IOException {
         String saveDir = "F:\\btlOOP\\demo\\src\\main\\resources\\image";
 
         File directory = new File(saveDir);
@@ -45,7 +46,6 @@ public class RenImage extends GiaoDienChung {
                 outputStream.write(buffer, 0, bytesRead);
             }
         }
-        return saveFile.getAbsolutePath();
     }
 
 

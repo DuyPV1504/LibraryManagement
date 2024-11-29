@@ -22,6 +22,11 @@ public class LoanRepository {
         bookRepository = new BookRepository();
     }
 
+    /**
+     * lay loan.
+     *
+     * @return list
+     */
     public List<Loan> getAllTransactions() {
         List<Loan> loanList = new ArrayList<>();
         String sql = "SELECT * FROM Loans";
@@ -37,8 +42,15 @@ public class LoanRepository {
         return loanList;
     }
 
+    /**
+     * tim loan.
+     *
+     * @param keyword key
+     * @return list
+     */
     public List<Loan> searchTransaction(String keyword) {
-        String query = "SELECT * FROM Loans WHERE LOWER(userAccount) LIKE LOWER(?) OR LOWER(book_id) LIKE LOWER(?)";
+        String query = "SELECT * FROM Loans WHERE LOWER(userAccount) "
+                + "LIKE LOWER(?) OR LOWER(book_id) LIKE LOWER(?)";
         List<Loan> loanList = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -58,6 +70,12 @@ public class LoanRepository {
         return loanList;
     }
 
+    /**
+     * lay loan.
+     *
+     * @param transactionId id
+     * @return loan
+     */
     public Loan getTransaction(int transactionId) {
         String sql = "SELECT * FROM Loans WHERE transaction_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -72,15 +90,24 @@ public class LoanRepository {
         return null;
     }
 
+    /**
+     * them loan.
+     *
+     * @param loan loan
+     * @return logic
+     */
     public boolean addTransaction(Loan loan) {
-        String query = "INSERT INTO Loans (userAccount, book_id, borrowDate, endDate, returnDate, status) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        String query = "INSERT INTO Loans (userAccount, book_id, "
+                + "borrowDate, endDate, returnDate, status) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query,
+                Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, loan.getUserAccount());
             preparedStatement.setInt(2, loan.getBookId());
             preparedStatement.setDate(3, java.sql.Date.valueOf(loan.getBorrowDate()));
             preparedStatement.setDate(4, java.sql.Date.valueOf(loan.getEndDate()));
-            preparedStatement.setDate(5, loan.getReturnDate() != null ? java.sql.Date.valueOf(loan.getReturnDate()) : null);
+            preparedStatement.setDate(5, loan.getReturnDate() != null
+                    ? java.sql.Date.valueOf(loan.getReturnDate()) : null);
             preparedStatement.setString(6, loan.getStatus().name());
 
             int rowsAffected = preparedStatement.executeUpdate();
@@ -105,15 +132,23 @@ public class LoanRepository {
         }
     }
 
+    /**
+     * update loan.
+     *
+     * @param loan loan
+     * @return logic
+     */
     public boolean updateTransaction(Loan loan) {
-        String query = "UPDATE Loans SET userAccount = ?, book_id = ?, borrowDate = ?, endDate = ?, returnDate = ?, status = ? WHERE transaction_id = ?";
+        String query = "UPDATE Loans SET userAccount = ?, book_id = ?, borrowDate = ?, "
+                + "endDate = ?, returnDate = ?, status = ? WHERE transaction_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, loan.getUserAccount());
             preparedStatement.setInt(2, loan.getBookId());
             preparedStatement.setDate(3, java.sql.Date.valueOf(loan.getBorrowDate()));
             preparedStatement.setDate(4, java.sql.Date.valueOf(loan.getEndDate()));
-            preparedStatement.setDate(5, loan.getReturnDate() != null ? java.sql.Date.valueOf(loan.getReturnDate()) : null);
+            preparedStatement.setDate(5, loan.getReturnDate() != null
+                    ? java.sql.Date.valueOf(loan.getReturnDate()) : null);
             preparedStatement.setString(6, loan.getStatus().name());
             preparedStatement.setInt(7, loan.getTransactionId());
 
@@ -125,7 +160,12 @@ public class LoanRepository {
         }
     }
 
-    // Xóa giao dịch theo transaction_id
+    /**
+     * xoa giao bang id
+     *
+     * @param transactionId id
+     * @return logic
+     */
     public boolean deleteTransaction(int transactionId) {
         String query = "DELETE FROM Loans WHERE transaction_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -140,15 +180,22 @@ public class LoanRepository {
         }
     }
 
+    /**
+     * noi.
+     *
+     * @param rs re
+     * @return loan
+     * @throws SQLException sql
+     */
     private Loan mapResultSetToLoan(ResultSet rs) throws SQLException {
         int transactionId = rs.getInt("transaction_id");
         String userAccount = rs.getString("userAccount");
         int bookId = rs.getInt("book_id");
         LocalDate borrowDate = rs.getDate("borrowDate").toLocalDate();
         LocalDate endDate = rs.getDate("endDate").toLocalDate();
-        LocalDate returnDate = rs.getDate("returnDate") != null ? rs.getDate("returnDate").toLocalDate() : null;
+        LocalDate returnDate = rs.getDate("returnDate") != null ?
+                rs.getDate("returnDate").toLocalDate() : null;
         Loan.LoanStatus status = Loan.LoanStatus.valueOf(rs.getString("status").toUpperCase());
-
 
         Book book = bookRepository.getBookById(bookId);
 

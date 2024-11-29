@@ -17,7 +17,7 @@
                 <Image url="@../../../image/libBack.jpg" />
             </image>
         </ImageView>
-        <Pane focusTraversable="true" layoutX="187.0" layoutY="52.0" opacity="0.74" prefHeight="378.0" prefWidth="506.0" style="-fx-background-color: #ffffff;">
+        <Pane focusTraversable="true" layoutX="187.0" layoutY="52.0" opacity="0.87" prefHeight="378.0" prefWidth="506.0" style="-fx-background-color: #ffffff;">
             <children>
                 <Text layoutX="177.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CREATE ACCOUNT" textAlignment="CENTER" wrappingWidth="147.2769775390625">
                     <font>

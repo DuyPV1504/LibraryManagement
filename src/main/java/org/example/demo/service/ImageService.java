@@ -11,6 +11,12 @@ import java.sql.SQLException;
 public class ImageService {
     private final ImageRespository imgRepository = new ImageRespository();
 
+    /**
+     * them anh.
+     *
+     * @param img img
+     * @return logic
+     */
     public boolean addImg(Image img) {
         try {
             imgRepository.addImage(img);
@@ -21,6 +27,14 @@ public class ImageService {
         }
     }
 
+    /**
+     * lay url.
+     *
+     * @param bookName ten
+     * @param author   tgia
+     * @return link
+     * @throws SQLException sql
+     */
     public String getUrlByBookNameAndAuthor(String bookName, String author) throws SQLException {
         try {
             return imgRepository.getImageUrl(bookName, author);
@@ -30,6 +44,15 @@ public class ImageService {
         }
     }
 
+    /**
+     * update link.
+     *
+     * @param bookName ten sach
+     * @param author   tgia
+     * @param url      url
+     * @return link
+     * @throws SQLException sql
+     */
     public boolean updateLink(String bookName, String author, String url) throws SQLException {
         try {
             imgRepository.updateImageUrl(bookName, author, url);
@@ -40,6 +63,14 @@ public class ImageService {
         }
     }
 
+    /**
+     * xoa link.
+     *
+     * @param bookName ten sach
+     * @param author   tgia
+     * @return
+     * @throws SQLException
+     */
     public boolean deleteLink(String bookName, String author) throws SQLException {
         try {
             imgRepository.deleteImage(bookName, author);
@@ -50,10 +81,22 @@ public class ImageService {
         }
     }
 
+    /**
+     * check link.
+     *
+     * @param imageUrl url
+     * @return logic
+     */
     public boolean isValidImageUrl(String imageUrl) {
         return ImageRespository.isValidImageUrl(imageUrl);
     }
 
+    /**
+     * lay path.
+     * @param imageUrl url
+     * @return path
+     * @throws IOException file
+     */
     public String getImagePath(String imageUrl) throws IOException {
         return ImageRespository.getImagePath(imageUrl);
     }

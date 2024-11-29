@@ -15,9 +15,19 @@ public class Loan {
         BORROWED,
         RETURNED
     }
+
     public Loan() {
 
     }
+
+    /**
+     * tao giao dich.
+     *
+     * @param userAccount ten
+     * @param bookId      id
+     * @param borrowDate  ngay
+     * @param endDate     ngay tra
+     */
     public Loan(String userAccount, int bookId, LocalDate borrowDate, LocalDate endDate) {
         this.userAccount = userAccount;
         this.bookId = bookId;
@@ -26,6 +36,16 @@ public class Loan {
         this.status = LoanStatus.BORROWED;
     }
 
+    /**
+     * tao gd bang id.
+     *
+     * @param transactionId id
+     * @param userAccount   ten nguoi dung
+     * @param bookId        id sach
+     * @param borrowDate    ngay muon
+     * @param returnDate    ngay tra
+     * @param status        tinh trang
+     */
     public Loan(int transactionId, String userAccount, int bookId, LocalDate borrowDate, LocalDate returnDate, LoanStatus status) {
         this.transactionId = transactionId;
         this.userAccount = userAccount;
@@ -35,7 +55,17 @@ public class Loan {
         this.status = status;
     }
 
-
+    /**
+     * tao loan 3.
+     *
+     * @param transactionId id
+     * @param userAccount   ten
+     * @param bookId        id
+     * @param borrowDate    ngay
+     * @param endDate       han
+     * @param returnDate    tra
+     * @param status        tinh trang
+     */
     public Loan(int transactionId, String userAccount, int bookId, LocalDate borrowDate, LocalDate endDate, LocalDate returnDate, LoanStatus status) {
         this.transactionId = transactionId;
         this.userAccount = userAccount;
